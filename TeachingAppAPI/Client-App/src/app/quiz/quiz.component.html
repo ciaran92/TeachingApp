@@ -1,0 +1,37 @@
+<div class="container">
+    <div class="quizWrapper" *ngIf="quizOver == false">
+        <div class="alert alert-danger" role="alert">
+        This is a danger alert—check it out!
+        </div>
+        <p>Question Number {{ questionNumber + 1 }}</p>
+        <div class="row">
+                <div class="card w-100">
+                    <div class="card-body">
+                        <p>Q. {{ questions[questionNumber].question }}</p>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="row" *ngFor="let option of questions[questionNumber].options;let i = index">
+                <div class="col"><li (click)="checkAnswer(option)" class="list-group-item list-group-item-action questionOption">{{i + 1}}.  {{ option }}</li></div>
+            </div>
+        
+            <div class="navBtnWrapper">
+                <div class="prevBtnContainer">
+                    <button (click)="previousQuestion()" type="button" class="btn btn-dark" style="float: right"><</button>
+                </div>
+                <div class="nextBtnDivContainer">
+                    <button (click)="nextQuestion()" type="button" class="btn btn-dark q"style="float:left">></button>
+                </div>
+            </div>
+        
+            <div class="submitBtnWrapper">
+                <button (click)="submitQuiz()" type="button" class="btn btn-dark q">Submit</button>
+            </div>
+
+            
+    </div>
+    <div class="results" *ngIf="quizOver">
+        <p>Done!!!!!!!!</p>
+    </div>
+</div>

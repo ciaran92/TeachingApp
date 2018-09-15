@@ -1,0 +1,21 @@
+<form #registerForm="ngForm" (ngSubmit)="OnSubmit(FirstName.value, LastName.value, Username.value, UserPassword.value)">
+  <div class="FirstName">
+      <label>First Name</label>
+      <input type="text" name="FirstName" #FirstName ngModel>
+  </div>
+  <div class="LastName">
+      <label>Last Name</label>
+      <input type="text" name="LastName" #LastName ngModel>
+  </div>
+  <div class="Username">
+    <label>Username</label>
+    <input type="text" name="Username" #Username ngModel>
+  </div>
+  <div class="UserPassword">
+    <label>Password</label>
+    <input type="text" name="UserPassword" #UserPassword ngModel>
+  </div>
+  <div class="RegisterStudentBtn">
+      <button type="submit">Submit</button>
+  </div>
+</form>

@@ -1,0 +1,37 @@
+.col, .card
+{
+    padding-left: 0;
+    padding-right: 0;
+    margin: 10px;
+}
+
+.questionOption{
+    cursor: pointer;
+}
+
+.quizNavBtns{
+    text-align: center;
+}
+
+.navBtnWrapper{
+    width: 100%;
+    float: left;
+}
+
+.prevBtnContainer{
+    width: 50%;
+    float: left;
+    padding-right: 25px;
+}
+
+.nextBtnDivContainer{
+    width: 50%;
+    float: right;
+    padding-left: 25px;
+}
+
+.submitBtnWrapper{
+    width: 100%;
+    text-align: center;
+    padding: 50px;
+}
