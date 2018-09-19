@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TeachingAppAPI.Models;
+using TeachingAppAPI.Data;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace TeachingAppAPI.Controllers
 {
-
     [Route("api/[controller]")]
-    public class QuestionsController : Controller
+    public class QuestionsController : ControllerBase
     {
         private TestDBContext context;        
 
