@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using TeachingAppAPI.Data;
 using TeachingAppAPI.Models;
 
 namespace TeachingAppAPI
@@ -30,6 +31,21 @@ namespace TeachingAppAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<TestDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = "mysite.com",
+                    ValidAudience = "mysite.com",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("secretkeySuperdooperecretneverbecracked147468gnvjhfnd"))
+                };
+                
+
+            });
 
             services.AddCors(options =>
             {
@@ -51,6 +67,7 @@ namespace TeachingAppAPI
                 app.UseDeveloperExceptionPage();
             }
             app.UseCors("AllowAll");
+            app.UseAuthentication();
             app.UseMvc();
         }
     }

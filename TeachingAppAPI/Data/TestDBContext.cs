@@ -1,8 +1,7 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
+using TeachingAppAPI.Models;
 
-namespace TeachingAppAPI.Models
+namespace TeachingAppAPI.Data
 {
     public partial class TestDBContext : DbContext
     {
