@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Question } from './question';
 import { Options } from './options';
 import { QuizService } from './quiz.service';
 import { Observable, timer } from 'rxjs';
+
+
 
 
 @Component({
@@ -13,25 +14,20 @@ import { Observable, timer } from 'rxjs';
 
 export class QuizComponent implements OnInit {
 
-  questions: Question[];
   questionNumber: number = 0;
   quizOver: boolean = false;
   answers: any[];
+  questions: any;
 
   constructor(private quizService: QuizService) { 
   }
 
   ngOnInit() {
-    this.getQuestions();
+    this.quizService.getQuestions().subscribe((response) => {this.questions = response;});
     this.answers = [];
     for(var i: number = 0; i < 10; i++){
         this.answers[i] = null;
     }
-    
-  }
-
-  getQuestions(){
-    this.quizService.getQuestions().subscribe(questions => this.questions = questions);
   }
 
   nextQuestion(){
@@ -42,7 +38,6 @@ export class QuizComponent implements OnInit {
   }
 
   previousQuestion(){
-    
     if(this.questionNumber + 1 >= 2){
       this.questionNumber--;
       console.log("question No. = " + (this.questionNumber + 1));
