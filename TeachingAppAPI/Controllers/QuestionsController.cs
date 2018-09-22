@@ -11,6 +11,7 @@ using TeachingAppAPI.Data;
 
 namespace TeachingAppAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class QuestionsController : ControllerBase
     {

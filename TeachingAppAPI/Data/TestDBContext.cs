@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using TeachingAppAPI.Models;
 
 namespace TeachingAppAPI.Data
@@ -25,7 +26,8 @@ namespace TeachingAppAPI.Data
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-ADKKK1M;Database=TestDB;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-ADKKK1M;Database=TestDB;Trusted_Connection=True;")
+                    .UseLoggerFactory(new LoggerFactory().AddConsole());
             }
         }
 

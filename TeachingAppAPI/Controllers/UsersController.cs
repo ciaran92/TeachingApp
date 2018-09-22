@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using TeachingAppAPI.Data;
 using TeachingAppAPI.Models;
@@ -18,10 +19,12 @@ namespace TeachingAppAPI.Controllers
     {
 
         private TestDBContext context;
+        private readonly AppSettings appSettings;
 
-        public UsersController(TestDBContext context)
+        public UsersController(TestDBContext context, IOptions<AppSettings> appSettings)
         {
             this.context = context;
+           this.appSettings = appSettings.Value;
         }
         // GET api/values
         [HttpGet]
@@ -49,36 +52,42 @@ namespace TeachingAppAPI.Controllers
         }
 
         [HttpPost("token")]
-        public IActionResult Token()
+        public IActionResult Token([FromBody]Users userInput)
         {
-            //string tokenString = "test";
-            var header = Request.Headers["Authorization"];
-            if (header.ToString().StartsWith("Basic"))
+            var user = context.Users.SingleOrDefault(x => x.Username == userInput.Username); // understand more on this line
+            if(userInput == null || user == null)
             {
-                var credValue = header.ToString().Substring("Basic".Length).Trim();
-                var usernameAndPassenc = Encoding.UTF8.GetString(Convert.FromBase64String(credValue)); //admin pass
-                var usernameAndPass = usernameAndPassenc.Split(":");
+                return BadRequest("Password or Username incorrect!");
+            }
 
-                if (usernameAndPass[0] == "Admin" && usernameAndPass[1] == "pass")
+            //var checkCreds = context.Users.FromSql($"select * from Users where Username = {inputModel.Username}").ToArray();
+            if (userInput.Username == user.Username && userInput.UserPassword == user.UserPassword)
+            {
+                Console.WriteLine((context.Users.Where(x => x.Username == userInput.Username).SingleOrDefault()).ToString());
+                Console.WriteLine("helooooo");
+                var SecretKey = Encoding.ASCII.GetBytes(appSettings.Secret);
+                var key = new SymmetricSecurityKey(SecretKey);
+                var signInCred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+                var claims = new List<Claim>
                 {
-
-
-                    var claimsData = new[] { new Claim(ClaimTypes.Name, usernameAndPass[0]) };
-                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("secretkeySuperdooperecretneverbecracked147468gnvjhfnd"));
-                    var signInCred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
-                    var token = new JwtSecurityToken
+                    new Claim(ClaimTypes.Name, userInput.Username)
+                };
+                var token = new JwtSecurityToken
                         (
-                        issuer: "mysite.com",
-                        audience: "mysite.com",
+                        issuer: "http://localhost:52459",
+                        audience: "http://localhost:52459",
                         expires: DateTime.Now.AddMinutes(1),
-                        claims: claimsData,
+                        claims: claims,
                         signingCredentials: signInCred
                         );
-                    var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-                    return Ok(tokenString);
-                }
+
+                var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+                return Ok(new { token = tokenString });
             }
-            return BadRequest("wrong request");
+            else
+            {
+                return Unauthorized();
+            }
         }
 
         // PUT api/values/5

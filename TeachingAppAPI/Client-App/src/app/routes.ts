@@ -15,5 +15,5 @@ export const appRoutes : Routes = [
         children: [{path: '', component:LoginComponent}]
     },
     {path: 'quiz', component:QuizComponent},
-    {path: '', redirectTo:'/quiz',pathMatch:'full'}
+    {path: '', redirectTo:'/home',pathMatch:'full'}
 ];
