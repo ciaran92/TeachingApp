@@ -1,3 +1,11 @@
-.tst{
-    border-radius: 50px;
+:host{
+    width: 100%;
+    position: fixed;
+    display: block;
+
 }
+
+.btn{
+    margin-left: 10px;
+}
+

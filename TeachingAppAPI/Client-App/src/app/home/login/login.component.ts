@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
+  failedLogin: boolean = false;
+
   constructor(private quizService: QuizService, private route: Router) { }
 
   ngOnInit() {
@@ -21,7 +23,12 @@ export class LoginComponent implements OnInit {
       (response: any) => {  
         let token = (<any>response).token;
         localStorage.setItem("jwt", token);
+        this.failedLogin = false;
         this.route.navigate(['/quiz']);
+      },
+      err => {
+        console.log("failed to login");
+        this.failedLogin = true;
       }
     );
   }

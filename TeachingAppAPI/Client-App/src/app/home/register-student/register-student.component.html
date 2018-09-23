@@ -1,21 +1,33 @@
-<form #registerForm="ngForm" (ngSubmit)="OnSubmit(FirstName.value, LastName.value, Username.value, UserPassword.value)">
-  <div class="FirstName">
-      <label>First Name</label>
-      <input type="text" name="FirstName" #FirstName ngModel>
+<div class="shade"></div>
+<div class="wrapper">  
+  <div class="card">
+      <a routerLink='/home' class="close"></a>
+    <div class="card-title">
+      <h2>Register an Account</h2>
+    </div>
+    <div class="card-body">
+        <form #registerForm="ngForm" (ngSubmit)="OnSubmit(FirstName.value, LastName.value, Username.value, UserPassword.value)">
+          <div class="FirstName form-group">
+              <label>First Name</label>
+              <input type="text" name="FirstName" #FirstName ngModel>
+          </div>
+          <div class="LastName form-group">
+              <label>Last Name</label>
+              <input type="text" name="LastName" #LastName ngModel>
+          </div>
+          <div class="Username form-group">
+            <label>Username</label>
+            <input type="text" name="Username" #Username ngModel>
+          </div>
+          <div class="UserPassword form-group">
+            <label>Password</label>
+            <input type="text" name="UserPassword" #UserPassword ngModel>
+          </div>
+          <div class="RegisterStudentBtn form-group">
+              <button class="btn btn-primary" type="submit">Submit</button>
+          </div>
+        </form>
+    </div>
   </div>
-  <div class="LastName">
-      <label>Last Name</label>
-      <input type="text" name="LastName" #LastName ngModel>
-  </div>
-  <div class="Username">
-    <label>Username</label>
-    <input type="text" name="Username" #Username ngModel>
-  </div>
-  <div class="UserPassword">
-    <label>Password</label>
-    <input type="text" name="UserPassword" #UserPassword ngModel>
-  </div>
-  <div class="RegisterStudentBtn">
-      <button type="submit">Submit</button>
-  </div>
-</form>
+</div>
+

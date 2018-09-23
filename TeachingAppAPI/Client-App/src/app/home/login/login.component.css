@@ -1,0 +1,78 @@
+:host{
+    position: fixed;
+    width: 100%;
+    height: 100%; 
+}
+
+.shade{
+    background-color: black;
+    opacity: 0.6;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+
+.close {
+    position: absolute;
+    right: -36px;
+    top: -36px;
+    width: 32px;
+    height: 32px;
+    opacity: 0.7;
+}
+
+.close:hover {
+    opacity: 1;
+}
+
+.close:before, .close:after {
+    position: absolute;
+    left: 15px;
+    content: ' ';
+    height: 33px;
+    width: 2px;
+    background-color: white;
+ }
+
+.close:before {
+    transform: rotate(45deg);
+}
+
+.close:after {
+    transform: rotate(-45deg);
+}
+
+.wrapper{
+    text-align: center;
+}
+
+.card{
+    display: inline-block;
+    border-radius: 0px; /*removing default border from the card*/
+    margin-top: 5rem;
+}
+
+.card-title{
+    margin-top: .75rem; /*adding top margin = default bottom margin for card-title*/
+}
+
+form{
+    display: inline-block;
+}
+
+.form-group{
+    width: 22rem;
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    padding-left: .3rem;
+  }
+  ::-moz-placeholder { /* Firefox 19+ */
+    padding-left: .3rem;
+  }
+  :-ms-input-placeholder { /* IE 10+ */
+    padding-left: .3rem;
+  }
+  :-moz-placeholder { /* Firefox 18- */
+    padding-left: .3rem;
+  }

@@ -4,6 +4,7 @@ import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import {ScrollToModule} from 'ng2-scroll-to';
 
 
 import { AppComponent } from './app.component';
@@ -16,6 +17,9 @@ import { appRoutes } from './routes';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './home/login/login.component';
 import { HttpClientModule } from '@angular/common/http';
+import { AboutUsComponent } from './about-us/about-us.component';
+import { ContactUsComponent } from './contact-us/contact-us.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +28,10 @@ import { HttpClientModule } from '@angular/common/http';
     QuizComponent,
     RegisterStudentComponent,
     HomeComponent,
-    LoginComponent
+    LoginComponent,
+    AboutUsComponent,
+    ContactUsComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +39,8 @@ import { HttpClientModule } from '@angular/common/http';
     RouterModule.forRoot(appRoutes),
     FormsModule,
     HttpClientModule,
-    CommonModule
+    CommonModule,
+    ScrollToModule.forRoot()
   ],
   providers: [
     QuizService
