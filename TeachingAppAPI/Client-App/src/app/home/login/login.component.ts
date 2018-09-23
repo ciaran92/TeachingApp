@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
         let token = (<any>response).token;
         localStorage.setItem("jwt", token);
         this.failedLogin = false;
-        this.route.navigate(['/quiz']);
+        this.route.navigate(['/landing-page']);
       },
       err => {
         console.log("failed to login");

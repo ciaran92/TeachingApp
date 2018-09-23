@@ -20,6 +20,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { FooterComponent } from './footer/footer.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
+import { AuthGuard } from './auth.guard';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,8 @@ import { FooterComponent } from './footer/footer.component';
     LoginComponent,
     AboutUsComponent,
     ContactUsComponent,
-    FooterComponent
+    FooterComponent,
+    LandingPageComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +46,8 @@ import { FooterComponent } from './footer/footer.component';
     ScrollToModule.forRoot()
   ],
   providers: [
-    QuizService
+    QuizService,
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })

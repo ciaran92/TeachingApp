@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { QuizService } from '../quiz/quiz.service';
+import { longStackSupport } from 'q';
 
 
 @Component({
@@ -8,8 +10,8 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-
-  constructor(private route: ActivatedRoute, private router: Router) { }
+  
+  constructor(private route: ActivatedRoute, private router: Router, private quizService: QuizService) { }
 
   ngOnInit() {
   }
@@ -20,5 +22,20 @@ export class NavbarComponent implements OnInit {
         x.scrollIntoView();
     }
   }
+
+  loggedIn(): boolean{
+    if(this.quizService.loggedIn()){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  logOut(){
+    localStorage.removeItem("jwt");
+  }
+
+
+
 
 }

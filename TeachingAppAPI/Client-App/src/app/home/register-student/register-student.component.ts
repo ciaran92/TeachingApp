@@ -17,7 +17,10 @@ export class RegisterStudentComponent implements OnInit {
   OnSubmit(FirstName:string, LastName:string, Username: string, UserPassword: string){
     this.quizService.createUser(FirstName, LastName, Username, UserPassword).subscribe(
       (data: any) => {
-        this.route.navigate(['/quiz'])
+        this.route.navigate(['/landing-page'])
+      },
+      err => {
+        console.log("failed to register");
       }
     );
   }

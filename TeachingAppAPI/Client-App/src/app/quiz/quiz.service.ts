@@ -47,4 +47,8 @@ export class QuizService {
         //console.log("reqHeader: " + reqHeader);
         return (this.http.post("http://localhost:52459/api/users/token", credentials, { headers: requiredHeader }));
     }
+
+    loggedIn(){
+        return !!localStorage.getItem('jwt');
+    }
 }

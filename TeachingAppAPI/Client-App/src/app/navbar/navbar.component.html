@@ -7,8 +7,14 @@
       <div class="navbar-nav ml-auto">
         <a class="nav-item nav-link" scrollTo href="#about">About Us</a>
         <a class="nav-item nav-link" scrollTo href="#contact">Contact</a>
-        <button routerLink='/register' routerLinkActive='active' type="button" class="btn btn-outline-primary">Register</button>
-        <button routerLink='/login' routerLinkActive='active' type="button" class="btn btn-primary">Sign In</button>
+        <div *ngIf = "!loggedIn()"> 
+          <button routerLink='/register' routerLinkActive='active' type="button" class="btn btn-outline-primary">Register</button>
+          <button routerLink='/login' routerLinkActive='active' type="button" class="btn btn-primary">Sign In</button>
+        </div>
+        <div *ngIf = "loggedIn()"> 
+            <button routerLink='/home' routerLinkActive='active' type="button" class="btn btn-primary" (click) = "logOut()">Sign Out</button>
+            
+        </div>
       </div>
     </div>
   </nav>

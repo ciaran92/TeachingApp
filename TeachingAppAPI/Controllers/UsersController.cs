@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -14,6 +15,7 @@ using TeachingAppAPI.Models;
 
 namespace TeachingAppAPI.Controllers
 {
+    
     [Route("api/[controller]")]
     public class UsersController : Controller
     {
@@ -24,14 +26,13 @@ namespace TeachingAppAPI.Controllers
         public UsersController(TestDBContext context, IOptions<AppSettings> appSettings)
         {
             this.context = context;
-           this.appSettings = appSettings.Value;
+            this.appSettings = appSettings.Value;
         }
         // GET api/values
         [HttpGet]
         public IActionResult GetUsers()
         {
             var blogs = context.Users.FromSql("select * from users").ToArray();
-
             return Ok(blogs);
         }
 
