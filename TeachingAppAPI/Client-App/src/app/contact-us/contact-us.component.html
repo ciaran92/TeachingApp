@@ -1,3 +1,52 @@
-<div class="wrapper">
-  <h1>Contact Us Section</h1>
+<div class="banner">
+    <div class="title">
+        <h1>Lets Taco Bout it</h1>
+        <h2>Use the form below to drop us a line. Or 
+            if you're feeling really dangerous why not call us on 021 294 4142</h2>            
+    </div>
 </div>
+<div class="contact-section">
+    <div class="contact-form">
+        <div class="line-separator">
+            <form #registerForm="ngForm" (ngSubmit)="OnSubmit(Name.value, Email.value, Number.value, Message.value)">
+                <div class="contact-subsection form-group">
+                    <label><h3 style="font-size:1.2rem;">Your Name</h3></label>
+                    <input type="text" name="Name" #Name ngModel>
+                </div>
+                <div class="contact-subsection form-group">
+                    <label><h3 style="font-size:1.2rem;">Your Email</h3></label>
+                    <input type="email" name="Email" #Email ngModel>
+                </div>
+                <div class="contact-subsection form-group">
+                    <label><h3 style="font-size:1.2rem;">Your Number</h3></label>
+                    <input type="text" name="Number" #Number ngModel>
+                </div>
+                <div class="contact-subsection form-group">
+                    <label><h3 style="font-size:1.2rem;">Your Message</h3></label>
+                    <textarea type="textarea" name="Message" #Message ngModel></textarea>
+                </div>
+                <div class="SubmitMessageBtn form-group">
+                    <button class="btn btn-primary" type="submit">Send</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div class="contact-details">
+        <div class="details-subsection">
+            <h3>Email</h3>
+            <p>ciaranselwyn@yahoo.co.nz</p>
+        </div>
+        <div class="details-subsection">
+            <h3>Telephone</h3>
+            <p>021-294-4142</p>
+        </div>
+        <div class="details-subsection">
+            <h3>Address</h3>
+            <p class="address">35 Highview Drive</p>
+            <p class="address">Nelson, 7011</p>
+            <p class="address">New Zealand</p>
+        </div>
+    </div>
+</div>
+<app-footer></app-footer>

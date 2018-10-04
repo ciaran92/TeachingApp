@@ -1,0 +1,21 @@
+<div class="wrapper">
+  <div class="card">
+    <div class="card-header">
+      <p>Your account has been successfully created! Before you can log in 
+        your account needs to be confirmed. A confirmation code has been 
+        sent to your email {{ userDetails.email }}, please enter the code 
+        provided below and click confirm to continue.</p>
+    </div>
+    <div class="card-body">
+        <form #registerForm="ngForm" (ngSubmit)="OnSubmit(VerificationCode.value)">
+            <div class="code">
+              <label>Verification Code</label>
+              <input type="text" name="VerificationCode" #VerificationCode ngModel>
+            </div>
+            <div class="ConfirmBtn form-group">
+              <button class="btn btn-primary" type="submit">Confirm</button>
+            </div>
+        </form>
+    </div>
+  </div>
+</div>

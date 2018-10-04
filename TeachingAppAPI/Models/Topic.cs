@@ -7,14 +7,15 @@ namespace TeachingAppAPI.Models
     {
         public Topic()
         {
-            Questions = new HashSet<Questions>();
+            Quiz = new HashSet<Quiz>();
         }
 
         public int TopicId { get; set; }
         public int? CourseId { get; set; }
         public string TopicName { get; set; }
+        public string TopicDesc { get; set; }
 
         public Course Course { get; set; }
-        public ICollection<Questions> Questions { get; set; }
+        public ICollection<Quiz> Quiz { get; set; }
     }
 }

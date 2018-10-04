@@ -5,15 +5,24 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav ml-auto">
-        <a class="nav-item nav-link" scrollTo href="#about">About Us</a>
-        <a class="nav-item nav-link" scrollTo href="#contact">Contact</a>
+        <a class="nav-item nav-link" routerLink='/home' scrollTo href="#home">Home</a>
+        <a class="nav-item nav-link" routerLink='/contact'>Contact</a>
         <div *ngIf = "!loggedIn()"> 
           <button routerLink='/register' routerLinkActive='active' type="button" class="btn btn-outline-primary">Register</button>
-          <button routerLink='/login' routerLinkActive='active' type="button" class="btn btn-primary">Sign In</button>
+          <button routerLink='/login' routerLinkActive='active' type="button" class="btn btn-outline-primary">Sign In</button>
         </div>
         <div *ngIf = "loggedIn()"> 
-            <button routerLink='/home' routerLinkActive='active' type="button" class="btn btn-primary" (click) = "logOut()">Sign Out</button>
-            
+            <!--<button routerLink='/home' routerLinkActive='active' type="button" class="btn btn-primary" (click) = "logOut()">Sign Out</button>-->    
+            <div class="dropdown-options">
+              <div><img src="../../assets/profileImage.jpg"></div>
+              
+              <div class="dropdown-content">
+                <a><img class="icon" src="../../assets/dashboard.png">Dashboard</a>
+                <a><img class="icon" src="../../assets/user-black.png">My Profile</a>
+                <a><img class="icon" src="../../assets/settings.png">Settings</a>
+                <a (click) = "logOut()"><img class="icon" src="../../assets/logout.png">Sign Out</a>
+              </div>
+            </div>
         </div>
       </div>
     </div>

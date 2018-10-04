@@ -10,11 +10,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using TeachingAppAPI.Data;
-using TeachingAppAPI.Models;
+using TeachingAppAPI.Services;
 
 namespace TeachingAppAPI
 {
@@ -30,7 +28,7 @@ namespace TeachingAppAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<TestDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<TestDB_Phase2Context>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");
@@ -51,6 +49,11 @@ namespace TeachingAppAPI
                 };
             });
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("RegisteredUser", policy => policy.RequireClaim("Registered"));
+            });
+
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll", p =>
@@ -61,6 +64,10 @@ namespace TeachingAppAPI
                 });
             });
             services.AddMvc();
+            services.AddSingleton<IEmailSender, EmailSender>();
+            services.AddScoped<IUserService, UserService>();
+            //services.Configure<AuthMessageSenderOptions>(Configuration);
+            //services.Configure<AuthMessageSenderOptions>(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

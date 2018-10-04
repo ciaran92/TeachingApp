@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TeachingAppAPI.Data;
+using TeachingAppAPI.Models;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,9 +16,9 @@ namespace TeachingAppAPI.Controllers
     [Route("api/[controller]")]
     public class QuestionsController : ControllerBase
     {
-        private TestDBContext context;        
+        private TestDB_Phase2Context context;        
 
-        public QuestionsController(TestDBContext context)
+        public QuestionsController(TestDB_Phase2Context context)
         {
             this.context = context;
         }
@@ -25,7 +26,7 @@ namespace TeachingAppAPI.Controllers
         [HttpGet]
         public IActionResult GetQuestions()
         {
-            var blogs = context.Questions.FromSql("EXEC randomTenQuestionQuiz").ToArray();
+            /*var blogs = context.Questions.FromSql("EXEC randomTenQuestionQuiz").ToArray();
             var dog = new object[blogs.Length];
 
             for(int i = 0; i < blogs.Length; i++)
@@ -49,7 +50,8 @@ namespace TeachingAppAPI.Controllers
                 //return Ok(dog);
             
 
-            return Ok(dog);
+            return Ok(dog);*/
+            return null;
             
         }
 

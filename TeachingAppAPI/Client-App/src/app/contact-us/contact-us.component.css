@@ -1,7 +1,7 @@
 :host{
-    background-color: blue;
+    background-color: white;
     float: left;
-    height: 100vh;
+    height: auto;
     width: 100%;
 }
 
@@ -13,5 +13,107 @@
 }
 
 h1{
-    color: white;
+    color: black;
+}
+
+.banner{
+    background-color: #edc7b7;
+    height: auto;
+    overflow: hidden;
+    text-align: center;
+}
+
+h1{
+    color: #ac3b61;
+    font-size: 3rem;
+}
+
+h3{
+    color: #ac3b61;
+    font-size: 1.3rem;
+}
+
+p{
+    color: #123c69;
+    font-size: 1rem;
+}
+
+.address{
+    margin: 0;
+}
+
+h2{
+    color: #123c69;
+    font-size: 1.3rem;
+    padding: 2rem;
+    padding-top: 1rem;
+}
+
+img{
+    opacity: 0.5;
+    color: black;
+}
+
+.title{
+    padding: 6rem;
+}
+
+.contact-section{
+    float: left;
+    width: 100%;
+    background-color: #eee2cd;
+}
+
+.contact-form{
+    width: 75%;
+    height: auto;
+    float: left;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    text-align: center;
+}
+
+.line-separator{
+    border-right: 1px solid #123c69;
+}
+
+form{
+    display: inline-block;
+    text-align: justify;
+}
+
+.contact-details{
+    width: 25%;
+    height: auto;
+    float: right;
+    padding: 2rem;
+    padding-top: 3rem;
+}
+
+label{
+    display: block;
+}
+
+input, textarea{
+    width: 20rem;
+    border: none;
+    border-radius: .2rem;
+
+}
+
+input{
+    height: 35px;
+    padding: 10px;
+    font-family:'Ubuntu', Helvetica, Arial, sans-serif;
+    color: #123c69;
+}
+
+textarea{
+    padding: 10px;
+    height: 200px;
+    font-family:'Ubuntu', Helvetica, Arial, sans-serif;
+    color: #123c69;
+}
+.SubmitMessageBtn{
+    float: right;
 }

@@ -11,7 +11,7 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { QuizComponent } from './quiz/quiz.component';
 
-import { QuizService } from './quiz/quiz.service';
+import { AuthenticationService } from './services/authentication.service';
 import { RegisterStudentComponent } from './home/register-student/register-student.component';
 import { appRoutes } from './routes';
 import { HomeComponent } from './home/home.component';
@@ -20,8 +20,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { FooterComponent } from './footer/footer.component';
-import { LandingPageComponent } from './landing-page/landing-page.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from './auth.guard';
+import { AccountConfirmationComponent } from './account-confirmation/account-confirmation.component';
+import { MyCoursesComponent } from './my-courses/my-courses.component';
+import { CoursesComponent } from './courses/courses.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +37,10 @@ import { AuthGuard } from './auth.guard';
     AboutUsComponent,
     ContactUsComponent,
     FooterComponent,
-    LandingPageComponent
+    DashboardComponent,
+    AccountConfirmationComponent,
+    MyCoursesComponent,
+    CoursesComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +52,7 @@ import { AuthGuard } from './auth.guard';
     ScrollToModule.forRoot()
   ],
   providers: [
-    QuizService,
+    AuthenticationService,
     AuthGuard
   ],
   bootstrap: [AppComponent]

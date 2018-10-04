@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Options } from './options';
-import { QuizService } from './quiz.service';
+import { AuthenticationService } from '../services/authentication.service';
 import { Observable, timer } from 'rxjs';
 
 
@@ -19,11 +19,11 @@ export class QuizComponent implements OnInit {
   answers: any[];
   questions: any;
 
-  constructor(private quizService: QuizService) { 
+  constructor(private authenticationService: AuthenticationService) { 
   }
 
   ngOnInit() {
-    this.quizService.getQuestions().subscribe((response) => {this.questions = response;});
+    this.authenticationService.getQuestions().subscribe((response) => {this.questions = response;});
     this.answers = [];
     for(var i: number = 0; i < 10; i++){
         this.answers[i] = null;

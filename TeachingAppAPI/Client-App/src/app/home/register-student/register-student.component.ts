@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { QuizService } from '../../quiz/quiz.service';
-import { Router } from '@angular/router';
+import { AuthenticationService } from '../../services/authentication.service';
+
 
 @Component({
   selector: 'app-register-student',
@@ -9,20 +9,14 @@ import { Router } from '@angular/router';
 })
 export class RegisterStudentComponent implements OnInit {
 
-  constructor(private quizService: QuizService, private route: Router) { }
+  error: any;
+  constructor(private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
   }
 
-  OnSubmit(FirstName:string, LastName:string, Username: string, UserPassword: string){
-    this.quizService.createUser(FirstName, LastName, Username, UserPassword).subscribe(
-      (data: any) => {
-        this.route.navigate(['/landing-page'])
-      },
-      err => {
-        console.log("failed to register");
-      }
-    );
+  OnSubmit(FirstName:string, LastName:string, Username: string, Email:string, UserPassword: string){
+    this.authenticationService.createUser(FirstName, LastName, Username, Email, UserPassword);
   }
 
 }

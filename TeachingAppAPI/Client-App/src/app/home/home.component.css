@@ -1,25 +1,26 @@
 :host, .about, .contact, .home-screen{
-    background-color: burlywood;
     float: left;
     height: 100vh;
     width: 100%;
-}
-
-.about{
-    background-color: red;
-}
-
-.contact{
-    background-color: blueviolet;
+    background-color: #eee2cd;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
 .wrapper{
     display: flex;
-    height: 100%;
+    height: 100vh;
+    width: 100%;
     align-items: center;
     justify-content: center;
+    background-color: #eee2cd;
+}
+.about{
+    background-color: #edc7b7;
 }
 
 h1{
-    color: white;
+    color: #123c69;
 }
