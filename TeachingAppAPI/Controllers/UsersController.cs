@@ -20,6 +20,18 @@ namespace TeachingAppAPI.Controllers
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
+        /*
+         -- Current methods:
+            - GetUsers():
+                - returns all users (doesn't distinguish type of user at this point
+            - Get(int id):
+                - 
+            - ConfirmAccount([FromBody]AppUser user)
+            - CreateNewUser([FromBody]AppUser newUser)
+            - GenerateCode(int length)
+         */
+
+
 
         private TestDB_Phase2Context context;
         //private Example mailServer;

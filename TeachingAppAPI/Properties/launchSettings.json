@@ -19,7 +19,7 @@
     "TeachingAppAPI": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/questions",
+      "launchUrl": "api/courses",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

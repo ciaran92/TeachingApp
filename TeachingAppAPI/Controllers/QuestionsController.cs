@@ -21,7 +21,7 @@ namespace TeachingAppAPI.Controllers
         public QuestionsController(TestDB_Phase2Context context)
         {
             this.context = context;
-        }
+        }   
         // GET api/values
         [HttpGet]
         public IActionResult GetQuestions()

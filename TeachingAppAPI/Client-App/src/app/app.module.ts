@@ -12,6 +12,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { QuizComponent } from './quiz/quiz.component';
 
 import { AuthenticationService } from './services/authentication.service';
+import { CourseService} from './services/course.service';
+
 import { RegisterStudentComponent } from './home/register-student/register-student.component';
 import { appRoutes } from './routes';
 import { HomeComponent } from './home/home.component';
@@ -25,6 +27,7 @@ import { AuthGuard } from './auth.guard';
 import { AccountConfirmationComponent } from './account-confirmation/account-confirmation.component';
 import { MyCoursesComponent } from './my-courses/my-courses.component';
 import { CoursesComponent } from './courses/courses.component';
+
 
 @NgModule({
   declarations: [
@@ -53,6 +56,7 @@ import { CoursesComponent } from './courses/courses.component';
   ],
   providers: [
     AuthenticationService,
+    CourseService,
     AuthGuard
   ],
   bootstrap: [AppComponent]

@@ -66,6 +66,7 @@ namespace TeachingAppAPI
             services.AddMvc();
             services.AddSingleton<IEmailSender, EmailSender>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICourseService, CourseService>();
             //services.Configure<AuthMessageSenderOptions>(Configuration);
             //services.Configure<AuthMessageSenderOptions>(Configuration);
         }
