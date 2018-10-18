@@ -12,12 +12,15 @@ export class LoginComponent implements OnInit {
 
   constructor(private authenticationService: AuthenticationService, private route: Router) { }
 
-  ngOnInit() {  
+  ngOnInit() {
   }
 
   login(form: NgForm) {
     let credentials = JSON.stringify(form.value);
     this.authenticationService.login(credentials);
   }
-  
+
+  failedLoginAttempt(): boolean{
+    return this.authenticationService.LoginAttemptFailed();
+  } 
 }

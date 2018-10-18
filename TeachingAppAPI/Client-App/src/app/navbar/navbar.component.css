@@ -15,7 +15,6 @@
 }
 .navbar-nav .nav-item{
     color: #ffffff;
-    margin-left: 35px;
 }
 
 .btn-outline-primary{
@@ -67,4 +66,18 @@ img{
 .k{
     position: fixed;
     
+}
+
+.form-control{
+    border-radius: 0;
+    width: 500px;
+}
+
+.searchImgBtn{
+    border-radius: 0;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 20px;
+    top: 10px;
 }

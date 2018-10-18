@@ -9,6 +9,7 @@ export class AuthenticationService {
     private rootURL2 = "http://localhost:52459/api/users/confirm-account";
     userDetails: any;
     loggedIn: boolean = false;
+    private failedLogin: boolean = false;
     constructor(private http: HttpClient, private route: Router){}
 
     /**
@@ -81,6 +82,7 @@ export class AuthenticationService {
             },
             err => {
               console.log("failed to login");
+              this.failedLogin = true;
               this.loggedIn = false;
             }
         );
@@ -89,6 +91,11 @@ export class AuthenticationService {
     IsLoggedIn(){
         return this.loggedIn;
         //return !!localStorage.getItem('jwt');
+    }
+
+    //used to return the bool value of failedLogin.
+    LoginAttemptFailed(){
+        return this.failedLogin;
     }
 
     logOut(){

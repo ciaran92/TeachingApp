@@ -16,7 +16,7 @@
                 <div class="loginBtn form-group">
                     <button class="btn btn-primary" type="submit">Sign In</button>
                 </div>
-                <span *ngIf="failedLogin">Incorrect Username or Password</span>
+                <span *ngIf="failedLoginAttempt()">Incorrect Username or Password</span>
             </form>
         </div>
     </div>

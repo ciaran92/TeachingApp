@@ -13,6 +13,7 @@ import { CoursesComponent } from './courses/courses.component';
 
 export const appRoutes : Routes = [
     {path: 'home', component:HomeComponent},
+    {path: 'courses', component: CoursesComponent},
     {path: 'contact', component:ContactUsComponent},
     {
         path: 'register', component:HomeComponent,
@@ -33,10 +34,6 @@ export const appRoutes : Routes = [
     {
         path: 'my-courses', component:DashboardComponent,
         children: [{path: '', component:MyCoursesComponent}]
-    },
-    {
-        path: 'courses', component:DashboardComponent,
-        children: [{path: '', component:CoursesComponent}]
     },
     {path: 'courses', component:CoursesComponent},
     {

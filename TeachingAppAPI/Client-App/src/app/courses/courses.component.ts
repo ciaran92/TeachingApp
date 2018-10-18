@@ -8,7 +8,7 @@ import { CourseService } from '../services/course.service';
 })
 export class CoursesComponent implements OnInit {
 
-  private courseDetails: any;
+  public courseDetails: any;
   constructor(private courseService: CourseService) { }
   
   ngOnInit() {

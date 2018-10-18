@@ -9,12 +9,12 @@ import { CourseService } from '../services/course.service';
 })
 export class MyCoursesComponent implements OnInit {
 
-  private courseDetails: any;
+  //private courseDetails: any;
   constructor(private courseService: CourseService) { }
 
   ngOnInit() {
     
-    this.courseService.getCourses().subscribe((response) => {this.courseDetails = response;});
+    //this.courseService.getCourses().subscribe((response) => {this.courseDetails = response;});
     
     //this.courseDetails = this.courseService.getCourses();
     //console.log("test courseDetails: " + this.courseDetails[0].courseId);

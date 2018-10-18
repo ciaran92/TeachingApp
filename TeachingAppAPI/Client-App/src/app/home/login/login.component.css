@@ -76,3 +76,7 @@ form{
   :-moz-placeholder { /* Firefox 18- */
     padding-left: .3rem;
   }
+
+  span{
+      color: red;
+  }
