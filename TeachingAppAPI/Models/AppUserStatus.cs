@@ -11,7 +11,7 @@ namespace TeachingAppAPI.Models
         }
 
         public int AppUserStatusId { get; set; }
-        public string AppUserUserStatusDesc { get; set; }
+        public string AppUserStatusDesc { get; set; }
 
         public ICollection<AppUser> AppUser { get; set; }
     }

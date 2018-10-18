@@ -67,6 +67,13 @@ namespace TeachingAppAPI
             services.AddSingleton<IEmailSender, EmailSender>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICourseService, CourseService>();
+            services.AddScoped<IEnrolmentService, EnrolmentService>();
+            services.AddScoped<ITopicService, TopicService>();
+            services.AddScoped<IQuizService, QuizService>();
+            services.AddScoped<IQuestionService, QuestionService>();
+            services.AddScoped<IAnswerService, AnswerService>();
+            services.AddScoped<IQuizInstanceService, QuizInstanceService>();
+            services.AddScoped<IQuizInstanceAnswerService, QuizInstanceAnswerService>();
             //services.Configure<AuthMessageSenderOptions>(Configuration);
             //services.Configure<AuthMessageSenderOptions>(Configuration);
         }

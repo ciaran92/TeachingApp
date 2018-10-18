@@ -6,18 +6,33 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TeachingAppAPI.Data;
+using TeachingAppAPI.Helpers;
 using TeachingAppAPI.Models;
+using TeachingAppAPI.Services;
 
 namespace TeachingAppAPI.Controllers
 {
     [Route("api/[controller]")]
     public class TopicsController : Controller
     {
-        private TestDB_Phase2Context _context;
+        /* This Contoller contains the following:
+        - GetTopic(): Selects particular topic
+        - GetAllTopics(): selects all available topics
+        - GetCourseTopics: gets all topics for a particular course
+        - CreateNewTopic(): creates a new coursetopic
+        - UpdateTopic(): updates an existing topic
+        - Delete(): deletes a topic (where a topic has no associated quizzes, etc.)
+ 
+        */
 
-        public TopicsController(TestDB_Phase2Context context)
+
+        private TestDB_Phase2Context _context;
+        private ITopicService _topicService;
+
+        public TopicsController(TestDB_Phase2Context context, ITopicService topicService)
         {
             _context = context;
+            _topicService = topicService;
         }
 
 
@@ -46,10 +61,10 @@ namespace TeachingAppAPI.Controllers
 
         }
 
-        
+
         // Select a Topic:
         // Returns json array of Topic objects 
-        [HttpGet("/topic/{id}", Name = "Topic")]
+        [HttpGet("{id}")]
         public IActionResult GetTopic(int id)
         {
             var topics = _context.Topic.FromSql($"select * from Topic where TopicId = {id}").ToArray();
@@ -75,7 +90,7 @@ namespace TeachingAppAPI.Controllers
 
         // Select all Topics assoicated with a Course:
         // Returns json array of Topic objects 
-        [HttpGet("/topics/{id}", Name = "Course_Topics")]
+        [HttpGet("/course-topics/{id}", Name = "Course-topics")]
         public IActionResult GetCourseTopics(int id)
         {
             var topics = _context.Topic.FromSql($"select * from Topic where CourseId = {id}").ToArray();
@@ -99,31 +114,55 @@ namespace TeachingAppAPI.Controllers
         }
 
 
-        // Update a Course Topic:
-        // 
+        // POST api/Topic
+        [HttpPost]
+        public IActionResult CreateNewTopic([FromBody]Topic newTopic)
+        {
+            try
+            {
+                Console.WriteLine("called createTopic()");
+                var topic = _topicService.CreateTopic(newTopic);
+
+                return Ok(new
+                {
+                    courseId = topic.CourseId,
+                    topicName = topic.TopicName,
+                    topicDesc = topic.TopicDesc
+                });
+            }
+            catch (CustomException e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
+
+
+        // Update a Topic:
         [HttpPut("update-topic")]
-        public void UpdateTopic([FromBody]Topic topic)
+        public void UpdateTopic([FromBody]Topic updateTopic)
         {
 
-            var courseTopic = _context.Topic.FromSql($"select * from Topic where CourseID = {topic.CourseId} and TopicId = {topic.TopicId}").ToArray();
-            //var courses = _context.Course.Where(x => x.CourseId == id);
+            var topic = _context.Topic.FromSql($"select * from Topic where TopicId = {updateTopic.TopicId}").ToArray();
 
-            //courseTopic.ElementAt(0).TopicName = ;
+            topic.ElementAt(0).TopicName = updateTopic.TopicName;
+            topic.ElementAt(0).CourseId = updateTopic.CourseId;
+            topic.ElementAt(0).TopicDesc = updateTopic.TopicDesc;
+
             _context.SaveChanges();
-
 
         }
 
-        // DELETE a Course:
-        // Only works if there are no topics, etc., accociated with the course
+
+
+
+
+        // DELETE a Topic:
+        // Only works if there are no topics, etc., accociated with the Topic
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            var courses = _context.Course.FromSql($"delete from Course where CourseId = {id}").ToArray();
+            var topic = _context.Topic.FromSql($"delete from Topic where TopicId = {id}").ToArray();
         }
-
-
-
 
     }
 }

@@ -12,6 +12,18 @@ using TeachingAppAPI.Services;
 
 namespace TeachingAppAPI.Controllers
 {
+    /* This Contoller contains the following:
+    - GetCourse(): Selects particular course
+    - GetCourses(): selects all available courses
+    - CreateNewCourse(): creates a new course
+    - UpdateCourse(): updates an existing course
+    - Delete(): deletes a course (where a course has no associated topics, etc.)
+
+    - GetUserCourses(): selects all available courses ?? GetUserEnrolments(): selects all courses where a user is enrolled
+
+         
+    */
+
     [Route("api/[controller]")]
     public class CoursesController : ControllerBase
     {
@@ -25,7 +37,6 @@ namespace TeachingAppAPI.Controllers
             _courseService = courseService;
         }
 
-        
 
         [HttpGet("{id}")]
         public IActionResult GetCourse(int id)
@@ -39,7 +50,7 @@ namespace TeachingAppAPI.Controllers
             
             if(courses.Length <= 0)
             {
-                return BadRequest("Fuck off");
+                return BadRequest("No course exists.");
             }
 
             //Console.WriteLine("course: " + courses);
@@ -66,7 +77,7 @@ namespace TeachingAppAPI.Controllers
 
 
 
-        // Select all Courses:
+        // Select all Courses (no matter what their status:
         // Returns json array of Course objects 
         [HttpGet]
         public IActionResult GetCourses()
@@ -74,6 +85,11 @@ namespace TeachingAppAPI.Controllers
             var courses = _context.Course.FromSql("select * from Course").ToArray();
             var length = courses.Length;
             var returnArray = new object[length];
+
+            if (courses.Length <= 0)
+            {
+                return BadRequest("No courses returned.");
+            }
 
             for (int i = 0; i < length; i++)
             {
@@ -95,7 +111,7 @@ namespace TeachingAppAPI.Controllers
 
 
 
-        // POST api/AppUser
+        // POST api/Course
         [HttpPost]
         public IActionResult CreateNewCourse([FromBody]Course newCourse)
         {
@@ -106,7 +122,7 @@ namespace TeachingAppAPI.Controllers
 
                 return Ok(new
                 {
-                    courseId = course.CourseId,
+                    //courseId = course.CourseId, This should not be passed in as the column in the DB is 
                     courseName = course.CourseName,
                     courseStatusId = course.CourseStatusId,
                     courseDateTimeStart = course.CourseDateTimeStart,
@@ -125,7 +141,7 @@ namespace TeachingAppAPI.Controllers
 
         // Update a Course:
         // 
-        [HttpPut("{id}")]
+        [HttpPut("update-course")]
         public void UpdateCourse([FromBody]Course updateCourse)
         {
 
@@ -143,7 +159,7 @@ namespace TeachingAppAPI.Controllers
 
 
         // DELETE a Course - not really useful at this point. Stored procedure required:
-        // Only works if there are no topics, etc., accociated with the course
+        // Only works if there are no topics, etc., associated with the course
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
