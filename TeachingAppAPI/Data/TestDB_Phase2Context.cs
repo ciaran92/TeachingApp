@@ -36,7 +36,7 @@ namespace TeachingAppAPI.Data
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-ADKKK1M;Database=TestDB_Phase2;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-EI3KQ5R;Database=TestDB_Phase2;Trusted_Connection=True;");
             }
         }
 
@@ -124,7 +124,7 @@ namespace TeachingAppAPI.Data
                     .HasColumnName("AppUserStatusID")
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.AppUserUserStatusDesc)
+                entity.Property(e => e.AppUserStatusDesc)
                     .IsRequired()
                     .HasColumnName("AppUserUserStatus_desc")
                     .HasMaxLength(100)
