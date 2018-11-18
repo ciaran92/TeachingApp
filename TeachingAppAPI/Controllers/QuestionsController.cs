@@ -73,7 +73,7 @@ namespace TeachingAppAPI.Controllers
 
         // Select a Question:
         // Returns json array of one Question objects 
-        [HttpGet("{id}")]
+        //[HttpGet("{id}")]
         public IActionResult GetQuestion(int id)
         {
             var question = _context.Question.FromSql($"select * from Question where QuestionId = {id}").ToArray();
@@ -98,7 +98,8 @@ namespace TeachingAppAPI.Controllers
 
         // Select all Questions associated with a Quiz:
         // Returns json array of Question objects 
-        [HttpGet("/quiz-questions/{id}", Name = "Quiz-questions")]
+        //[HttpGet("/quiz-questions/{id}", Name = "Quiz-questions")]
+        [HttpGet("{id}")]
         public IActionResult GetQuizQuestions(int id)
         {
             var questions = _context.Question.FromSql($"select * from Question where QuizId = {id}").ToArray();

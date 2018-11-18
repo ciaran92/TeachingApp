@@ -1,0 +1,17 @@
+<div class="page-header">
+  <div class="container">
+      <h1>Topic Quizzes</h1>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+      <div class="col-2" *ngFor="let quiz of topicQuizzes">
+          <div class="card">
+              <img class="card-img-top" src="../../assets/placeholder.jpg" alt="Card image cap">
+              <div class="card-body">
+                  <p class="card-text">{{ quiz.quizDesc | slice:0:25}}</p>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

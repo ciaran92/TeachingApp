@@ -1,0 +1,18 @@
+<div class="page-header">
+  <div class="container">
+      <h1>All Topics</h1>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+      <div class="col-2" *ngFor="let topic of courseTopics">
+          <div class="card">
+              <img class="card-img-top" src="../../assets/placeholder.jpg" alt="Card image cap">
+              <div class="card-body">
+                  <p class="card-text">{{ topic.topicName | slice:0:25}}</p>
+                  <p>{{ topic.topicDesc }}</p>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

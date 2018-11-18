@@ -7,6 +7,7 @@ export class AuthenticationService {
     private questionsUrl = "http://localhost:52459/api/questions";
     private rootURL = "http://localhost:52459/api/users";
     private rootURL2 = "http://localhost:52459/api/users/confirm-account";
+    
     userDetails: any;
     loggedIn: boolean = false;
     private failedLogin: boolean = false;

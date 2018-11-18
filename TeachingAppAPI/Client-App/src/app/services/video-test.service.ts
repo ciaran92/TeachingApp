@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 
 
 @Injectable()
-export class CourseService {
+export class VideoTestService {
     
     private rootURL = "http://localhost:52459/api/courses";
     
@@ -18,8 +18,8 @@ export class CourseService {
      * for authorization.
      */
 
-    getCourses(): any {
-        var result = this.http.get(this.rootURL);
+    getCourseVideoDesc(courseID: number): any {
+        var result = this.http.get(this.rootURL + "/" + courseID);
        
         return result;
     }

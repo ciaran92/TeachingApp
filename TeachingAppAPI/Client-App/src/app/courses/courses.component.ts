@@ -8,12 +8,13 @@ import { CourseService } from '../services/course.service';
 })
 export class CoursesComponent implements OnInit {
 
-  public courseDetails: any;
+  private courseDetails: any;
   constructor(private courseService: CourseService) { }
   
   ngOnInit() {
     this.courseService.getCourses().subscribe((response) => {this.courseDetails = response;});
   }
+  
 }
 
    

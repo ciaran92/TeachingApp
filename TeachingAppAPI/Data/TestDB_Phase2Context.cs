@@ -30,6 +30,9 @@ namespace TeachingAppAPI.Data
         public virtual DbSet<QuizType> QuizType { get; set; }
         public virtual DbSet<QuizUserStatus> QuizUserStatus { get; set; }
         public virtual DbSet<Topic> Topic { get; set; }
+        //public virtual DbSet<test1> Test1 { get; set; }
+
+        public virtual DbQuery<test1> Test1 { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -341,6 +344,65 @@ namespace TeachingAppAPI.Data
                     .HasForeignKey(d => d.CourseId)
                     .HasConstraintName("FK__Topic__CourseId__440B1D61");
             });
+
+
+
+            // MyAttempt:
+            //modelBuilder.Entity<test1>(entity =>
+            //{
+
+            //    entity.Property(e => e.EnrolmentId).HasColumnName("EnrolmentID");
+
+            //    entity.Property(e => e.QuizInstanceId).HasColumnName("QuizInstanceID");
+
+            //    entity.Property(e => e.QuizId).HasColumnName("QuizID");
+
+            //    entity.Property(e => e.QuestionId).HasColumnName("QuestionID");
+
+            //    entity.Property(e => e.QuestionText).HasColumnName("QuestionText");
+
+            //    entity.Property(e => e.AnswerId).HasColumnName("AnswerID");
+
+            //    entity.Property(e => e.AnswerText).HasColumnName("AnswerText");
+
+            //    entity.Property(e => e.AnswerTypeId).HasColumnName("AnswerTypeID");
+
+            //    entity.Property(e => e.AnswerType_Desc).HasColumnName("AnswerType_desc");
+
+
+            //    modelBuilder.Entity<test1>()
+            //        .HasKey(c => new { c.EnrolmentId, c.QuizInstanceId, c.QuizId });
+
+                //entity.Property(e => e.QuizDateTimeStart)
+                //    .HasColumnName("Quiz_DateTime_start")
+                //    .HasColumnType("datetime");
+
+
+
+                //entity.Property(e => e.QuizUserStatusId).HasColumnName("QuizUserStatusID");
+
+                //entity.HasOne(d => d.Enrolment)
+                //    .WithMany(p => p.QuizInstance)
+                //    .HasForeignKey(d => d.EnrolmentId)
+                //    .HasConstraintName("FK__QuizInsta__Enrol__5CD6CB2B");
+
+                //entity.HasOne(d => d.Quiz)
+                //    .WithMany(p => p.QuizInstance)
+                //    .HasForeignKey(d => d.QuizId)
+                //    .HasConstraintName("FK__QuizInsta__QuizI__5AEE82B9");
+
+                //entity.HasOne(d => d.QuizUserStatus)
+                //    .WithMany(p => p.QuizInstance)
+                //    .HasForeignKey(d => d.QuizUserStatusId)
+                //    .HasConstraintName("FK__QuizInsta__QuizU__5BE2A6F2");
+            //});
+
+
+
+
+
+
+
         }
     }
 }

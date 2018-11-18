@@ -1,0 +1,60 @@
+<p>
+  video-test 1:
+</p>
+<iframe 
+  width="560" 
+  height="315" 
+  src="https://www.youtube.com/embed/1OYw7FPB7CE" 
+  frameborder="0" 
+  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+  allowfullscreen>
+</iframe>
+<p>
+    video-test 1 works!
+</p>
+
+
+<p>
+    video-test 2:
+</p>
+<div *ngFor='let item of videolist'>
+  <a href='videos/{{ item.slug }}' >{{ item.name }}</a>
+  <div [innerHTML]='item.embed'></div>
+  <div style="position:relative;height:0;padding-bottom:56.25%">
+    <iframe 
+      width="560" 
+      height="315" 
+      [src]=getEmbedURL(item) 
+      frameborder="0" 
+      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+      allowfullscreen>
+    </iframe>
+  </div>
+</div>
+<p>
+    video-test 2 works!
+</p>
+
+
+<p>
+    video-test 3:
+</p>
+<div class="quizWrapper" *ngIf="courseDescVidResponse">
+  <div *ngFor='let item of courseDescVidResponse'>
+      <a href='videos/{{ item.courseName }}' > {{ item.courseName }}</a>
+      <div [innerHTML]='item.courseThumbnailUrl'></div>
+      <div style="position:relative;height:0;padding-bottom:56.25%">
+        <iframe 
+          width="560" 
+          height="315" 
+          [src]=getEmbedURL(item) 
+          frameborder="0" 
+          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+          allowfullscreen>
+        </iframe>
+      </div>
+  </div>
+</div>
+  <p>
+      video-test 3 has issues
+  </p>

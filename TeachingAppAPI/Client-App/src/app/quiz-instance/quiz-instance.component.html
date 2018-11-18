@@ -1,0 +1,36 @@
+
+
+  <div class="container">
+    <div class="quizWrapper" *ngIf="questions && allQuestionsAnswerOptions">
+
+      <div class="alert alert-danger" role="alert">
+      This is a danger alert—check it out!
+      </div>
+      
+      <div class="row" *ngFor="let element of questions;let i = index">
+        <div class="row">
+            <div class="card w-100">
+              <div class="card-body">
+                <p>Question: {{ element.questionText }}</p>
+                <p test = "getAnswerOptions(element.questionId)"></p>
+                <div class="row" *ngFor="let option of allQuestionsAnswerOptions;let i = index">
+                  <div class="quizWrapper" *ngIf="option.questionId == element.questionId"> 
+                    <div class="col">
+                      <li (click)="checkAnswer(option, $event.target)" class="list-group-item list-group-item-action answerId">Answer option:  {{ option.answerText }}</li>
+                    </div>
+                  </div>
+                </div> 
+              </div>
+            </div>
+        </div>
+      </div>
+
+      <div class="submitBtnWrapper">
+          <button (click)="submitQuizResults()" type="button" class="btn btn-dark q">Submit</button>
+      </div>
+    </div>
+  </div>
+  
+  <!--Test Messagessss-->
+  
+

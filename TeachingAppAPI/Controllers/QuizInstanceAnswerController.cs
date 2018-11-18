@@ -125,9 +125,11 @@ namespace TeachingAppAPI.Controllers
         {
             try
             {
-                Console.WriteLine("called createQuizInstanceAnswer()");
+                //newQuizInstanceAnswer.AppUserAnswerDateTime = DateTime.UtcNow;
+                //newQuizInstanceAnswer.AppUserAnswer = "P";
                 var quizInstanceAnswer = _quizInstanceAnswerService.CreateQuizInstanceAnswer(newQuizInstanceAnswer);
 
+                Console.WriteLine("called createQuizInstanceAnswer(3)" + quizInstanceAnswer.AnswerId);
                 return Ok(new
                 {
                     quizInstanceAnswerId = quizInstanceAnswer.QuizInstanceAnswerId,
@@ -136,11 +138,12 @@ namespace TeachingAppAPI.Controllers
                     answerId = quizInstanceAnswer.AnswerId,
                     appUserAnswerId = quizInstanceAnswer.AppUserAnswer,
                     appUserAnswerDateTime = quizInstanceAnswer.AppUserAnswerDateTime
+                    
                 });
             }
             catch (CustomException e)
             {
-                return BadRequest(new { message = e.Message });
+                return BadRequest();
             }
         }
 

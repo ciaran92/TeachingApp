@@ -10,6 +10,11 @@ import { AuthGuard } from './auth.guard';
 import { AccountConfirmationComponent } from './account-confirmation/account-confirmation.component';
 import { MyCoursesComponent } from './my-courses/my-courses.component';
 import { CoursesComponent } from './courses/courses.component';
+import { TopicsComponent } from './topics/topics.component';
+import { Quiz2Component } from './quiz2/quiz2.component';
+import { QuizInstanceComponent } from './quiz-instance/quiz-instance.component';
+import { VideoTestComponent } from './video-test/video-test.component';
+
 
 export const appRoutes : Routes = [
     {path: 'home', component:HomeComponent},
@@ -35,12 +40,26 @@ export const appRoutes : Routes = [
         path: 'my-courses', component:DashboardComponent,
         children: [{path: '', component:MyCoursesComponent}]
     },
-    {path: 'courses', component:CoursesComponent},
+    {
+        path: 'courses', component:CoursesComponent
+    },
+    {
+        path: 'topics', component:TopicsComponent
+    },
+    {
+        path: 'quizzes', component:Quiz2Component
+    },
+    {
+        path: 'quiz-instances', component:QuizInstanceComponent
+    },
+    {
+        path: 'video-test', component:VideoTestComponent
+    },
     {
         path: 'confirm-account', component:AccountConfirmationComponent
     },
-    {path: '', redirectTo:'/home',pathMatch:'full'},
-    
-
+    {
+        path: '', redirectTo:'/home',pathMatch:'full'
+    },
     
 ];

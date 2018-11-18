@@ -63,6 +63,7 @@ namespace TeachingAppAPI.Controllers
                 {
                     courseId = courses.ElementAt(i).CourseId,
                     courseName = courses.ElementAt(i).CourseName,
+                    courseThumbnailUrl = courses.ElementAt(i).CourseThumbnailUrl,
                     courseStatusId = courses.ElementAt(i).CourseStatusId,
                     courseDateTimeStart = courses.ElementAt(i).CourseDateTimeStart,
                     courseDuration = courses.ElementAt(i).CourseDuration,

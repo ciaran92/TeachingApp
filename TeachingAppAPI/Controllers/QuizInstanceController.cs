@@ -13,7 +13,7 @@ using TeachingAppAPI.Services;
 namespace TeachingAppAPI.Controllers
 {
     [Route("api/[controller]")]
-    public class QuizInstanceController : Controller
+    public class QuizInstanceController : ControllerBase
     {
         /* This Controller contains the following:
         - GetQuizInstance(): Selects particular topic
@@ -34,25 +34,35 @@ namespace TeachingAppAPI.Controllers
             _quizInstanceService = quizInstanceService;
         }
 
-        // ?????????? Remove ??????????
-        // Select all QuizInstances: 
-        // Returns json array of QuizInstance objects 
-        [HttpGet]
-        public IActionResult GetAllQuizInstances()
+
+
+        //Select all Quiz Questions and answers
+        // Returns json array of test1 objects 
+        [HttpGet("{id}")]
+        public IActionResult GetQuizQuestionsAndAnswers3(int id)
         {
-            var quizInstances = _context.QuizInstance.FromSql("select * from QuizInstance").ToArray();
-            var length = quizInstances.Length;
+            // Calling the selectQuizInstanceQuestionAnswers Stored Procedure:
+            var param = new SqlParameter("@QuizInstanceID", id);
+            var questionsAndAnswers = _context.Test1.FromSql($"selectQuizInstanceQuestionAnswers @QuizInstanceID", param).ToList();
+            //Console.WriteLine("reponse array length: " + questionsAndAnswers.Length); 
+            var length = questionsAndAnswers.Count;
             var returnArray = new object[length];
 
             for (int i = 0; i < length; i++)
             {
+                //Console.WriteLine("reponse: "+ i + " " + questionsAndAnswers.ElementAt(i).QuestionText);
                 returnArray[i] = new
                 {
-                    quizInstanceId = quizInstances.ElementAt(i).QuizInstanceId,
-                    enrolmentId = quizInstances.ElementAt(i).EnrolmentId,
-                    quizId = quizInstances.ElementAt(i).QuizId,
-                    quizUserStatusId = quizInstances.ElementAt(i).QuizUserStatusId,
-                    quizDateTimeStart = quizInstances.ElementAt(i).QuizDateTimeStart
+                    enrolmentId = questionsAndAnswers.ElementAt(i).EnrolmentId, // remove late, not required in response?
+                    quizInstanceId = questionsAndAnswers.ElementAt(i).QuizInstanceId, 
+                    quizId = questionsAndAnswers.ElementAt(i).QuizId, // remove late, not required in response?
+                    questionId = questionsAndAnswers.ElementAt(i).QuestionId, 
+                    questionText = questionsAndAnswers.ElementAt(i).QuestionText,
+                    answerID = questionsAndAnswers.ElementAt(i).AnswerId,
+                    answerText = questionsAndAnswers.ElementAt(i).AnswerText,
+                    answerTypeID = questionsAndAnswers.ElementAt(i).AnswerTypeId, // remove late, not required in response?
+                    answerTypeDesc = questionsAndAnswers.ElementAt(i).AnswerType_Desc
+
                 };
 
             }
@@ -60,39 +70,71 @@ namespace TeachingAppAPI.Controllers
             return Ok(returnArray);
 
         }
+
+
+        
+
+
+
+        // ?????????? Remove ??????????
+        // Select all QuizInstances: 
+        // Returns json array of QuizInstance objects 
+        //[HttpGet]
+        //public IActionResult GetAllQuizInstances()
+        //{
+        //    var quizInstances = _context.QuizInstance.FromSql("select * from QuizInstance").ToArray();
+        //    var length = quizInstances.Length;
+        //    var returnArray = new object[length];
+
+        //    for (int i = 0; i < length; i++)
+        //    {
+        //        returnArray[i] = new
+        //        {
+        //            quizInstanceId = quizInstances.ElementAt(i).QuizInstanceId,
+        //            enrolmentId = quizInstances.ElementAt(i).EnrolmentId,
+        //            quizId = quizInstances.ElementAt(i).QuizId,
+        //            quizUserStatusId = quizInstances.ElementAt(i).QuizUserStatusId,
+        //            quizDateTimeStart = quizInstances.ElementAt(i).QuizDateTimeStart
+        //        };
+
+        //    }
+
+        //    return Ok(returnArray);
+
+        //}
 
 
         // Select a QuizInstance:
         // Returns json array of QuizInstance objects 
-        [HttpGet("{id}")]
-        public IActionResult GetQuizInstance(int id)
-        {
-            var quizInstance = _context.QuizInstance.FromSql($"select * from QuizInstance where EnrolmentId = {id}").ToArray();
-            var length = quizInstance.Length;
-            var returnArray = new object[length];
+        //[HttpGet("{id}")]
+        //public IActionResult GetQuizInstance(int id)
+        //{
+        //    var quizInstance = _context.QuizInstance.FromSql($"select * from QuizInstance where EnrolmentId = {id}").ToArray();
+        //    var length = quizInstance.Length;
+        //    var returnArray = new object[length];
 
-            for (int i = 0; i < length; i++)
-            {
-                returnArray[i] = new
-                {
-                    quizInstanceId = quizInstance.ElementAt(i).QuizInstanceId,
-                    enrolmentId = quizInstance.ElementAt(i).EnrolmentId,
-                    quizId = quizInstance.ElementAt(i).QuizId,
-                    quizUserStatusId = quizInstance.ElementAt(i).QuizUserStatusId,
-                    quizDateTimeStart = quizInstance.ElementAt(i).QuizDateTimeStart
-                };
+        //    for (int i = 0; i < length; i++)
+        //    {
+        //        returnArray[i] = new
+        //        {
+        //            quizInstanceId = quizInstance.ElementAt(i).QuizInstanceId,
+        //            enrolmentId = quizInstance.ElementAt(i).EnrolmentId,
+        //            quizId = quizInstance.ElementAt(i).QuizId,
+        //            quizUserStatusId = quizInstance.ElementAt(i).QuizUserStatusId,
+        //            quizDateTimeStart = quizInstance.ElementAt(i).QuizDateTimeStart
+        //        };
 
-            }
+        //    }
 
-            return Ok(returnArray);
+        //    return Ok(returnArray);
 
-        }
+        //}
 
 
         // Select all QuizInstances associated with an Enrolment:
         // Returns json array of QuizInstance objects 
         // [HttpGet("/enrolment-quizInstances/{id}", Name = "Enrolment-quizInstances")]
-        [HttpGet("/enrolment-quizInstances/{id}")]
+        [HttpGet("enrolment-quizInstances/{id}")]
         public IActionResult GetEnrolmentQuizInstances(int id)
         {
             var quizInstances = _context.QuizInstance.FromSql($"select * from QuizInstance where EnrolmentId = {id}").ToArray();
