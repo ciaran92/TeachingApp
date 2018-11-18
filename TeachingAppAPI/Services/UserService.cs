@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using TeachingAppAPI.Helpers;
-using TeachingAppAPI.Models;
+using TeachingAppAPI.Entities;
 using TeachingAppAPI.Data;
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System.Text;
 
 namespace TeachingAppAPI.Services
 {
@@ -16,9 +19,14 @@ namespace TeachingAppAPI.Services
             _context = context;
         }
 
-        public AppUser Authenticate(string username, string password)
+        public bool Authenticate(AppUser user, string username, string password)
         {
-            throw new NotImplementedException();
+
+            if (ValidatePassword(password, user.PasswordSalt, user.UserPassword))
+            {
+                return true;
+            }
+            return false;
         }
 
         public AppUser CreateUser(AppUser user, string password)
@@ -34,15 +42,52 @@ namespace TeachingAppAPI.Services
             }
             else
             {
+                // Hash users password before storing in database
+                //var HashedPassword = HashPassword(password);
+                //user.UserPassword = HashedPassword;
+                string salt = CreateSalt();
+                user.PasswordSalt = salt;
+                user.UserPassword = HashPassword(password, salt);
                 var verificationCode = GenerateCode(6);
                 user.VerificationCode = verificationCode;
-                user.AccountVerified = false;
+                user.AccountVerified = true;
                 _context.AppUser.Add(user);
                 _context.SaveChanges();
                 Console.WriteLine("created user");
                 return user;
             }
             
+        }
+
+        private string HashPassword(string password, string salt)
+        {
+            string hashedPassword = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: password,
+                salt: Encoding.UTF8.GetBytes(salt),
+                prf: KeyDerivationPrf.HMACSHA1,
+                iterationCount: 10000,
+                numBytesRequested: 256 / 8));
+
+            return hashedPassword;
+        }
+
+        private string CreateSalt()
+        {
+            byte[] salt = new byte[128 / 8];
+            using (var generator = RandomNumberGenerator.Create())
+            {
+                generator.GetBytes(salt);
+                return Convert.ToBase64String(salt);
+            }
+        }
+
+        private bool ValidatePassword(string password, string salt, string hashedPwdFromDB)
+        {
+            if (HashPassword(password, salt) == hashedPwdFromDB)
+            {
+                return true;
+            }
+            return false;
         }
 
         private Boolean DoesUserAlreadyExist(string username)

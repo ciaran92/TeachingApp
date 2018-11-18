@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
-using TeachingAppAPI.Models;
+using Microsoft.EntityFrameworkCore.Metadata;
+using TeachingAppAPI.Entities;
 
 namespace TeachingAppAPI.Data
 {
@@ -29,14 +30,17 @@ namespace TeachingAppAPI.Data
         public virtual DbSet<QuizInstanceAnswer> QuizInstanceAnswer { get; set; }
         public virtual DbSet<QuizType> QuizType { get; set; }
         public virtual DbSet<QuizUserStatus> QuizUserStatus { get; set; }
+        public virtual DbSet<RefreshToken> RefreshToken { get; set; }
         public virtual DbSet<Topic> Topic { get; set; }
+
+        public virtual DbQuery<EnrolledCoursesList> EnrolledCoursesLists { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-EI3KQ5R;Database=TestDB_Phase2;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-ADKKK1M;Database=TestDB_Phase2;Trusted_Connection=True;");
             }
         }
 
@@ -95,12 +99,16 @@ namespace TeachingAppAPI.Data
                     .HasMaxLength(75)
                     .IsUnicode(false);
 
+                entity.Property(e => e.PasswordSalt)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.UserName)
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
                 entity.Property(e => e.UserPassword)
-                    .HasMaxLength(100)
+                    .HasMaxLength(50)
                     .IsUnicode(false);
 
                 entity.Property(e => e.VerificationCode)
@@ -126,7 +134,7 @@ namespace TeachingAppAPI.Data
 
                 entity.Property(e => e.AppUserStatusDesc)
                     .IsRequired()
-                    .HasColumnName("AppUserUserStatus_desc")
+                    .HasColumnName("AppUserStatus_desc")
                     .HasMaxLength(100)
                     .IsUnicode(false);
             });
@@ -145,14 +153,7 @@ namespace TeachingAppAPI.Data
 
             modelBuilder.Entity<Course>(entity =>
             {
-                entity.Property(e => e.CourseDateTimeStart)
-                    .HasColumnName("Course_DateTime_start")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.CourseDesc)
-                    .HasColumnName("Course_desc")
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.Property(e => e.CourseDescription).IsUnicode(false);
 
                 entity.Property(e => e.CourseDuration).HasColumnName("Course_Duration");
 
@@ -161,6 +162,17 @@ namespace TeachingAppAPI.Data
                     .IsUnicode(false);
 
                 entity.Property(e => e.CourseStatusId).HasColumnName("CourseStatusID");
+
+                entity.Property(e => e.CourseThumbnailUrl)
+                    .HasColumnName("CourseThumbnailURL")
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.DateCreated).HasColumnType("datetime");
+
+                entity.Property(e => e.Subtitle)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
 
                 entity.HasOne(d => d.CourseStatus)
                     .WithMany(p => p.Course)
@@ -323,6 +335,22 @@ namespace TeachingAppAPI.Data
                     .HasColumnName("QuizUserStatus_desc")
                     .HasMaxLength(100)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<RefreshToken>(entity =>
+            {
+                entity.Property(e => e.ExpiresUtc).HasColumnType("datetime");
+
+                entity.Property(e => e.IssuedUtc).HasColumnType("datetime");
+
+                entity.Property(e => e.Token)
+                    .HasMaxLength(450)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.AppUser)
+                    .WithMany(p => p.RefreshToken)
+                    .HasForeignKey(d => d.AppUserId)
+                    .HasConstraintName("FK__RefreshTo__AppUs__625A9A57");
             });
 
             modelBuilder.Entity<Topic>(entity =>

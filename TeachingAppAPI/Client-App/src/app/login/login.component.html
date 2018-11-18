@@ -1,0 +1,22 @@
+<div class="wrapper">
+    <h1>Sign In to your Account</h1>
+    <div class="card">
+        <div class="card-body">
+            <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+                <div class="username form-group">
+                    <input type="text" name="Username" ngModel #Username placeholder="username">
+                </div>
+                <div class="password form-group">
+                    <input type="password" name="UserPassword" ngModel #UserPassword placeholder="password">
+                </div>
+                <div class="loginBtn form-group">
+                    <button class="btn btn-primary" type="submit">Sign In</button>
+                </div>
+                <span *ngIf="failedLoginAttempt()">Incorrect Username or Password</span>
+            </form>
+        </div>
+    </div>
+    <p>Don't have an account? <a class="register" routerLink='/register'>Register Here</a></p>
+</div>
+
+

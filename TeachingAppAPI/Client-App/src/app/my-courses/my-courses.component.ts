@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CourseService } from '../services/course.service';
+import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 
 @Component({
@@ -9,16 +12,29 @@ import { CourseService } from '../services/course.service';
 })
 export class MyCoursesComponent implements OnInit {
 
-  //private courseDetails: any;
-  constructor(private courseService: CourseService) { }
+  private name: any;
+  private myCoursesList: any;
+
+  constructor(private courseService: CourseService, private route: Router, private cookie: CookieService) { }
 
   ngOnInit() {
     
-    //this.courseService.getCourses().subscribe((response) => {this.courseDetails = response;});
-    
-    //this.courseDetails = this.courseService.getCourses();
-    //console.log("test courseDetails: " + this.courseDetails[0].courseId);
+    /*this.auth.GetUsername().subscribe((response) => {
+      this.name = response;
+      console.log("name: " + this.name[0].name);
+    })*/
+    this.DisplayCourseList();
+  }
 
+  DisplayCourseList(){
+    this.courseService.GetCoursesEnrolledIn().subscribe((response) => 
+    {
+      this.myCoursesList = response;
+      console.log("MyCourses: " + this.myCoursesList[0].courseName);
+    }, err => {
+      console.log("error: " + err.error);
+      this.route.navigate(['/home']);
+    });
   }
 
 }     

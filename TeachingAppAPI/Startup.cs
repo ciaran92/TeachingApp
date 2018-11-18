@@ -45,13 +45,15 @@ namespace TeachingAppAPI
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = "http://localhost:52459",
                     ValidAudience = "http://localhost:52459",
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero, 
                     IssuerSigningKey = new SymmetricSecurityKey(key)
                 };
             });
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("RegisteredUser", policy => policy.RequireClaim("Registered"));
+                options.AddPolicy("RegisteredUser", policy => policy.RequireClaim("AccountConfirmed", "True"));
             });
 
             services.AddCors(options =>
@@ -63,19 +65,9 @@ namespace TeachingAppAPI
                     .AllowAnyMethod();
                 });
             });
+            DependencyInjectionConfig.AddScope(services);
             services.AddMvc();
-            services.AddSingleton<IEmailSender, EmailSender>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<ICourseService, CourseService>();
-            services.AddScoped<IEnrolmentService, EnrolmentService>();
-            services.AddScoped<ITopicService, TopicService>();
-            services.AddScoped<IQuizService, QuizService>();
-            services.AddScoped<IQuestionService, QuestionService>();
-            services.AddScoped<IAnswerService, AnswerService>();
-            services.AddScoped<IQuizInstanceService, QuizInstanceService>();
-            services.AddScoped<IQuizInstanceAnswerService, QuizInstanceAnswerService>();
-            //services.Configure<AuthMessageSenderOptions>(Configuration);
-            //services.Configure<AuthMessageSenderOptions>(Configuration);
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

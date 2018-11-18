@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TeachingAppAPI.Data;
 using TeachingAppAPI.Helpers;
-using TeachingAppAPI.Models;
+using TeachingAppAPI.Entities;
 using TeachingAppAPI.Services;
 
 namespace TeachingAppAPI.Controllers

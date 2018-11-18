@@ -1,0 +1,335 @@
+.wrapper{
+    padding-top: 60px;
+    padding-bottom: 60px;
+    background-color: #f2f3f5;
+}
+
+/******Base Styles for all buttons******/
+.custom-btn{
+    border: none;
+    border-radius: 0;
+    color: #ffffff;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+/***************************************/
+
+.steps{
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.step{
+    display: inline-block;
+}
+
+.step-name{
+    margin-top: 10px;
+}
+.dot {
+    height: 50px;
+    width: 50px;
+    padding: 10px;
+    background-color: #288ca2;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+    margin-left: 25px;
+    margin-right: 25px;
+    color: #fff;
+}
+
+.dot p{
+    line-height: 30px;
+    margin: 0;
+}
+
+.dot-selected{
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #288ca2;
+}
+
+.dot-selected p{
+    line-height: 28px;
+    margin: 0;
+}
+
+.dot:hover{
+    background-color: #fff;
+    border: 1px solid #288ca2;
+    transition: all .3s;
+}
+
+.dot:hover p{
+    color: black;
+    line-height: 28px;
+}
+
+.section{
+    box-shadow: 0 0 5px #888;
+    background: #fff;
+}
+
+.section-title{
+    line-height: 45px;
+    padding: 30px;
+    border-bottom: 1px solid #C0C0C0; 
+}
+
+.section-title h3{
+    margin-bottom: 0;
+}
+
+.section-content{
+    padding: 30px;
+}
+
+.input-field{
+    margin-bottom: 30px;
+}
+
+.input-field label{
+    display: block;
+}
+
+.input-field input{
+    display: block;
+    width: 100%;
+    height: 40px;
+    border: 1px solid #C0C0C0;
+}
+
+.input-field textarea{
+    width: 50%;
+    margin: 0 auto;
+    display: block;
+}
+
+.textEditor{
+    height: 500px;
+    width: 100%;
+}
+
+.editorOptions{
+    height: 40px;
+    border: 1px solid #C0C0C0;
+}
+
+.editorOptions button{
+    background-color: transparent;
+    height: 100%;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    margin-right: 5px;
+    margin-left: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.editorOptions button i{
+    line-height: 34px;
+}
+
+.textArea{
+    width: 100%;
+    height: 460px;
+    border: 1px solid #C0C0C0;
+    border-top: none;
+}
+
+.textArea iframe{
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.navigation-buttons{
+    height: 45px;
+    margin-top: 30px;
+}
+
+.btn-next{
+    float: right;
+}
+
+.btn-previous{
+    float: left;
+}
+
+.navigation-buttons button{
+    height: 100%;
+    background: #fe3636;
+}
+
+.navigation-buttons button:hover{
+    background: #bb0000;
+}
+
+.upload-box{
+    background: red;
+    width: 300px;
+    height: 300px;
+    margin: 0 auto;
+}
+
+/************Course-Content CSS************/
+
+.topic{
+    height: 50px;
+    width: 100%;
+    border: 1px solid #C0C0C0;
+}
+
+.topic p{
+    margin: 0;
+    line-height: 50px;
+    display: inline-block;
+    margin-left: 15px;
+}
+
+.topic button{
+    color: #ffffff;
+    background: #288ca2;
+    padding: 0 10px;
+    margin-top: 10px;
+    margin-right: 10px;
+    float: right;
+    height: 30px;
+}
+
+.topic button:hover{
+    background: #135e6e;
+    transition: all 0.3s;
+}
+
+.add-topic{
+    margin-top: 15px;
+    background: #288ca2;
+    padding: 6px 10px;
+    color: #ffffff;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.add-topic:hover{
+    background: #135e6e;
+    transition: all 0.3s;
+}
+
+.add-topic p{
+    display: inline-block;
+    line-height: 1.5rem;
+    margin: 0;
+    margin-right: 20px;
+    margin-left: 15px;
+}
+
+.add-topic i{
+    font-size: 1rem;
+    line-height: 1rem;
+}
+
+.topic-modal{
+    position: fixed;
+    content: "";
+    background-color: rgba(0,0,0,.8);
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.topic-modal-box{
+    position: fixed;
+    background-color: #ffffff;
+    width: 90%;
+    max-width: 900px;
+    height: 80vh;
+    left: 50%;
+    top:50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+}
+
+.topic-title{
+    height: 40px;
+    border-bottom: 1px solid #C0C0C0;
+}
+
+.topic-modal-container{
+    padding: 30px;
+    height: 100%;
+    width: 100%;
+    overflow-y: scroll;
+}
+
+.topic-type{
+    width: 30%;
+    outline: 1px solid #C0C0C0;
+    margin-left: 10%;
+    margin-right: 10%;
+    height: 250px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.topic-type:hover, .topic-type:hover p{
+    background: #288ca2;
+    transition: all 0.3s;
+    color: #fff;
+}
+
+.topic-type-content{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.topic-type-content-inner{
+    text-align: center;
+}
+
+.topic-type-content-inner i{
+    margin-bottom: 15px;
+    font-size: 1.8rem;
+}
+
+.topic-type-content-inner p{
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+}
+
+.modal-buttons{
+    position: absolute;
+    right: 30px;
+    bottom: 30px;
+}
+
+.modal-buttons button{
+    margin-left: 15px;
+    background-color: #288ca2;
+}
+
+.modal-buttons .add:hover{
+    background: #135e6e;
+    transition: all 0.3s;
+}
+
+.modal-buttons .cancel{
+    background-color: transparent;
+    color: #288ca2;
+    font-weight: 600;
+}
+
+.modal-buttons .cancel:hover{
+    color: #135e6e;
+}
+
+.editor{
+    margin-top: 30px;
+}
+

@@ -1,16 +1,16 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" routerLink='/home'>TeachingApp</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+  <div class="container">
+    <img src="../../assets/hat.png" width="30" height="30" class="d-inline-block align-top" alt="">
+    <a class="navbar-brand" routerLink='/home'>3Peas</a>
+    <form class="form-inline">
+        <div class="input-group">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+          <img class="searchImgBtn" src="../../assets/search.png">
+        </div>
+    </form>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav ml-auto">
-          <form class="form-inline">
-              <div class="input-group">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <img class="searchImgBtn" src="../../assets/search.png">
-              </div>
-          </form>
+          
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Courses
@@ -20,14 +20,15 @@
                 <a class="dropdown-item" routerLink='/courses'>All Courses</a>
                 <a class="dropdown-item" href="#">Popular Courses</a>
                 <a class="dropdown-item" href="#">Trending Courses</a>
+                <a class="dropdown-item" routerLink='/create-course'>Create Course</a>
               </div>
           </li>
           <li *ngIf = "loggedIn()" class="nav-item">
-            <a class="nav-link" href="#">My Courses<span class="sr-only">(current)</span></a>
+            <a class="nav-link" routerLink='/my-courses'>My Courses<span class="sr-only">(current)</span></a>
           </li>
         <div *ngIf = "!loggedIn()"> 
           <button routerLink='/register' routerLinkActive='active' type="button" class="btn btn-outline-primary">Register</button>
-          <button routerLink='/login' routerLinkActive='active' type="button" class="btn btn-outline-primary">Sign In</button>
+          <button routerLink='/sign-in' routerLinkActive='active' type="button" class="btn btn-outline-primary">Sign In</button>
         </div>
         <div *ngIf = "loggedIn()"> 
             <!--<button routerLink='/home' routerLinkActive='active' type="button" class="btn btn-primary" (click) = "logOut()">Sign Out</button>-->    
@@ -44,5 +45,9 @@
         </div>
       </div>
     </div>
-  </nav>
+  </div>
+</nav>
+<div *ngIf="shown" class="test">
+  
+</div>
   

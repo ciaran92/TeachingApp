@@ -10,3 +10,15 @@ html, body {
   -webkit-box-shadow: none!important;
   box-shadow: none!important;
 }
+
+.ngx-toolbar{
+  background-color: transparent !important;
+}
+
+.ngx-toolbar-set{
+  background-color: transparent !important;
+}
+
+.ngx-editor-button{
+  border: none !important;
+}

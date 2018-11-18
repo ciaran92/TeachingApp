@@ -10,14 +10,19 @@ import {ScrollToModule} from 'ng2-scroll-to';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { QuizComponent } from './quiz/quiz.component';
+import { CookieService } from 'ngx-cookie-service';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { NgxEditorModule } from 'ngx-editor';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 import { AuthenticationService } from './services/authentication.service';
 import { CourseService} from './services/course.service';
+import { CreateCourseService } from './services/create-course.service';
 
-import { RegisterStudentComponent } from './home/register-student/register-student.component';
+import { RegisterStudentComponent } from './register-student/register-student.component';
 import { appRoutes } from './routes';
 import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './home/login/login.component';
+import { LoginComponent } from './login/login.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
@@ -27,6 +32,13 @@ import { AuthGuard } from './auth.guard';
 import { AccountConfirmationComponent } from './account-confirmation/account-confirmation.component';
 import { MyCoursesComponent } from './my-courses/my-courses.component';
 import { CoursesComponent } from './courses/courses.component';
+import { CourseDetailsComponent } from './courses/course-details.component';
+import { CreateCourseComponent } from './create-course/create-course.component';
+import { CourseInfoComponent } from './create-course/course-info/course-info.component';
+import { CourseThumbnailComponent } from './create-course/course-thumbnail/course-thumbnail.component';
+import { CourseRequirementsComponent } from './create-course/course-requirements/course-requirements.component';
+import { CourseContentComponent } from './create-course/course-content/course-content.component';
+import { SubmitCourseComponent } from './create-course/submit-course/submit-course.component';
 
 
 @NgModule({
@@ -43,7 +55,14 @@ import { CoursesComponent } from './courses/courses.component';
     DashboardComponent,
     AccountConfirmationComponent,
     MyCoursesComponent,
-    CoursesComponent
+    CoursesComponent,
+    CourseDetailsComponent,
+    CreateCourseComponent,
+    CourseInfoComponent,
+    CourseThumbnailComponent,
+    CourseRequirementsComponent,
+    CourseContentComponent,
+    SubmitCourseComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,12 +71,17 @@ import { CoursesComponent } from './courses/courses.component';
     FormsModule,
     HttpClientModule,
     CommonModule,
-    ScrollToModule.forRoot()
+    ScrollToModule.forRoot(),
+    NgxEditorModule,
+    AngularFontAwesomeModule
   ],
   providers: [
     AuthenticationService,
     CourseService,
-    AuthGuard
+    AuthGuard,
+    CookieService,
+    JwtHelperService,
+    CreateCourseService
   ],
   bootstrap: [AppComponent]
 })

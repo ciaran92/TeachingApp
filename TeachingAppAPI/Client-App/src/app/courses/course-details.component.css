@@ -1,0 +1,11 @@
+.header{
+    height: auto;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    background: #29303b;
+    color: #ffffff;
+}
+
+h1, h3{
+    margin: 0;
+}

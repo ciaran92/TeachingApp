@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TeachingAppAPI.Models;
+using TeachingAppAPI.Entities;
 
 namespace TeachingAppAPI.Services
 {
