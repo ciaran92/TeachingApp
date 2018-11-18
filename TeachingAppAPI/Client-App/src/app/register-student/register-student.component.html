@@ -1,0 +1,30 @@
+<div class="wrapper">
+  <h1>Register now and Start Learning</h1>
+  <div class="card">
+    <div class="card-body">
+        <form #registerForm="ngForm" (ngSubmit)="OnSubmit(FirstName.value, LastName.value, Username.value, Email.value, UserPassword.value)">
+          <div class="FirstName form-group">
+              <input type="text" name="FirstName" placeholder="First Name" #FirstName ngModel>
+          </div>
+          <div class="LastName form-group">
+              <input type="text" name="LastName" placeholder="Last Name" #LastName ngModel>
+          </div>
+          <div class="Username form-group">
+            <input type="text" name="Username" placeholder="Username" #Username ngModel>
+          </div>
+          <div class="Email form-group">
+            <input type="email" name="Email" placeholder="Email" #Email ngModel>
+          </div>
+          <div class="UserPassword form-group">
+            <input type="text" name="UserPassword" placeholder="Password" #UserPassword ngModel>
+          </div>
+          <div class="RegisterStudentBtn form-group">
+              <button class="btn btn-primary" type="submit">Create Account</button>
+          </div>
+        </form>
+    </div>
+    <span>{{error}}</span>
+  </div>
+  <p>Already have an account? <a class="signIn" routerLink='/sign-in'>Sign In</a></p>
+</div>
+

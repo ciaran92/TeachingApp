@@ -1,0 +1,72 @@
+:host{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+}
+  
+.wrapper{
+    text-align: center;
+    height: 100%;
+}
+
+h1{
+    font-weight: 300;
+    font-size: 2.5rem;
+    margin-top: 5rem;
+}
+
+.card{
+    display: inline-block;
+    margin-top: 2rem;
+    border: none;
+    border-radius: 0px; /*removing default border from the card*/
+    -moz-box-shadow: 0 0 5px #888;
+    -webkit-box-shadow: 0 0 5px#888;
+    box-shadow: 0 0 5px #888;
+    background-color: white;
+    opacity: 1;
+}
+
+.form-group{
+    width: 16rem;
+}
+
+input{
+    width: 100%;
+    display: block;
+    clear: both;
+    border: 1px solid #90C3D4;
+    border-radius: .15rem;
+    line-height: 2rem;
+    padding-left: .5rem;
+}
+
+::placeholder{
+    color: #C0C0C0;
+}
+
+.RegisterStudentBtn{
+    margin-bottom: 0;
+}
+
+.btn-primary{
+    width: 16rem;
+    color: #fff;
+    background: #90C3D4;
+    border: none;
+}
+
+.btn{
+    line-height: 2.2rem;
+    border-radius: .15rem;
+}
+
+p{
+    margin-top: 0.5rem;
+}
+
+p .signIn{
+    color: #288ca2;
+    cursor: pointer;
+}

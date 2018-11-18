@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TeachingAppAPI.Helpers;
-using TeachingAppAPI.Models;
+using TeachingAppAPI.Entities;
 using TeachingAppAPI.Data;
 
 

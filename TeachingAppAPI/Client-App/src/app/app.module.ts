@@ -19,27 +19,36 @@ import { Quiz2Service } from './services/quiz2.service';
 import { QuizInstanceService } from './services/quiz-instance.service';
 import { QuestionService } from './services/question.service';
 
+import { QuizComponent } from './quiz/quiz.component';
+import { CookieService } from 'ngx-cookie-service';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { NgxEditorModule } from 'ngx-editor';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
+
+
+import { CreateCourseService } from './services/create-course.service';
+
+import { RegisterStudentComponent } from './register-student/register-student.component';
 import { appRoutes } from './routes';
 
 import { HomeComponent } from './home/home.component';
-import { RegisterStudentComponent } from './home/register-student/register-student.component';
-import { LoginComponent } from './home/login/login.component';
-import { AuthGuard } from './auth.guard';
-import { AccountConfirmationComponent } from './account-confirmation/account-confirmation.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-
+import { LoginComponent } from './login/login.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { FooterComponent } from './footer/footer.component';
 
 import { MyCoursesComponent } from './my-courses/my-courses.component';
 import { CoursesComponent } from './courses/courses.component';
-import { TopicsComponent } from './topics/topics.component';
-import { QuizComponent } from './quiz/quiz.component';
-import { Quiz2Component } from './quiz2/quiz2.component';
-import { QuizInstanceComponent } from './quiz-instance/quiz-instance.component';
-import { VideoTestComponent } from './video-test/video-test.component';
-import { VideoTestService } from './services/video-test.service';
+import { CourseDetailsComponent } from './courses/course-details.component';
+import { CreateCourseComponent } from './create-course/create-course.component';
+import { CourseInfoComponent } from './create-course/course-info/course-info.component';
+import { CourseThumbnailComponent } from './create-course/course-thumbnail/course-thumbnail.component';
+import { CourseRequirementsComponent } from './create-course/course-requirements/course-requirements.component';
+import { CourseContentComponent } from './create-course/course-content/course-content.component';
+import { SubmitCourseComponent } from './create-course/submit-course/submit-course.component';
+import { AuthGuard } from './auth.guard';
+import { AccountConfirmationComponent } from './account-confirmation/account-confirmation.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 
 @NgModule({
@@ -57,10 +66,13 @@ import { VideoTestService } from './services/video-test.service';
     AccountConfirmationComponent,
     MyCoursesComponent,
     CoursesComponent,
-    TopicsComponent,
-    Quiz2Component,
-    QuizInstanceComponent,
-    VideoTestComponent
+    CourseDetailsComponent,
+    CreateCourseComponent,
+    CourseInfoComponent,
+    CourseThumbnailComponent,
+    CourseRequirementsComponent,
+    CourseContentComponent,
+    SubmitCourseComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,17 +81,21 @@ import { VideoTestService } from './services/video-test.service';
     FormsModule,
     HttpClientModule,
     CommonModule,
-    ScrollToModule.forRoot()
+    ScrollToModule.forRoot(),
+    NgxEditorModule,
+    AngularFontAwesomeModule
   ],
   providers: [
     AuthenticationService,
     CourseService,
+    AuthGuard,
+    CookieService,
+    JwtHelperService,
+    CreateCourseService,
     TopicService,
     Quiz2Service,
     QuizInstanceService,
-    QuestionService,
-    VideoTestService,
-    AuthGuard
+    QuestionService
   ],
   bootstrap: [AppComponent]
 })

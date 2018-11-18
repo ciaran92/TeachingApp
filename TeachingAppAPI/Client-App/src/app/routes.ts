@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router'
 import { QuizComponent } from './quiz/quiz.component';
-import { RegisterStudentComponent } from './home/register-student/register-student.component';
+import { RegisterStudentComponent } from './register-student/register-student.component';
 import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './home/login/login.component';
+import { LoginComponent } from './login/login.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -15,18 +15,22 @@ import { Quiz2Component } from './quiz2/quiz2.component';
 import { QuizInstanceComponent } from './quiz-instance/quiz-instance.component';
 import { VideoTestComponent } from './video-test/video-test.component';
 
+import { CourseDetailsComponent } from './courses/course-details.component';
+import { CreateCourseComponent } from './create-course/create-course.component';
+import { CourseInfoComponent } from './create-course/course-info/course-info.component';
+import { CourseThumbnailComponent } from './create-course/course-thumbnail/course-thumbnail.component';
+import { SubmitCourseComponent } from './create-course/submit-course/submit-course.component';
+import { CourseContentComponent } from './create-course/course-content/course-content.component';
 
 export const appRoutes : Routes = [
     {path: 'home', component:HomeComponent},
     {path: 'courses', component: CoursesComponent},
     {path: 'contact', component:ContactUsComponent},
     {
-        path: 'register', component:HomeComponent,
-        children: [{path: '', component:RegisterStudentComponent}]
+        path: 'register', component:RegisterStudentComponent
     },
     {
-        path: 'login', component:HomeComponent,
-        children: [{path: '', component:LoginComponent}]
+        path: 'sign-in', component:LoginComponent
     },
     {
         path: 'quiz', component:QuizComponent,
@@ -37,8 +41,14 @@ export const appRoutes : Routes = [
         //canActivate: [AuthGuard]
     },
     {
-        path: 'my-courses', component:DashboardComponent,
-        children: [{path: '', component:MyCoursesComponent}]
+        path: 'my-courses', component:MyCoursesComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'courses', component:CoursesComponent
+    },
+    {
+        path: 'courses/:id', component:CourseDetailsComponent
     },
     {
         path: 'courses', component:CoursesComponent
@@ -61,5 +71,16 @@ export const appRoutes : Routes = [
     {
         path: '', redirectTo:'/home',pathMatch:'full'
     },
+    {   path: 'create-course', component:CreateCourseComponent,
+        children:[
+            { path: '', component: CourseInfoComponent },
+            { path: 'thumbnail', component: CourseThumbnailComponent },
+            { path: 'submit', component: SubmitCourseComponent },
+            { path: 'content', component: CourseContentComponent}
+        ]    
+    },
+    {path: '', redirectTo:'/home',pathMatch:'full'},
+    
+
     
 ];

@@ -1,0 +1,23 @@
+<div class="wrapper" *ngFor="let course of courseDetails">
+  <div class="header">
+    <div class="container">
+        <h1>{{ course.courseName }}</h1>
+        <h3>{{ course.subtitle }}</h3>
+    </div>
+  </div>
+  <div class="content container">
+    <h2>Course Topics</h2>
+    <div class="topics" *ngFor="let topic of course.topics;let i = index">
+      <p>
+        {{ topic.topicName }}
+      </p>
+    </div>
+    
+    <button *ngIf="loggedIn()" type="button" routerLink="" class="btn btn-primary">Enrol</button>
+    <button *ngIf="!loggedIn()" type="button" routerLink="" class="btn btn-primary">Enroleddeeeded</button>    
+  </div>
+  
+</div>
+
+
+

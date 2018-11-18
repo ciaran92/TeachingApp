@@ -35,3 +35,7 @@ input{
 button{
     float: right;
 }
+
+.options{
+    text-align: left;
+}

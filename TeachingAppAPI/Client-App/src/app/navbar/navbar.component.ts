@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
 import { longStackSupport } from 'q';
+import { Status } from '../services/status';
 
 
 @Component({
@@ -11,6 +12,7 @@ import { longStackSupport } from 'q';
 })
 export class NavbarComponent implements OnInit {
   private fragment: string;
+  
 
   constructor(private route: ActivatedRoute, private router: Router, private authenticationService: AuthenticationService) { }
 
@@ -41,6 +43,7 @@ export class NavbarComponent implements OnInit {
   }
 
   loggedIn(): boolean{
+    //console.log(this.authenticationService.IsLoggedIn());
     return this.authenticationService.IsLoggedIn();
   }
 
@@ -69,6 +72,11 @@ export class NavbarComponent implements OnInit {
     }
 
     
+  }
+  
+  public shown: boolean = false;
+  show(){
+    this.shown = true;
   }
 
 

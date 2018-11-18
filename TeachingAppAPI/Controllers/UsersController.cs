@@ -5,13 +5,15 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using TeachingAppAPI.Data;
+using TeachingAppAPI.Entities;
 using TeachingAppAPI.Helpers;
-using TeachingAppAPI.Models;
 using TeachingAppAPI.Services;
 
 namespace TeachingAppAPI.Controllers
@@ -20,47 +22,26 @@ namespace TeachingAppAPI.Controllers
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
-        /*
-         -- Current methods:
-            - GetUsers():
-                - returns all users (doesn't distinguish type of user at this point
-            - Get(int id):
-                - 
-            - ConfirmAccount([FromBody]AppUser user)
-            - CreateNewUser([FromBody]AppUser newUser)
-            - GenerateCode(int length)
-         */
-
-
 
         private TestDB_Phase2Context context;
         //private Example mailServer;
         private readonly AppSettings appSettings;
         private EmailSender emailSender;
         private IUserService _userService;
+        private IDataProtector _protector;
+        private ITokenGenerator _tokenGenerator;
 
-        public UsersController(TestDB_Phase2Context context, IOptions<AppSettings> appSettings, IOptions<EmailSender> emailSender, IUserService userService)
+        public UsersController(TestDB_Phase2Context context, IOptions<AppSettings> appSettings, IOptions<EmailSender> emailSender, IUserService userService, ITokenGenerator tokenGenerator, IDataProtectionProvider provider)
         {
             this.context = context;
             this.appSettings = appSettings.Value;
             this.emailSender = emailSender.Value;
             _userService = userService;
+            _tokenGenerator = tokenGenerator;
+            _protector = provider.CreateProtector("Contoso.UsersController.v1");
             //this.mailServer = mailServer;
         }
-        // GET api/values
-        [HttpGet]
-        public IActionResult GetUsers()
-        {
-            var blogs = context.AppUser.FromSql("select * from AppUser").ToArray();
-            return Ok(blogs);
-        }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
 
         [HttpPost("confirm-account")]
         public IActionResult ConfirmAccount([FromBody]AppUser user)
@@ -79,14 +60,8 @@ namespace TeachingAppAPI.Controllers
                 //context.AppUser.FromSql($"verifyAccount @AppUserId", param);
                 //context.Update(user);
                 context.SaveChanges();
-                return Ok(new
-                {
-                    id = generatedCode.ElementAt(0).AppUserId,
-                    userName = generatedCode.ElementAt(0).UserName,
-                    email = generatedCode.ElementAt(0).Email,
-                    firstName = generatedCode.ElementAt(0).FirstName,
-                    lastName = generatedCode.ElementAt(0).LastName
-                });
+                CreateToken(user);
+                return Ok();
             }
             else
             {
@@ -105,8 +80,27 @@ namespace TeachingAppAPI.Controllers
                 var user = _userService.CreateUser(newUser, newUser.UserPassword);
                 emailSender.SendEmailAsync(appSettings.MailKey, user.Email, "Your verifiaction code", "Your verification code is " + user.VerificationCode);
                 Console.WriteLine("sent mail");
+                var SecretKey = Encoding.ASCII.GetBytes(appSettings.Secret);
+                var key = new SymmetricSecurityKey(SecretKey);
+                var signInCred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.UserName)
+                };
+                var token = new JwtSecurityToken
+                        (
+                        issuer: "http://localhost:52459",
+                        audience: "http://localhost:52459",
+                        expires: DateTime.Now.AddMinutes(1),
+                        claims: claims,
+                        signingCredentials: signInCred
+                        );
+
+                var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
                 return Ok(new
                 {
+                    token = tokenString,
                     id = user.AppUserId,
                     userName = user.UserName,
                     email = user.Email,
@@ -120,136 +114,67 @@ namespace TeachingAppAPI.Controllers
             }
         }
 
-        
-        public static string GenerateCode(int length)
-        {
-            Random random = new Random();
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            string code = new string(Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
-            return code;
-        }
-
-        /**
-         * Checks to see if user exists.
-         * returns true if user exists.
-         **/
-        public bool UserExists(string UserName)
-        {
-            if(!context.AppUser.Any(x => x.UserName == UserName))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
-        public bool EmailTaken(string emailAddress)
-        {
-            if(context.AppUser.Any(x => x.Email == emailAddress))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         [HttpPost("token")]
-        public IActionResult Token([FromBody]AppUser userInput)
+        public IActionResult CreateToken([FromBody]AppUser userInput)
         {
-            var user = context.AppUser.SingleOrDefault(x => x.UserName == userInput.UserName); // understand more on this line
-            if(userInput == null || user == null)
+            var user = context.AppUser.SingleOrDefault(x => x.UserName == userInput.UserName);
+            Console.WriteLine("user: " + user);
+            if(user != null)
             {
-                return BadRequest("UserName does not exist!");
-            }
-            if(userInput.UserPassword != user.UserPassword)
-            {
-                return BadRequest("Incorroect password");
-            }
-            if(user.AccountVerified == false)
-            {
-                return Ok(new
+                if (_userService.Authenticate(user, userInput.UserName, userInput.UserPassword))
                 {
-                    id = user.AppUserId,
-                    userName = user.UserName,
-                    email = user.Email,
-                    firstName = user.FirstName,
-                    lastName = user.LastName,
-                    verified = user.AccountVerified
-                }); //really strange... id, UserName etc have to be lower case
-            }
-            //var checkCreds = context.AppUser.FromSql($"select * from AppUser where UserName = {inputModel.UserName}").ToArray();
-            if (IsUserAccountVerified(userInput.UserName))
-            {
-                Console.WriteLine((context.AppUser.Where(x => x.UserName == userInput.UserName).SingleOrDefault()).ToString());
-                Console.WriteLine("helooooo");
-                var SecretKey = Encoding.ASCII.GetBytes(appSettings.Secret);
-                var key = new SymmetricSecurityKey(SecretKey);
-                var signInCred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, userInput.UserName)
-                };
-                var token = new JwtSecurityToken
-                        (
-                        issuer: "http://localhost:52459",
-                        audience: "http://localhost:52459",
-                        expires: DateTime.Now.AddMinutes(1),
-                        claims: claims,
-                        signingCredentials: signInCred
-                        );
+                    // create refresh token here
+                    RefreshToken refreshToken = _tokenGenerator.CreateRefreshToken(user.AppUserId);
+                    // call create access token method here
 
-                var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-                //Example.SendMail();
-                return Ok(new
-                { token = tokenString,
-                    id = user.AppUserId,
-                    userName = user.UserName,
-                    email = user.Email,
-                    firstName = user.FirstName,
-                    lastName = user.LastName,
-                    verified = user.AccountVerified
-                });
+                    string accessToken = _tokenGenerator.CreateAccessToken(user);
+                    // TODO: create new user model to return
+                    return Ok(new
+                    {
+                        token = accessToken,
+                        refreshToken = refreshToken.Token,
+                        id = user.AppUserId,
+                        userName = user.UserName
+                    });
+                }
+                else
+                {
+                    return BadRequest("Incorrect username or password");
+                }
             }
             else
             {
+                return BadRequest("User does not exist");
+            }       
+        }
+
+        [HttpPost("token/refresh")]
+        public IActionResult RefreshToken([FromBody] RefreshToken refreshToken)
+        {
+            var refreshTokenFromDatabase = context.RefreshToken.Include(x => x.AppUser).SingleOrDefault(i => i.Token == refreshToken.Token);
+            Console.WriteLine("DateTime.Now: " + DateTime.Now);
+            if (refreshTokenFromDatabase == null)
+            {
+                return BadRequest();
+            }
+            if (refreshTokenFromDatabase.ExpiresUtc < DateTime.Now)
+            {
+                Console.WriteLine("DateTime.Now: " + DateTime.Now);
+                Console.WriteLine("refreshTokenFromDatabase.ExpiresUtc: " + refreshTokenFromDatabase.ExpiresUtc);
                 return Unauthorized();
             }
-        }
+            AppUser user = refreshTokenFromDatabase.AppUser;
+            string accessToken = _tokenGenerator.CreateAccessToken(user);
 
-        public string TokenGenerator(bool accountVerified)
-        {
-            var SecretKey = Encoding.ASCII.GetBytes(appSettings.Secret);
-            var key = new SymmetricSecurityKey(SecretKey);
-            var signInCred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
-            var claims = new List<Claim>
-                {
-                    new Claim("UserAccountVerified", accountVerified.ToString())
-                };
-            var token = new JwtSecurityToken
-                        (
-                        issuer: "http://localhost:52459",
-                        audience: "http://localhost:52459",
-                        expires: DateTime.Now.AddMinutes(1),
-                        claims: claims,
-                        signingCredentials: signInCred
-                        );
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        public bool IsUserAccountVerified(string UserName)
-        {
-            var userDetails = context.AppUser.FromSql($"select * from AppUser where UserName = {UserName}").ToArray();
-
-            if(userDetails.ElementAt(0).AccountVerified == true)
+            return Ok(new
             {
-                return true;
-            }
-            return false;
+                token = accessToken,
+                refreshToken = refreshTokenFromDatabase.Token,
+                id = refreshTokenFromDatabase.AppUser.AppUserId
+            });
+        
+
         }
 
         // PUT api/values/5

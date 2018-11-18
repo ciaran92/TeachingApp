@@ -6,7 +6,7 @@
 <div class="container">
     <div class="row">
         <div class="col-2" *ngFor="let course of courseDetails">
-            <div class="card">
+            <div class="card" (click)="GoToCourse(course.courseId)">
                 <img class="card-img-top" src="../../assets/placeholder.jpg" alt="Card image cap">
                 <div class="card-body">
                     <p class="card-text">{{ course.courseName | slice:0:25}}</p>

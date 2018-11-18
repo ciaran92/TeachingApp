@@ -1,5 +1,8 @@
+<div class="popup" *ngIf = "DisplayPopup()">
+    <p>You need to verifiy your account to view this. <a>Click Here</a></p>
+    <a (click)="Close()" class="close"></a>
+</div>
 <navbar></navbar>
-
 <router-outlet></router-outlet>
 <app-footer></app-footer>
 
