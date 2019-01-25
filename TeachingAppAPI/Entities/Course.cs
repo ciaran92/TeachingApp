@@ -13,12 +13,13 @@ namespace TeachingAppAPI.Entities
 
         public int CourseId { get; set; }
         public string CourseName { get; set; }
+        public string CourseThumbnailUrl { get; set; }
+        public string Subtitle { get; set; }
         public int? CourseStatusId { get; set; }
         public DateTime? DateCreated { get; set; }
         public int? CourseDuration { get; set; }
-        public string CourseThumbnailUrl { get; set; }
-        public string Subtitle { get; set; }
         public string CourseDescription { get; set; }
+        public string CourseTrailerVideo { get; set; }
 
         public CourseStatus CourseStatus { get; set; }
         public ICollection<Enrolment> Enrolment { get; set; }

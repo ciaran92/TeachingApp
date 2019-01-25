@@ -5,32 +5,15 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { Course } from '../create-course/course';
 
 @Injectable()
-export class CreateCourseService {
-    
+export class CreateQuizService {
+
     private step = new BehaviorSubject<number>(1);
     currentStep = this.step.asObservable();
-    public EnrolledCoursesList: any;
+    //public EnrolledCoursesList: any;
     private rootURL = "http://localhost:52459/api/courses";
-    public course: Course = new Course(); // ?? This may be a problem for testing ??
+    //public course: Course = new Course(); // ?? This may be a problem for testing ??
 
     constructor(private http: HttpClient, private route: Router){}
-
-    createCourse(courseName: string, courseSubtitle: string, courseDescription: string){
-        var body = {
-            CourseName: courseName,
-            CourseDescription: courseDescription,
-            Subtitle: courseSubtitle
-        }
-        return this.http.post(this.rootURL, body).subscribe(
-            (response) => {
-                //this.route.navigate(['/home']);
-            },
-            err => {
-              //this.error = err.error;
-              console.log(err.error);
-            }
-          );
-    }
 
     uploadImage(formData: FormData){
         console.log(formData)
@@ -41,7 +24,5 @@ export class CreateCourseService {
     changeStep(newStep: number){
         this.step.next(newStep);
     }
-    
-}
 
-    
+}

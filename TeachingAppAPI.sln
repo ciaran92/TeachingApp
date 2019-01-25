@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeachingAppAPI", "TeachingAppAPI\TeachingAppAPI.csproj", "{ECF4AE85-F97B-4200-A13A-0A2A0FA8503C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeachingAppAPI", "TeachingAppAPI\TeachingAppAPI.csproj", "{ECF4AE85-F97B-4200-A13A-0A2A0FA8503C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeachingAppApiTests", "TeachingAppApiTests\TeachingAppApiTests\TeachingAppApiTests.csproj", "{D89B6830-9A32-46A9-8DC6-B9468B1D8495}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{ADF04D4D-FDC1-4193-AC25-484CE5EC9B55}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +19,16 @@ Global
 		{ECF4AE85-F97B-4200-A13A-0A2A0FA8503C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECF4AE85-F97B-4200-A13A-0A2A0FA8503C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECF4AE85-F97B-4200-A13A-0A2A0FA8503C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D89B6830-9A32-46A9-8DC6-B9468B1D8495}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D89B6830-9A32-46A9-8DC6-B9468B1D8495}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D89B6830-9A32-46A9-8DC6-B9468B1D8495}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D89B6830-9A32-46A9-8DC6-B9468B1D8495}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D89B6830-9A32-46A9-8DC6-B9468B1D8495} = {ADF04D4D-FDC1-4193-AC25-484CE5EC9B55}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CE25CEA6-4587-42BE-88CA-26943A0CDD68}

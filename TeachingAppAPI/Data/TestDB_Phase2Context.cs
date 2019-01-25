@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using TeachingAppAPI.Models;
 using TeachingAppAPI.Entities;
 
 namespace TeachingAppAPI.Data
@@ -32,18 +33,18 @@ namespace TeachingAppAPI.Data
         public virtual DbSet<QuizUserStatus> QuizUserStatus { get; set; }
         public virtual DbSet<RefreshToken> RefreshToken { get; set; }
         public virtual DbSet<Topic> Topic { get; set; }
-        //public virtual DbSet<test1> Test1 { get; set; }
 
         public virtual DbQuery<test1> Test1 { get; set; }
 
         public virtual DbQuery<EnrolledCoursesList> EnrolledCoursesLists { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-ADKKK1M;Database=TestDB_Phase2;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-EI3KQ5R;Database=TestDB_Phase2;Trusted_Connection=True;");
             }
         }
 
@@ -103,15 +104,15 @@ namespace TeachingAppAPI.Data
                     .IsUnicode(false);
 
                 entity.Property(e => e.PasswordSalt)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                   .HasMaxLength(50)
+                   .IsUnicode(false);
 
                 entity.Property(e => e.UserName)
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
                 entity.Property(e => e.UserPassword)
-                    .HasMaxLength(50)
+                    .HasMaxLength(100)
                     .IsUnicode(false);
 
                 entity.Property(e => e.VerificationCode)
@@ -156,7 +157,9 @@ namespace TeachingAppAPI.Data
 
             modelBuilder.Entity<Course>(entity =>
             {
-                entity.Property(e => e.CourseDescription).IsUnicode(false);
+                entity.Property(e => e.CourseDescription)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.CourseDuration).HasColumnName("Course_Duration");
 
@@ -171,11 +174,15 @@ namespace TeachingAppAPI.Data
                     .HasMaxLength(200)
                     .IsUnicode(false);
 
+                entity.Property(e => e.CourseTrailerVideo)
+                    .HasMaxLength(400)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.DateCreated).HasColumnType("datetime");
 
                 entity.Property(e => e.Subtitle)
-                    .HasMaxLength(200)
-                    .IsUnicode(false);
+                   .HasMaxLength(200)
+                   .IsUnicode(false);
 
                 entity.HasOne(d => d.CourseStatus)
                     .WithMany(p => p.Course)
@@ -353,7 +360,7 @@ namespace TeachingAppAPI.Data
                 entity.HasOne(d => d.AppUser)
                     .WithMany(p => p.RefreshToken)
                     .HasForeignKey(d => d.AppUserId)
-                    .HasConstraintName("FK__RefreshTo__AppUs__625A9A57");
+                    .HasConstraintName("FK__RefreshTo__AppUs__3C34F16F");
             });
 
             modelBuilder.Entity<Topic>(entity =>
@@ -372,65 +379,6 @@ namespace TeachingAppAPI.Data
                     .HasForeignKey(d => d.CourseId)
                     .HasConstraintName("FK__Topic__CourseId__440B1D61");
             });
-
-
-
-            // MyAttempt:
-            //modelBuilder.Entity<test1>(entity =>
-            //{
-
-            //    entity.Property(e => e.EnrolmentId).HasColumnName("EnrolmentID");
-
-            //    entity.Property(e => e.QuizInstanceId).HasColumnName("QuizInstanceID");
-
-            //    entity.Property(e => e.QuizId).HasColumnName("QuizID");
-
-            //    entity.Property(e => e.QuestionId).HasColumnName("QuestionID");
-
-            //    entity.Property(e => e.QuestionText).HasColumnName("QuestionText");
-
-            //    entity.Property(e => e.AnswerId).HasColumnName("AnswerID");
-
-            //    entity.Property(e => e.AnswerText).HasColumnName("AnswerText");
-
-            //    entity.Property(e => e.AnswerTypeId).HasColumnName("AnswerTypeID");
-
-            //    entity.Property(e => e.AnswerType_Desc).HasColumnName("AnswerType_desc");
-
-
-            //    modelBuilder.Entity<test1>()
-            //        .HasKey(c => new { c.EnrolmentId, c.QuizInstanceId, c.QuizId });
-
-                //entity.Property(e => e.QuizDateTimeStart)
-                //    .HasColumnName("Quiz_DateTime_start")
-                //    .HasColumnType("datetime");
-
-
-
-                //entity.Property(e => e.QuizUserStatusId).HasColumnName("QuizUserStatusID");
-
-                //entity.HasOne(d => d.Enrolment)
-                //    .WithMany(p => p.QuizInstance)
-                //    .HasForeignKey(d => d.EnrolmentId)
-                //    .HasConstraintName("FK__QuizInsta__Enrol__5CD6CB2B");
-
-                //entity.HasOne(d => d.Quiz)
-                //    .WithMany(p => p.QuizInstance)
-                //    .HasForeignKey(d => d.QuizId)
-                //    .HasConstraintName("FK__QuizInsta__QuizI__5AEE82B9");
-
-                //entity.HasOne(d => d.QuizUserStatus)
-                //    .WithMany(p => p.QuizInstance)
-                //    .HasForeignKey(d => d.QuizUserStatusId)
-                //    .HasConstraintName("FK__QuizInsta__QuizU__5BE2A6F2");
-            //});
-
-
-
-
-
-
-
         }
     }
 }
