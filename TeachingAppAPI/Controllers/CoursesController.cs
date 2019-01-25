@@ -18,6 +18,7 @@ using System.Net.Http.Headers;
 using Amazon.S3;
 using Amazon.S3.Model;
 using TeachingAppAPI.Models;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace TeachingAppAPI.Controllers
 {
@@ -149,43 +150,20 @@ namespace TeachingAppAPI.Controllers
             return Ok(returnArray);
         }
 
-        // POST api/Course
-        [HttpPost]
-        public IActionResult CreateNewCourse([FromBody]Course course)
+        [HttpGet("get-topics")]
+        public IActionResult GetTopics(int id)
         {
-            if(course == null)
-            {
-                return BadRequest();
-            }
-            course.CourseStatusId = 1;
-            _context.Course.Add(course);
-            _context.SaveChanges();
-            return Ok();
+            var param = new SqlParameter("@CourseId", id);
+            var topics = _context.Topic.FromSql($"select * from Topic where CourseId = @CourseId", param).ToArray();
+            return Ok(topics);
         }
 
-        [HttpPut("update-course")]
-        public void UpdateCourse([FromBody]Course updateCourse)
+        [HttpPost("add-topic")]
+        public IActionResult CreateNewTopic([FromBody]Topic topic)
         {
-
-            var course = _context.Course.FromSql($"select * from Course where CourseId = {updateCourse.CourseId}").ToArray();
-
-            course.ElementAt(0).CourseName = updateCourse.CourseName;
-            course.ElementAt(0).CourseStatusId = updateCourse.CourseStatusId;
-            //course.ElementAt(0).CourseDateTimeStart = updateCourse.CourseDateTimeStart;
-            course.ElementAt(0).CourseDuration = updateCourse.CourseDuration;
-            course.ElementAt(0).CourseDescription = updateCourse.CourseDescription;
-
+            _context.Topic.Add(topic);
             _context.SaveChanges();
-
-        }
-
-
-        // DELETE a Course - not really useful at this point. Stored procedure required:
-        // Only works if there are no topics, etc., associated with the course
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-            var courses = _context.Course.FromSql($"delete from Course where CourseId = {id}").ToArray();
+            return Ok(topic);
         }
 
         [HttpPost("uploadNGX"), DisableRequestSizeLimit]
@@ -226,6 +204,68 @@ namespace TeachingAppAPI.Controllers
             }
             
             return null;
+        }
+
+        [HttpPost("new-course")]
+        public IActionResult CreateNewCourse([FromBody]Course course)
+        {
+            course.CourseStatusId = 1; //TODO: change this to 0 if course is in process of being created and has not been submitted for review
+            
+            _context.Course.Add(course);
+            
+            _context.SaveChanges();
+            addTopic(course.CourseId);
+            return Ok(course);
+        }
+
+        public IActionResult addTopic([FromQuery] int id)
+        {
+            Topic topic = new Topic() { CourseId = id, TopicName = "Example Topic", TopicDesc = "Example Description" };
+            _context.Topic.Add(topic);
+            _context.SaveChanges();
+            return null;
+        }
+
+        [HttpPost("upload2")]
+        public async Task<IActionResult> ConfirmAccountAsync([FromBody]Course course)
+        {     
+            course.CourseThumbnailUrl = await UploadImage(course.CourseThumbnailUrl);
+            _context.Course.Add(course);
+            _context.SaveChanges();
+            return Ok(course);
+        }
+
+        public async Task<string> UploadImage(String base64str)
+        {
+            Console.WriteLine(base64str);
+            var fileName = "";
+            try
+            {
+                byte[] bytes = Convert.FromBase64String(base64str);
+                var client = new AmazonS3Client(accessKey, accessSecret, Amazon.RegionEndpoint.APSoutheast2);
+                fileName = Guid.NewGuid().ToString();
+                PutObjectResponse response = null;
+
+                using (var stream = new MemoryStream(bytes))
+                {
+                    var request = new PutObjectRequest
+                    {
+                        BucketName = bucket,
+                        Key = fileName,
+                        InputStream = stream,
+                        CannedACL = S3CannedACL.PublicRead
+                    };
+                    response = await client.PutObjectAsync(request);
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Console.WriteLine("ha" + ex);
+            }
+            Console.WriteLine("path: " + fileName);
+            return "https://s3-ap-southeast-2.amazonaws.com/scrotums/" + fileName;
+
+
         }
 
         [HttpPost("upload"), DisableRequestSizeLimit]

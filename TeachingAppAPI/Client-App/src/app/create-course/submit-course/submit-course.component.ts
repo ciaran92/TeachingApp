@@ -17,16 +17,22 @@ export class SubmitCourseComponent implements OnInit {
     this.courseService.changeStep(5);
   }
 
-  SubmitCourse(){
+  SubmitCourse() {
     console.log("called");
-    const formData: FormData = new FormData();
+    /*const formData: FormData = new FormData();
     formData.append("CourseName", sessionStorage.getItem("CourseName"));
     formData.append("Subtitle", sessionStorage.getItem("Subtitle"));
     formData.append("CourseDescription", sessionStorage.getItem("CourseDescription"));
-    formData.append("CourseThumbnail", this.courseService.course.CourseThumbnail);   
+    formData.append("CourseThumbnail", sessionStorage.getItem("thumbnail_img"));   
 
     this.courseService.uploadImage(formData).subscribe(res => {
-      console.log("Success: " + res);
+    console.log("Success: " + res);
     })
+    */
+   let CourseName = sessionStorage.getItem("CourseName");
+   let Subtitle = sessionStorage.getItem("Subtitle");
+   let CourseDescription = sessionStorage.getItem("CourseDescription");
+   let CourseThumbnailURL = sessionStorage.getItem("thumbnail_img");
+   this.courseService.updateCourse(CourseName, Subtitle, CourseDescription, CourseThumbnailURL);
   }
 }

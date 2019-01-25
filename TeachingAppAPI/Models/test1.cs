@@ -19,7 +19,6 @@ namespace TeachingAppAPI.Models
         public int? AnswerTypeId { get; set; }
         public string AnswerType_Desc { get; set; }
 
-
         public Enrolment Enrolment { get; set; }
         public QuizInstance QuizInstance { get; set; }
         public Quiz Quiz { get; set; }

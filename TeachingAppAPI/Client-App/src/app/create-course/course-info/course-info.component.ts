@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { CreateCourseService } from 'src/app/services/create-course.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-course-info',
@@ -11,8 +11,11 @@ export class CourseInfoComponent implements OnInit, AfterViewInit {
 
   editor: any;
   currentStep: number;
+  dataModel: string = "<h1>Hello</h1>";
+  courseName: string;
+  courseSubtitle: string;
 
-  constructor(private courseService: CreateCourseService, private route: Router) { }
+  constructor(private courseService: CreateCourseService, private router: ActivatedRoute, private route: Router) { }
 
   ngOnInit() {
     this.courseService.currentStep.subscribe(step => this.currentStep = step);
@@ -20,38 +23,30 @@ export class CourseInfoComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    
-    this.editor = window.document.getElementsByName('Course_Desc')[0];
-    this.editor.contentDocument.designMode = "on";
+    //this.editor = window.document.getElementsByName('Course_Desc')[0];
+    //this.editor.contentDocument.designMode = "on";
   }
 
   execCmd(command: string){
     this.editor.contentDocument.execCommand(command, false, null);
   }
 
-  OnSubmit(CourseName: string, CourseSubtitle: string){
-    sessionStorage.setItem("CourseName", CourseName);
-    sessionStorage.setItem("Subtitle", CourseSubtitle);
-    sessionStorage.setItem("CourseDescription", this.editor.contentDocument.body.innerHTML);
-
-    this.route.navigate(['create-course/thumbnail']);
-    //this.courseService.createCourse(CourseName, CourseSubtitle, this.editor.body.innerHTML);
-    
+  addImage(){
+    var url = prompt("enter image url");
+    this.editor.contentDocument.execCommand("insertImage", false, url);
   }
 
-  /*FormatHTML(unformattedHTML: string): string{
-    let output = "<p>";
-    output += unformattedHTML;
+  OnSubmit(){
+    sessionStorage.setItem("CourseName", this.courseName);
+    sessionStorage.setItem("Subtitle", this.courseSubtitle);
+    sessionStorage.setItem("CourseDescription", this.dataModel);
+    console.log(this.dataModel);
+    this.route.navigate(['create-course/thumbnail', this.getCourseId()]);
+    //this.courseService.createCourse(CourseName, CourseSubtitle, this.editor.body.innerHTML);
+  }
 
-    var replaceDiv = /<div>/gi;
-    var replaceEndDiv = /<\/div>/gi;
-
-    var format1 = output.replace(replaceDiv, "</p><div><p>");
-    var format2 = format1.replace(replaceEndDiv, "</p></div>");
-    output = format2;
-    output += "</p>";
-
-    return output;
-  }*/
+  getCourseId(){
+    return parseInt(this.router.snapshot.paramMap.get('id'));
+  }
 
 }

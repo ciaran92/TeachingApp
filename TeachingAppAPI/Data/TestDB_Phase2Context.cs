@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using TeachingAppAPI.Models;
 using TeachingAppAPI.Entities;
+using TeachingAppAPI.Models;
 
 namespace TeachingAppAPI.Data
 {
@@ -171,7 +172,6 @@ namespace TeachingAppAPI.Data
 
                 entity.Property(e => e.CourseThumbnailUrl)
                     .HasColumnName("CourseThumbnailURL")
-                    .HasMaxLength(200)
                     .IsUnicode(false);
 
                 entity.Property(e => e.CourseTrailerVideo)

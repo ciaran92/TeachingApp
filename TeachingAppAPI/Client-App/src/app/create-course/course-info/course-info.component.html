@@ -4,43 +4,23 @@
   <h3>Step 1: Enter Basic Course Info</h3>
 </div>
 <div class="section-content">
-  <form #registerForm="ngForm" (ngSubmit)="OnSubmit(CourseName.value, CourseSubtitle.value)">
+  <div>
     <div class="input-field">
       <label>Enter a Name for the Course</label>
-      <input type="text" name="CourseName" #CourseName>
+      <input type="text" name="CourseName" #CourseName [(ngModel)]="courseName">
     </div>
     <div class="input-field">
       <label>Enter a subtitle for the Course</label>
-      <input type="text" name="CourseSubtitle" #CourseSubtitle>
+      <input type="text" name="CourseSubtitle" #CourseSubtitle [(ngModel)]="courseSubtitle">
     </div>
   
     <div class="input-field">
     <label>Enter a detailed Description about the Course</label>
-      <div class="textEditor">
-        <div class="editorOptions">
-          <button type="button" title="Bold" (click)="execCmd('insertParagraph')"><i class="fa fa-bold"></i></button>
-          <button type="button" title="Italic" (click)="execCmd('italic')"><i class="fa fa-italic"></i></button>
-          <button type="button" title="Underline" (click)="execCmd('underline')"><i class="fa fa-underline"></i></button>
-          <button type="button" title="cross" (click)="execCmd('strikeThrough')"><i class="fa fa-strikethrough"></i></button>
-          <button type="button" title="Align Left" (click)="execCmd('justifyLeft')"><i class="fa fa-align-left"></i></button>
-          <button type="button" title="Center Text" (click)="execCmd('justifyCenter')"><i class="fa fa-align-center"></i></button>
-          <button type="button" title="Align Right" (click)="execCmd('justifyRight')"><i class="fa fa-align-right"></i></button>
-          <button type="button" title="Block Text" (click)="execCmd('justifyFull')"><i class="fa fa-align-justify"></i></button>
-    
-          <button type="button" title="Link" (click)="underline()"><i class="fa fa-link"></i></button>
-          <button type="button" title="Un-Link" (click)="underline()"><i class="fa fa-unlink"></i></button>
-    
-          <button type="button" title="Insert Image" (click)="underline()"><i class="fa fa-image"></i></button>
-        </div>
-    
-        <div class="textArea">
-          <iframe id="Course_Desc" name="Course_Desc" placeholder="First Name" #Course_Desc></iframe>
-        </div>
-      </div>
+    <editor apiKey="q5vm3kahytbopeoboczaj73xriedeav2sd9yp4sp0vwuedn5" [(ngModel)]="dataModel" [init]="{plugins: 'image code lists preview', images_upload_url: 'postAcceptor.php', height: 400, menubar: false, toolbar: 'bold italic underline alignleft aligncenter alignright bullist numlist formatselect | image preview'}"></editor>
     </div>
     <div class="navigation-buttons">
-        <button class="custom-btn btn-next btn btn-primary" type="submit">Next Step</button>
+        <button class="custom-btn btn-next btn btn-primary" (click)="OnSubmit()">Next Step</button>
     </div>
-  </form>
+  </div>
 </div>  
 

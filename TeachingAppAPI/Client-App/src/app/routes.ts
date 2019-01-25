@@ -21,6 +21,11 @@ import { CourseInfoComponent } from './create-course/course-info/course-info.com
 import { CourseThumbnailComponent } from './create-course/course-thumbnail/course-thumbnail.component';
 import { SubmitCourseComponent } from './create-course/submit-course/submit-course.component';
 import { CourseContentComponent } from './create-course/course-content/course-content.component';
+import { AddTopicComponent } from './create-course/course-content/add-topic.component';
+import { EditTopicComponent } from './create-course/course-content/edit-topic.component';
+import { AddLessonComponent } from './create-course/course-content/add-lesson.component';
+import { EditLessonComponent } from './create-course/course-content/edit-lesson.component';
+import { GenerateCourseComponent } from './create-course/generate-course.component';
 
 export const appRoutes : Routes = [
     {path: 'home', component:HomeComponent},
@@ -71,12 +76,32 @@ export const appRoutes : Routes = [
     {
         path: '', redirectTo:'/home',pathMatch:'full'
     },
+    {
+        path: 'add-course', component:GenerateCourseComponent
+    },
     {   path: 'create-course', component:CreateCourseComponent,
         children:[
-            { path: '', component: CourseInfoComponent },
-            { path: 'thumbnail', component: CourseThumbnailComponent },
-            { path: 'submit', component: SubmitCourseComponent },
-            { path: 'content', component: CourseContentComponent}
+            { path: 'course-info/:id', component: CourseInfoComponent },
+            { path: 'thumbnail/:id', component: CourseThumbnailComponent },
+            { path: 'submit/:id', component: SubmitCourseComponent },
+            { 
+            path: 'content/:id', component: CourseContentComponent,
+            children: [
+                { path: 'add-topic', component: AddTopicComponent,
+                    children:[
+                        
+                        { path: 'add-lesson', component: AddLessonComponent },
+                        { path: 'edit-lesson', component: EditLessonComponent }
+                    ]
+                },
+                { 
+                    path: 'edit-topic', component: EditTopicComponent,
+                    children: [
+                        { path: 'edit-lesson', component: EditLessonComponent }
+                    ]
+                }
+                ]
+            }
         ]    
     },
     {path: '', redirectTo:'/home',pathMatch:'full'},
