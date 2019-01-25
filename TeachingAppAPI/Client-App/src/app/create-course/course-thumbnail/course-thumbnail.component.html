@@ -3,13 +3,16 @@
   <h3>Step 2: Choose a Thumbnail Image for the Course</h3>
 </div>
 <div class="section-content">
-    <form #thumbnailImageForm="ngForm" (ngSubmit)="OnSubmit2(Image)">
-      <div class='upload-box'>
-        <input type="file" #Image (change)="handleFileInput($event.target.files)">
-      </div>
-      <div class="navigation-buttons">
-        <button class="btn-previous custom-btn btn btn-primary" routerLink='/create-course'>Go Back</button>
-        <button class="btn-next custom-btn btn btn-primary" routerLink='/create-course/content'>Next Step</button>
-      </div>
-    </form>
+  <div class="upload-area">
+    <div class='upload-box'>
+      <i *ngIf="image64 == null" class="fa fa-upload"></i>
+      <img *ngIf="image64 != null" class="thumbnail-img" src= "{{ image64 }}" />
+    </div>
+    <input type="file" #Image (change)="handleFileInput($event)">
+  </div>
+  
+  <div class="navigation-buttons">
+    <button class="btn-previous custom-btn btn btn-primary" (click)="goBack()">Go Back</button>
+    <button class="btn-next custom-btn btn btn-primary" (click)="next()">Next Step</button>
+  </div>
 </div>

@@ -1,0 +1,31 @@
+<div class="topic-modal">
+<div class="topic-modal-box">
+    <div class="topic-modal-container">
+    
+    <div class="input-field">
+        <label>Enter a Name for the Topic</label>
+        <input type="text" name="TopicName" #TopicName ngModel>
+    </div>
+    <div class="input-field">
+        <label>Enter a Brief Description for the topic</label>
+        <textarea rows="4" type="text" name="TopicDescription" #TopicDescription ngModel></textarea>
+    </div>
+    
+    
+    <div class="add-video" *ngIf="showAddVideo">
+        <div class='upload-box'>
+        <input type="file" #Image (change)="handleFileInput($event)">
+        </div>
+    </div>
+
+    <div class="modal-buttons">
+        <button class="cancel custom-btn" (click)="cancel()">Cancel</button>
+        <button (click)="addTopics(TopicName.value, TopicDescription.value)" [routerLink]="[create-course/content]" [queryParams]="getCourseId()" class="add custom-btn">Add Topic</button>
+    </div>
+
+    
+    </div>
+</div>
+
+</div>
+<router-outlet></router-outlet>

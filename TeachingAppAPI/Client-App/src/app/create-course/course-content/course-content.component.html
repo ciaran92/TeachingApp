@@ -3,53 +3,18 @@
   <h3>Step 4: Create Course Content</h3>
 </div>
 <div class="section-content">
-  <div class="topic" *ngFor="let topic of topics">
-    <p>Topic 1: {{topic.topicName}}</p>
-    <button class="custom-btn" (click)="AddTopic()">Edit</button>
+  <div class="topic" *ngFor="let topic of topics; let i = index">
+    <p>Topic {{i + 1}}: {{topic.topicName}}</p>
+    <button class="custom-btn" routerLink="/create-course/content/edit-topic">Edit</button>
   </div>
-  <div class="add-topic" (click)="addTopic = true;">
-      <p>Add Topic</p><i class="fas fa-plus"></i>
+  <div class="add-topic" routerLink='add-topic'>
+      <p>Add Topic</p><i class="fa fa-plus"></i>
   </div>
   <div class="navigation-buttons">
-    <button class="btn-previous custom-btn" routerLink='/create-course/thumbnail'>Go Back</button>
+    <button class="btn-previous custom-btn" (click)="goBack()">Go Back</button>
     <button class="btn-next custom-btn" routerLink='/create-course/submit'>Next Step</button>
   </div>
   
 </div>
-<div class="topic-modal" *ngIf="addTopic">
-  <div class="topic-modal-box">
-    <div class="topic-modal-container">
-      <div class="input-field">
-        <label>Enter a Name for the Course</label>
-        <input type="text" name="CourseName" #CourseName>
-      </div>
-      <label style="display:block; margin-bottom: 30px;">Select the type of content for this Topic</label>
-      <div class="topic-type">
-        <div class="topic-type-content">
-          <div class="topic-type-content-inner">
-            <i class="fa fa-play-circle"></i>
-            <p>video</p>
-          </div>
-          
-        </div>
-      </div>
-      <div class="topic-type">
-        <div class="topic-type-content">
-          <div class="topic-type-content-inner">
-            <i class="fa fa-file-text-o"></i>
-            <p>Article</p>
-          </div>  
-        </div>
-      </div>
-      <div class="editor">
-        <app-ngx-editor imageEndPoint="http://localhost:52459/api/courses/uploadNGX" [config]="editorConfig" [spellcheck]="true" [(ngModel)]="htmlContent"></app-ngx-editor>
-      </div>
-      
-      <div class="modal-buttons">
-        <button class="cancel custom-btn">Cancel</button>
-        <button class="add custom-btn" (click)="test()">Add Topic</button>
-      </div>
-    </div>
-  </div>
-  
-</div>
+<router-outlet></router-outlet>
+

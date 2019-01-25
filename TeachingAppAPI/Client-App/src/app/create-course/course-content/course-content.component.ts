@@ -1,55 +1,96 @@
 import { Component, OnInit } from '@angular/core';
 import { CreateCourseService } from 'src/app/services/create-course.service';
 import { Topic } from './topic';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-course-content',
   templateUrl: './course-content.component.html',
-  styleUrls: ['../create-course.component.css']
+  styleUrls: ['../create-course.component.css', './course-content.component.css']
 })
 export class CourseContentComponent implements OnInit {
 
   htmlContent: string;
+  filesToUpload: File;
   currentStep: number;
-  topics: Topic[] = [];
-  addTopic: boolean = false;
-  editorConfig = {
-    "editable": true,
-    "spellcheck": true,
-    "height": "400px",
-    "minHeight": "0",
-    "width": "auto",
-    "minWidth": "0",
-    "translate": "yes",
-    "enableToolbar": true,
-    "showToolbar": true,
-    "placeholder": "Enter text here...",
-    "imageEndPoint": "",
-    "toolbar": [
-        ["bold", "italic", "underline", "strikeThrough", "superscript", "subscript"],
-        ["fontSize"],
-        ["justifyLeft", "justifyCenter", "justifyRight", "justifyFull", "indent", "outdent"],
-        ["cut", "copy", "delete", "removeFormat", "undo", "redo"],
-        ["paragraph", "blockquote", "removeBlockquote", "horizontalLine", "orderedList", "unorderedList"],
-        ["link", "unlink", "image", "video"]
-    ]
-  };
+  topics: Object;
 
-  constructor(private courseService: CreateCourseService) { }
+  addTopic: boolean = false;
+
+  showAddVideo: boolean = false;
+  showAddArticle: boolean = false;
+
+  videoToUpload_base64: string;
+
+  courseId: any;
+
+  constructor(private courseService: CreateCourseService, private router: ActivatedRoute, private route: Router) { }
 
   ngOnInit() {
+    console.log("content")
     this.courseService.currentStep.subscribe(step => this.currentStep = step);
-    this.courseService.changeStep(5);
-    this.topics.push(new Topic("Introduction"));
-    console.log("topic length: " + this.topics.length);
+    this.courseService.changeStep(4);
+    //this.topics = this.courseService.getTopics(this.getCourseId());
+    this.displayTopicsList();
+    console.log("topics" + JSON.stringify(this.courseService.getTopics(this.getCourseId())))
+    
+    console.log(this.topics)
+
+    this.courseId = this.getCourseId;
   }
 
-  AddTopic(){
-    //this.topics.push(this.topics.length);
+  displayTopicsList(){
+    this.courseService.getTopics(this.getCourseId()).subscribe((response) => 
+    {
+      this.topics = response[0].topics;
+      console.log("topics list: " + JSON.stringify(response[0]));
+    }, err => {
+      console.log("error: " + err.error);
+    });
   }
 
-  test(){
-    console.log(this.htmlContent);
+  editTopic(i: number) {
+    
   }
 
+  doSomething(topicType: string){
+    if(topicType === 'video'){
+      console.log("clicked | video");
+      this.showAddVideo = true;
+    }
+    if(topicType === 'article'){
+      console.log("clicked | article");
+      this.showAddArticle = true;
+    }
+    
+  }
+
+  handleFileInput(event){
+    let file = event.target.files[0];
+    console.log(file);
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (): void => {
+      this.videoToUpload_base64 = (reader.result as string).match(
+        /.+;base64,(.+)/
+          )[1];
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
+  }
+
+  cancel(){
+    this.addTopic = false;
+    this.showAddVideo = false;
+    this.showAddArticle = false;
+  }
+
+  goBack(){
+    this.route.navigate(['create-course/thumbnail', this.getCourseId()]);
+  }
+
+  getCourseId(){
+    return parseInt(this.router.snapshot.paramMap.get('id'));
+  }
 }

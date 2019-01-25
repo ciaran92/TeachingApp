@@ -24,6 +24,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { NgxEditorModule } from 'ngx-editor';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
+import { EditorModule } from '@tinymce/tinymce-angular';
 
 
 import { CreateCourseService } from './services/create-course.service';
@@ -41,14 +42,27 @@ import { MyCoursesComponent } from './my-courses/my-courses.component';
 import { CoursesComponent } from './courses/courses.component';
 import { CourseDetailsComponent } from './courses/course-details.component';
 import { CreateCourseComponent } from './create-course/create-course.component';
+import { GenerateCourseComponent } from './create-course/generate-course.component';
+
+
 import { CourseInfoComponent } from './create-course/course-info/course-info.component';
 import { CourseThumbnailComponent } from './create-course/course-thumbnail/course-thumbnail.component';
 import { CourseRequirementsComponent } from './create-course/course-requirements/course-requirements.component';
+
 import { CourseContentComponent } from './create-course/course-content/course-content.component';
+import { AddTopicComponent } from './create-course/course-content/add-topic.component';
+import { EditTopicComponent } from './create-course/course-content/edit-topic.component';
+import { AddLessonComponent } from './create-course/course-content/add-lesson.component';
+import { EditLessonComponent } from './create-course/course-content/edit-lesson.component';
+
 import { SubmitCourseComponent } from './create-course/submit-course/submit-course.component';
 import { AuthGuard } from './auth.guard';
 import { AccountConfirmationComponent } from './account-confirmation/account-confirmation.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { TopicsComponent } from './topics/topics.component';
+import { Quiz2Component } from './quiz2/quiz2.component';
+import { QuizInstanceComponent } from './quiz-instance/quiz-instance.component';
+import { VideoTestComponent } from './video-test/video-test.component';
 
 
 @NgModule({
@@ -73,6 +87,15 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     CourseRequirementsComponent,
     CourseContentComponent,
     SubmitCourseComponent,
+    TopicsComponent,
+    Quiz2Component,
+    QuizInstanceComponent,
+    VideoTestComponent,
+    AddTopicComponent,
+    EditTopicComponent,
+    AddLessonComponent,
+    EditLessonComponent,
+    GenerateCourseComponent
   ],
   imports: [
     BrowserModule,
@@ -83,7 +106,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     CommonModule,
     ScrollToModule.forRoot(),
     NgxEditorModule,
-    AngularFontAwesomeModule
+    AngularFontAwesomeModule,
+    EditorModule
   ],
   providers: [
     AuthenticationService,

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TeachingAppAPI.Entities;
 
 namespace TeachingAppAPI.Models
 {
@@ -17,7 +18,6 @@ namespace TeachingAppAPI.Models
         public string AnswerText { get; set; }
         public int? AnswerTypeId { get; set; }
         public string AnswerType_Desc { get; set; }
-
 
         public Enrolment Enrolment { get; set; }
         public QuizInstance QuizInstance { get; set; }

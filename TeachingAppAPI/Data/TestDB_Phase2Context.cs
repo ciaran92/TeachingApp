@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using TeachingAppAPI.Entities;
+using TeachingAppAPI.Models;
 
 namespace TeachingAppAPI.Data
 {
@@ -168,7 +169,6 @@ namespace TeachingAppAPI.Data
 
                 entity.Property(e => e.CourseThumbnailUrl)
                     .HasColumnName("CourseThumbnailURL")
-                    .HasMaxLength(200)
                     .IsUnicode(false);
 
                 entity.Property(e => e.DateCreated).HasColumnType("datetime");
