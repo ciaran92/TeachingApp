@@ -34,7 +34,7 @@ export class AddTopicComponent implements OnInit {
           this.courseService.addTopic(this.getCourseId(), name, desc).subscribe(
             (response) => {
                 //location.reload();
-                //this.route.navigate(['create-course/content', this.getCourseId()]);
+                this.route.navigate(['create-course/content', this.getCourseId()]);
                 console.log("topic added");
             },
             err => {
@@ -42,12 +42,10 @@ export class AddTopicComponent implements OnInit {
               console.log(err.error);
             }
           );
-          
         } 
         else {
           alert("Please enter a name for the topic");
-        }
-        
+        }        
     }
 
     // Cancel creating the topic and go back to course-content page

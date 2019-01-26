@@ -7,7 +7,11 @@
     <p>Topic {{i + 1}}: {{topic.topicName}}</p>
     <button class="custom-btn" routerLink="/create-course/content/edit-topic">Edit</button>
   </div>
-  <div class="add-topic" routerLink='add-topic'>
+  <div class="topic" *ngIf="addTopic">
+    <input type="text" name="TopicName" placeholder="Enter a Name for this Topic" #TopicName ngModel>
+    <button class="custom-btn" (click)="createTopic(TopicName.value)">Add</button>
+  </div>
+  <div class="add-topic" (click)="addTopic = true">
       <p>Add Topic</p><i class="fa fa-plus"></i>
   </div>
   <div class="navigation-buttons">

@@ -45,7 +45,7 @@ namespace TeachingAppAPI.Data
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-EI3KQ5R;Database=TestDB_Phase2;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-EI3KQ5R;Database=DevelopmentDB;Trusted_Connection=True;");
             }
         }
 
@@ -160,7 +160,8 @@ namespace TeachingAppAPI.Data
             {
                 entity.Property(e => e.CourseDescription)
                     .HasMaxLength(100)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .IsRequired(false);
 
                 entity.Property(e => e.CourseDuration).HasColumnName("Course_Duration");
 
@@ -172,17 +173,20 @@ namespace TeachingAppAPI.Data
 
                 entity.Property(e => e.CourseThumbnailUrl)
                     .HasColumnName("CourseThumbnailURL")
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .IsRequired(false);
 
                 entity.Property(e => e.CourseTrailerVideo)
                     .HasMaxLength(400)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .IsRequired(false);
 
                 entity.Property(e => e.DateCreated).HasColumnType("datetime");
 
                 entity.Property(e => e.Subtitle)
                    .HasMaxLength(200)
-                   .IsUnicode(false);
+                   .IsUnicode(false)
+                   .IsRequired(false);
 
                 entity.HasOne(d => d.CourseStatus)
                     .WithMany(p => p.Course)
@@ -365,6 +369,9 @@ namespace TeachingAppAPI.Data
 
             modelBuilder.Entity<Topic>(entity =>
             {
+                entity.Property(e => e.TopicOrder)
+                    .HasColumnName("TopicOrder");
+
                 entity.Property(e => e.TopicDesc)
                     .HasColumnName("Topic_desc")
                     .HasMaxLength(50)

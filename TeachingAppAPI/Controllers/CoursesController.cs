@@ -58,6 +58,7 @@ namespace TeachingAppAPI.Controllers
         {
             // Calling the selectCourse Stored Procedure:
             var param = new SqlParameter("@CourseId", id);
+
             var courses = _context.Course.FromSql($"select * from Course where CourseId = @CourseId", param).ToArray();
             var topics = _context.Topic.FromSql($"select * from Topic where CourseId = @CourseId", param).ToArray();
 
@@ -111,20 +112,29 @@ namespace TeachingAppAPI.Controllers
         [HttpGet]
         public IActionResult GetCourses()
         {
-            var query = _context.Course.ToList();
-
-            var courses = new List<CoursesListDto>();
-
-            foreach (var course in query)
+            try
             {
-                courses.Add(new CoursesListDto()
+                var query = _context.Course.ToList();
+                var courses = new List<CoursesListDto>();
+
+                foreach (var course in query)
                 {
-                    CourseId = course.CourseId,
-                    CourseName = course.CourseName,
-                    CourseThumbnailUrl = course.CourseThumbnailUrl
-                });
+                    courses.Add(new CoursesListDto()
+                    {
+                        CourseId = course.CourseId,
+                        CourseName = course.CourseName,
+                        CourseThumbnailUrl = course.CourseThumbnailUrl
+                    });
+                }
+                return Ok(courses);
             }
-            return Ok(courses);
+            catch(Exception ex)
+            {
+                return Ok();
+            }
+            
+
+            
         }
 
         [Authorize(Policy = "RegisteredUser")]
@@ -150,12 +160,26 @@ namespace TeachingAppAPI.Controllers
             return Ok(returnArray);
         }
 
+        // Method to display list of all topics id's & names (used in course-content.component)
         [HttpGet("get-topics")]
         public IActionResult GetTopics(int id)
         {
             var param = new SqlParameter("@CourseId", id);
-            var topics = _context.Topic.FromSql($"select * from Topic where CourseId = @CourseId", param).ToArray();
+            var query = _context.Topic.FromSql($"select * from Topic where CourseId = @CourseId order by TopicOrder asc", param).ToArray();
+            var topics = new List<TopicsListDto>();
+
+            foreach (var topic in query)
+            {
+                topics.Add(new TopicsListDto()
+                {
+                    TopicId = topic.TopicId,
+                    TopicName = topic.TopicName,
+                    TopicOrder = topic.TopicOrder
+                });
+            }
+
             return Ok(topics);
+
         }
 
         [HttpPost("add-topic")]
@@ -220,7 +244,7 @@ namespace TeachingAppAPI.Controllers
 
         public IActionResult addTopic([FromQuery] int id)
         {
-            Topic topic = new Topic() { CourseId = id, TopicName = "Example Topic", TopicDesc = "Example Description" };
+            Topic topic = new Topic() { CourseId = id, TopicName = "Example Topic", TopicDesc = "Example Description", TopicOrder = 1 };
             _context.Topic.Add(topic);
             _context.SaveChanges();
             return null;

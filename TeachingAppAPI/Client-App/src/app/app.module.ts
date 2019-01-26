@@ -54,6 +54,7 @@ import { AddTopicComponent } from './create-course/course-content/add-topic.comp
 import { EditTopicComponent } from './create-course/course-content/edit-topic.component';
 import { AddLessonComponent } from './create-course/course-content/add-lesson.component';
 import { EditLessonComponent } from './create-course/course-content/edit-lesson.component';
+import { CreateQuizComponent } from './create-course/course-content/create-quiz/create-quiz.component';
 
 import { SubmitCourseComponent } from './create-course/submit-course/submit-course.component';
 import { AuthGuard } from './auth.guard';
@@ -63,7 +64,6 @@ import { TopicsComponent } from './topics/topics.component';
 import { Quiz2Component } from './quiz2/quiz2.component';
 import { QuizInstanceComponent } from './quiz-instance/quiz-instance.component';
 import { VideoTestComponent } from './video-test/video-test.component';
-import { CreateQuizComponent } from './create-quiz/create-quiz.component';
 
 
 @NgModule({

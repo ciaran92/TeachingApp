@@ -26,6 +26,7 @@ import { EditTopicComponent } from './create-course/course-content/edit-topic.co
 import { AddLessonComponent } from './create-course/course-content/add-lesson.component';
 import { EditLessonComponent } from './create-course/course-content/edit-lesson.component';
 import { GenerateCourseComponent } from './create-course/generate-course.component';
+import { CreateQuizComponent } from './create-course/course-content/create-quiz/create-quiz.component';
 
 export const appRoutes : Routes = [
     {path: 'home', component:HomeComponent},
@@ -85,21 +86,13 @@ export const appRoutes : Routes = [
             { path: 'thumbnail/:id', component: CourseThumbnailComponent },
             { path: 'submit/:id', component: SubmitCourseComponent },
             { 
-            path: 'content/:id', component: CourseContentComponent,
-            children: [
-                { path: 'add-topic', component: AddTopicComponent,
-                    children:[
-                        
-                        { path: 'add-lesson', component: AddLessonComponent },
-                        { path: 'edit-lesson', component: EditLessonComponent }
-                    ]
-                },
-                { 
-                    path: 'edit-topic', component: EditTopicComponent,
-                    children: [
-                        { path: 'edit-lesson', component: EditLessonComponent }
-                    ]
-                }
+                path: 'content/:id', component: CourseContentComponent,
+                children: [
+                    { path: 'add-topic', component: AddTopicComponent,
+                        children: [
+                            { path: 'create-quiz', component: CreateQuizComponent }
+                        ] 
+                    }
                 ]
             }
         ]    

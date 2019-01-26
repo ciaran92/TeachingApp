@@ -1,0 +1,16 @@
+<div class="topic-modal">
+    <div class="topic-modal-box">
+        <div class="topic-modal-container">
+            <div class="input-field">
+                <label>Enter a Name for the Topic</label>
+                <input type="text" name="TopicName" #TopicName ngModel>
+            </div>
+
+
+            <div class="modal-buttons">
+                <button class="cancel custom-btn" (click)="cancel()">Cancel</button>
+                <button (click)="addTopics(TopicName.value, TopicDescription.value)" class="add custom-btn">Add Topic</button>
+            </div>
+        </div>
+    </div>
+</div>

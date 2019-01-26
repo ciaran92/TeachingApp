@@ -21,7 +21,7 @@ export class CourseContentComponent implements OnInit {
   showAddArticle: boolean = false;
 
   videoToUpload_base64: string;
-
+  topicsToAdd: Topic[];
   courseId: any;
 
   constructor(private courseService: CreateCourseService, private router: ActivatedRoute, private route: Router) { }
@@ -32,9 +32,6 @@ export class CourseContentComponent implements OnInit {
     this.courseService.changeStep(4);
     //this.topics = this.courseService.getTopics(this.getCourseId());
     this.displayTopicsList();
-    console.log("topics" + JSON.stringify(this.courseService.getTopics(this.getCourseId())))
-    
-    console.log(this.topics)
 
     this.courseId = this.getCourseId;
   }
@@ -42,11 +39,15 @@ export class CourseContentComponent implements OnInit {
   displayTopicsList(){
     this.courseService.getTopics(this.getCourseId()).subscribe((response) => 
     {
-      this.topics = response[0].topics;
-      console.log("topics list: " + JSON.stringify(response[0]));
+      this.topicsToAdd = response[0].topics;
+      console.log("topics list: " + JSON.stringify(response[0].topics));
     }, err => {
       console.log("error: " + err.error);
     });
+  }
+
+  createTopic(topicName: string) {
+    this.addTopic = true;
   }
 
   editTopic(i: number) {
