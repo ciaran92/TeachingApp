@@ -22,7 +22,7 @@ export class GenerateCourseComponent implements OnInit{
     this.courseService.createCourse(courseName).subscribe((response) => 
     {
       this.courseDetails = response;
-      //console.log("courses list: " + JSON.stringify(response));
+      console.log("courses list: " + JSON.stringify(response));
       //console.log("courses list: " + this.courseDetails.courseId);
       this.route.navigate(['/create-course/course-info', this.courseDetails.courseId]);
     }, err => {

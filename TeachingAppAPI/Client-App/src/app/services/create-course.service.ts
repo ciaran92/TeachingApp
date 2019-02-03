@@ -10,12 +10,11 @@ export class CreateCourseService {
     
     private step = new BehaviorSubject<number>(1);
     currentStep = this.step.asObservable();
-    //privateId = new BehaviorSubject<number>
-
-    topics: Topic[] = [];
     
     public EnrolledCoursesList: any;
-    private rootURL = "http://localhost:52459/api/courses";
+    private coursesURL = "http://localhost:52459/api/courses";
+    private topicsURL = "http://localhost:52459/api/topics"
+    private lessonsURL = "http://localhost:52459/api/lessons"
     public course: Course = new Course(); // ?? This may be a problem for testing ??
 
     constructor(private http: HttpClient, private route: Router){}
@@ -23,31 +22,28 @@ export class CreateCourseService {
     uploadImage(formData: FormData){
         console.log(formData)
         //formData.append('Name', caption);
-        return this.http.post(this.rootURL + "/upload", formData);
+        return this.http.post(this.coursesURL + "/upload", formData);
     }
 
+    // Get all the topics for a course (returns the topicId, topicName & topicOrder)
     getTopics(courseId: number) {
-        return this.http.get(this.rootURL + "/" + courseId); 
-        /*if(sessionStorage.getItem("user_topics") != null){
-            console.log("topics have been added");
-            this.topics = JSON.parse(sessionStorage.getItem("user_topics"));
-        }
-        else{
-            console.log("no topics added yet");
-            this.topics.push(new Topic("Introduction", "custom desc", null));
-        }
-        return this.topics;*/
+        return this.http.get(this.topicsURL + "/get-topics/" + courseId); 
     }
 
-    addTopic(courseId: number, name: string, desc: string){
+    // Get all required information about the selected topic
+    getTopicById(topicId: number){
+        return this.http.get(this.topicsURL + "/get-topic-by-id/" + topicId);
+    }
+
+    addTopic(courseId: number, name: string, topicOrder: number){
         //this.topics.push(newTopic);
         //sessionStorage.setItem("user_topics", JSON.stringify(this.topics));
         var body = {
             CourseId: courseId,
             TopicName: name,
-            TopicDesc: desc
+            TopicOrder: topicOrder
         }
-        return this.http.post(this.rootURL + "/add-topic", body)
+        return this.http.post(this.topicsURL, body)
     }
 
     changeStep(newStep: number){
@@ -61,7 +57,7 @@ export class CreateCourseService {
             CourseDescription: courseDescription,
             CourseThumbnailUrl: courseThumbnail
         }
-        return this.http.post(this.rootURL + "/upload2", body).subscribe(
+        return this.http.post(this.coursesURL + "/upload2", body).subscribe(
             (response) => {
                 //this.route.navigate(['/home']);
             },
@@ -76,7 +72,34 @@ export class CreateCourseService {
         var body = {
             CourseName: courseName
         }
-        return this.http.post(this.rootURL + "/new-course", body);
+        return this.http.post(this.coursesURL + "/new-course", body);
+    }
+
+    deleteTopic(id: number){
+        return this.http.delete(this.topicsURL + '/' + id);
+    }
+
+    updateLessonVideo(id: number, videBase64: string, fileName: string){
+        var body = {
+            LessonVideoUrl: videBase64,
+            VideoFileName: fileName
+        };
+        return this.http.put(this.lessonsURL + '/update-video/' + id, body);
+    }
+
+    updateLessonName(id: number, newLessonName: string){
+        var body = {LessonName: newLessonName}
+        return this.http.put(this.lessonsURL + '/update-name/' + id, body);
+    }
+
+    createNewLesson(topicId: number, lessonName: string, lessonOrder: number) {
+        var body = {TopicId: topicId, LessonName: lessonName, LessonOrder: lessonOrder};
+        return this.http.post(this.lessonsURL, body);
+    }
+
+    updateTopic(topicId: number, topicName: string, topicDescription: string){
+        var body = {TopicId: topicId, TopicName: topicName, TopicDesc: topicDescription};
+        return this.http.put(this.topicsURL + "/" + topicId, body);
     }
     
 }

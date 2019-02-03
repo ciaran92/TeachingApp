@@ -1,6 +1,5 @@
 :host{
     width: 100%;
-    float: left;
     min-height: 100vh;
 }
 .page-header{

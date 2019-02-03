@@ -1,11 +1,61 @@
 <div class="topic-modal">
-    <div class="topic-modal-box">
+    <div class="topic-modal-box" *ngIf="topic != null">
         <div class="topic-modal-container">
-            <h1>Edit Topic</h1>
+
+            <!-- Heading (Name of the topic being edited) -->
+            <div class="header">
+                <h3>{{ topic.topicName }}</h3>
+            </div>
+
+            <!-- Edit the name for the Topic-->
+            <div class="input-field">
+                <label>Topic Name</label>
+                <input type="text" name="TopicName" placeholder="Enter a Name For this topic" [(ngModel)]="topicName"/>
+            </div>
+
+            <!-- Enter a Description for the topic -->
+            <div class="input-field">
+                <label>Topic Description</label>
+                <textarea rows="5" type="text" name="TopicDescription" placeholder="Enter a Description For this topic" [(ngModel)]="topicDescription"></textarea>
+            </div>
+
+            <!-- Button to add a new lesson -->
+            <div class="add-lesson" (click)="addLesson()">
+                <p>Add Lesson</p><i class="fa fa-plus"></i>
+            </div>
+
+            <!-- Display all lessons for the topic-->
+            <div *ngFor="let lesson of lessons; let i = index">
+                <div class="lesson">
+                    <div class="created-lesson" *ngIf="lesson.lessonId">
+                        <div class="lesson-name">
+                            <label>Lesson {{i+1}}: </label>
+                            <input type="text" id="lesson-name-{{i}}" class="lessonName" name="LessonName" value="{{lesson.lessonName}}" #LessonName readonly/>
+                        </div>
+                        <div class="option-btns">
+                            <button class="custom-btn delete-btn" id="delete-btn-{{i}}" title="Delete" (click)="deleteTopic(i)"><i class="fa fa-ban"></i></button>
+                            <button class="custom-btn edit-btn" id="edit-btn-{{i}}" title="Edit" (click)="displayLessonEditView(i)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                            <button class="custom-btn cancel-btn" id="cancel-btn-{{i}}" style="display: none" (click)="cancelUpdate(i)"><i class="fa fa-times"></i></button>
+                            <button class="custom-btn confirm-btn" id="confirm-btn-{{i}}" style="display: none" (click)="updateLessonName(i, LessonName.value)"><i class="fa fa-check"></i></button>
+                        </div>   
+                    </div>
+                    <div class="new-lesson" *ngIf="!lesson.lessonId">
+                        <input type="text" name="LessonName" placeholder="Enter a Name for this Lesson" #LessonName ngModel>
+                        <button class="custom-btn add-btn" (click)="createNewLesson(LessonName.value, i)">Add</button>
+                    </div>
+                </div>
+                <div id="lesson-content-{{i}}" style="display:none" class="lesson-content">
+                    <button type="button" onclick="document.getElementById('file-upload').click()" class="custom-btn upload-file-btn">Choose File</button>
+                    <input id="file-upload" class="upload-file" type="file" #Image (change)="handleFileInput($event, i)" />
+                    <input type="text" class="file-name" name="FileName" placeholder="{{ lesson.videoFileName }}" #FileName readonly>
+                </div>
+            </div>
         </div>
+
+        <!-- Save changes & cancel btns -->
         <div class="modal-buttons">
-            <button class="cancel custom-btn" routerLink="/create-course/content">Cancel</button>
-            <button class="add custom-btn">Save Changes</button>
+            <button class="cancel custom-btn" (click)="cancel()">Cancel</button>
+            <button class="custom-btn save-changes" (click)="saveChanges(topicName, topicDescription)">Save Changes</button>
         </div>
     </div>
 </div>

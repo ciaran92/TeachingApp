@@ -40,10 +40,6 @@ namespace TeachingAppAPI.Controllers
         private TestDB_Phase2Context _context;
         private ICourseService _courseService;
         private IHostingEnvironment _hostingEnvironment;
-        private static string accessKey = "AKIAJXGSGKXO5IK4YDIA";
-        private static String accessSecret = "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";
-        private static String bucket = "scrotums";
-
 
         public CoursesController(TestDB_Phase2Context context, ICourseService courseService, IHostingEnvironment hostingEnvironment) 
         {
@@ -160,27 +156,7 @@ namespace TeachingAppAPI.Controllers
             return Ok(returnArray);
         }
 
-        // Method to display list of all topics id's & names (used in course-content.component)
-        [HttpGet("get-topics")]
-        public IActionResult GetTopics(int id)
-        {
-            var param = new SqlParameter("@CourseId", id);
-            var query = _context.Topic.FromSql($"select * from Topic where CourseId = @CourseId order by TopicOrder asc", param).ToArray();
-            var topics = new List<TopicsListDto>();
-
-            foreach (var topic in query)
-            {
-                topics.Add(new TopicsListDto()
-                {
-                    TopicId = topic.TopicId,
-                    TopicName = topic.TopicName,
-                    TopicOrder = topic.TopicOrder
-                });
-            }
-
-            return Ok(topics);
-
-        }
+        
 
         [HttpPost("add-topic")]
         public IActionResult CreateNewTopic([FromBody]Topic topic)
@@ -190,7 +166,7 @@ namespace TeachingAppAPI.Controllers
             return Ok(topic);
         }
 
-        [HttpPost("uploadNGX"), DisableRequestSizeLimit]
+        /*[HttpPost("uploadNGX"), DisableRequestSizeLimit]
         public async Task<ActionResult> UploadNGXImage()
         {
             try
@@ -228,7 +204,7 @@ namespace TeachingAppAPI.Controllers
             }
             
             return null;
-        }
+        }*/
 
         [HttpPost("new-course")]
         public IActionResult CreateNewCourse([FromBody]Course course)
@@ -238,61 +214,33 @@ namespace TeachingAppAPI.Controllers
             _context.Course.Add(course);
             
             _context.SaveChanges();
-            addTopic(course.CourseId);
+            CreateDefaultTopic(course.CourseId);
             return Ok(course);
         }
 
-        public IActionResult addTopic([FromQuery] int id)
+        // Method to create default topic whenever a new course is created
+        public IActionResult CreateDefaultTopic([FromQuery] int id)
         {
             Topic topic = new Topic() { CourseId = id, TopicName = "Example Topic", TopicDesc = "Example Description", TopicOrder = 1 };
             _context.Topic.Add(topic);
             _context.SaveChanges();
+            CreateDefaultLesson(topic.TopicId);
             return null;
         }
 
-        [HttpPost("upload2")]
-        public async Task<IActionResult> ConfirmAccountAsync([FromBody]Course course)
-        {     
-            course.CourseThumbnailUrl = await UploadImage(course.CourseThumbnailUrl);
-            _context.Course.Add(course);
-            _context.SaveChanges();
-            return Ok(course);
-        }
-
-        public async Task<string> UploadImage(String base64str)
+        // Method to create default topic whenever a new course is created
+        public IActionResult CreateDefaultLesson([FromQuery] int id)
         {
-            Console.WriteLine(base64str);
-            var fileName = "";
-            try
-            {
-                byte[] bytes = Convert.FromBase64String(base64str);
-                var client = new AmazonS3Client(accessKey, accessSecret, Amazon.RegionEndpoint.APSoutheast2);
-                fileName = Guid.NewGuid().ToString();
-                PutObjectResponse response = null;
-
-                using (var stream = new MemoryStream(bytes))
-                {
-                    var request = new PutObjectRequest
-                    {
-                        BucketName = bucket,
-                        Key = fileName,
-                        InputStream = stream,
-                        CannedACL = S3CannedACL.PublicRead
-                    };
-                    response = await client.PutObjectAsync(request);
-                }
-            }
-            catch (System.Exception ex)
-            {
-                Console.WriteLine("ha" + ex);
-            }
-            Console.WriteLine("path: " + fileName);
-            return "https://s3-ap-southeast-2.amazonaws.com/scrotums/" + fileName;
-
-
+            Lesson defaultLesson = new Lesson() { TopicId = id, LessonName = "Default Lesson", LessonOrder = 1, VideoFileName = "No File Selected" };
+            _context.Lesson.Add(defaultLesson);
+            _context.SaveChanges();
+            return null;
         }
 
-        [HttpPost("upload"), DisableRequestSizeLimit]
+
+        
+
+        /*[HttpPost("upload"), DisableRequestSizeLimit]
         public async Task<ActionResult> UploadFile()
         {
             try
@@ -346,14 +294,14 @@ namespace TeachingAppAPI.Controllers
                     {
                         file.CopyTo(stream);
                     }
-                }*/
+                }
                 return Ok();
             }
             catch (System.Exception ex)
             {
                 return BadRequest();
             }
-        }
+        }*/
 
 
 

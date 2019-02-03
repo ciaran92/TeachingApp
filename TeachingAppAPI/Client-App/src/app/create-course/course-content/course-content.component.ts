@@ -13,15 +13,12 @@ export class CourseContentComponent implements OnInit {
   htmlContent: string;
   filesToUpload: File;
   currentStep: number;
-  topics: Object;
-
-  addTopic: boolean = false;
 
   showAddVideo: boolean = false;
   showAddArticle: boolean = false;
 
   videoToUpload_base64: string;
-  topicsToAdd: Topic[];
+  topics: Topic[];
   courseId: any;
 
   constructor(private courseService: CreateCourseService, private router: ActivatedRoute, private route: Router) { }
@@ -32,27 +29,60 @@ export class CourseContentComponent implements OnInit {
     this.courseService.changeStep(4);
     //this.topics = this.courseService.getTopics(this.getCourseId());
     this.displayTopicsList();
-
     this.courseId = this.getCourseId;
   }
 
   displayTopicsList(){
     this.courseService.getTopics(this.getCourseId()).subscribe((response) => 
     {
-      this.topicsToAdd = response[0].topics;
-      console.log("topics list: " + JSON.stringify(response[0].topics));
+      this.topics = response as Topic[];
+      console.log("bruh: " + JSON.stringify(this.topics));
     }, err => {
       console.log("error: " + err.error);
     });
   }
 
-  createTopic(topicName: string) {
-    this.addTopic = true;
+  /**
+   * Method to create a new topic locally in the topics array
+   */
+  addTopic(){
+    let index = this.topics.length + 1
+    let newTopic: Topic = new Topic(null, null, null, index, null)
+    this.topics.push(newTopic)
   }
 
-  editTopic(i: number) {
-    
+  /**
+   * Called when the add button is clicked when creating a new topic
+   * @param topicName takes in the name of the topic to be created
+   * @param index takes in the position (index) of the topic in the topics array. adds 1 to this value to get the topics order value
+   */
+  createTopic(topicName: string, index: number) {
+    console.log("index: " + index)
+    this.courseService.addTopic(this.getCourseId(), topicName, index + 1).subscribe(
+      (response) => {
+          console.log("topic added: " + JSON.stringify(response));
+          this.topics[index] = response as Topic;
+      },
+      err => {
+        //this.error = err.error;
+        console.log(err.error);
+      }
+    );
   }
+
+  deleteTopic(index: number){
+    let topicId = this.topics[index].topicId;
+    this.courseService.deleteTopic(topicId).subscribe(
+      (response) => {
+        console.log(response);
+      },
+      err => {
+        //this.error = err.error;
+        console.log(err.error);
+      }
+    );
+  }
+
 
   doSomething(topicType: string){
     if(topicType === 'video'){
@@ -81,8 +111,12 @@ export class CourseContentComponent implements OnInit {
     };
   }
 
+  editTopic(index: number) {
+    let topicId = this.topics[index].topicId;
+    this.route.navigate(['create-course/content/' + this.getCourseId() + '/edit-topic/' + topicId]);
+  }
+
   cancel(){
-    this.addTopic = false;
     this.showAddVideo = false;
     this.showAddArticle = false;
   }
@@ -94,4 +128,5 @@ export class CourseContentComponent implements OnInit {
   getCourseId(){
     return parseInt(this.router.snapshot.paramMap.get('id'));
   }
+   
 }

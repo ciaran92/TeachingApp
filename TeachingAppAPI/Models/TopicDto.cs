@@ -6,10 +6,13 @@ using TeachingAppAPI.Entities;
 
 namespace TeachingAppAPI.Models
 {
-    public class TopicsListDto
+    public class TopicDto
     {
         public int TopicId { get; set; }
-        public string TopicName { get; set; }
+        public string TopicName { get; set; }       
+        public string TopicDesc { get; set; }
         public int? TopicOrder { get; set; }
+        public ICollection<LessonDto> Lesson { get; set; }
+        //= new List<LessonDto>();
     }
 }

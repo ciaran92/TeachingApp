@@ -1,15 +1,17 @@
 import { Lesson } from "./lesson";
 
 export class Topic{
-    topicId: number;
+    topicId?: number;
     topicName: string;
+    topicDesc: string;
     topicOrder: number;
-    newTopic: boolean;
+    topicLessons: Lesson[];
 
-    constructor(topicId, topicName, topicOrder, newTopic){
+    constructor(topicId, topicName, topicDesc, topicOrder, topicLessons){
         this.topicId = topicId;
         this.topicName = topicName;
+        this.topicDesc = topicDesc;
         this.topicOrder = topicOrder;
-        this.newTopic = newTopic;
+        this.topicLessons = topicLessons;
     }
 }

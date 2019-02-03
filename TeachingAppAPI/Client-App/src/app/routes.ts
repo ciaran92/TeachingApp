@@ -21,10 +21,7 @@ import { CourseInfoComponent } from './create-course/course-info/course-info.com
 import { CourseThumbnailComponent } from './create-course/course-thumbnail/course-thumbnail.component';
 import { SubmitCourseComponent } from './create-course/submit-course/submit-course.component';
 import { CourseContentComponent } from './create-course/course-content/course-content.component';
-import { AddTopicComponent } from './create-course/course-content/add-topic.component';
 import { EditTopicComponent } from './create-course/course-content/edit-topic.component';
-import { AddLessonComponent } from './create-course/course-content/add-lesson.component';
-import { EditLessonComponent } from './create-course/course-content/edit-lesson.component';
 import { GenerateCourseComponent } from './create-course/generate-course.component';
 import { CreateQuizComponent } from './create-course/course-content/create-quiz/create-quiz.component';
 
@@ -88,7 +85,7 @@ export const appRoutes : Routes = [
             { 
                 path: 'content/:id', component: CourseContentComponent,
                 children: [
-                    { path: 'add-topic', component: AddTopicComponent,
+                    { path: 'edit-topic/:id', component: EditTopicComponent,
                         children: [
                             { path: 'create-quiz', component: CreateQuizComponent }
                         ] 

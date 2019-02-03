@@ -9,6 +9,8 @@ using TeachingAppAPI.Data;
 using TeachingAppAPI.Helpers;
 using TeachingAppAPI.Entities;
 using TeachingAppAPI.Services;
+using TeachingAppAPI.Models;
+using AutoMapper;
 
 namespace TeachingAppAPI.Controllers
 {
@@ -121,14 +123,15 @@ namespace TeachingAppAPI.Controllers
             try
             {
                 Console.WriteLine("called createTopic()");
-                var topic = _topicService.CreateTopic(newTopic);
+                _context.Add(newTopic);
+                _context.SaveChanges();
+                TopicsListDto createdTopic = new TopicsListDto();
 
-                return Ok(new
-                {
-                    courseId = topic.CourseId,
-                    topicName = topic.TopicName,
-                    topicDesc = topic.TopicDesc
-                });
+                createdTopic.TopicId = newTopic.TopicId;
+                createdTopic.TopicName = newTopic.TopicName;
+                createdTopic.TopicOrder = newTopic.TopicOrder;
+
+                return Ok(createdTopic);
             }
             catch (CustomException e)
             {
@@ -136,32 +139,49 @@ namespace TeachingAppAPI.Controllers
             }
         }
 
+        [HttpDelete("{id}")]
+        public IActionResult DeleteTopic(int id)
+        {
+            var topic = _context.Topic.FirstOrDefault(t => t.TopicId == id);
+
+            _context.Topic.Remove(topic);
+            _context.SaveChanges();
+            return NoContent();
+        }
+
 
         // Update a Topic:
-        [HttpPut("update-topic")]
-        public void UpdateTopic([FromBody]Topic updateTopic)
+        [HttpPut("{id}")]
+        public void UpdateTopic(int id, [FromBody]Topic topic)
         {
+            var topicFromDatabase = _context.Topic.FirstOrDefault(t => t.TopicId == id);
 
-            var topic = _context.Topic.FromSql($"select * from Topic where TopicId = {updateTopic.TopicId}").ToArray();
-
-            topic.ElementAt(0).TopicName = updateTopic.TopicName;
-            topic.ElementAt(0).CourseId = updateTopic.CourseId;
-            topic.ElementAt(0).TopicDesc = updateTopic.TopicDesc;
-
+            topicFromDatabase.TopicName = topic.TopicName;
+            topicFromDatabase.TopicDesc = topic.TopicDesc;
+            _context.Topic.Update(topicFromDatabase);
             _context.SaveChanges();
 
         }
 
-
-
-
-
-        // DELETE a Topic:
-        // Only works if there are no topics, etc., accociated with the Topic
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpGet("get-topic-by-id/{id}")]
+        public IActionResult GetTopicById(int id)
         {
-            var topic = _context.Topic.FromSql($"delete from Topic where TopicId = {id}").ToArray();
+            Console.WriteLine("called");
+            var topic = _context.Topic.Include(t => t.Lesson).AsEnumerable().FirstOrDefault(t => t.TopicId == id); //LINQ statement to get topic and all its lessons
+            Console.WriteLine(topic);
+            var topicToReturn = Mapper.Map<TopicDto>(topic);
+            return Ok(topicToReturn);
+        }
+
+        // Method to display list of all topics for a given course
+        [HttpGet("get-topics/{id}")]
+        public IActionResult GetTopics(int id)
+        {
+            var param = new SqlParameter("@CourseId", id);
+            var query = _context.Topic.FromSql($"select * from Topic where CourseId = @CourseId order by TopicOrder asc", param).ToArray();
+            var topics = Mapper.Map<IEnumerable<TopicsListDto>>(query);
+            return Ok(topics);
+
         }
 
     }

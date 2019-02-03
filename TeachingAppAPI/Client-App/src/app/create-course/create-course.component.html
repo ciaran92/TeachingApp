@@ -14,7 +14,7 @@
           <p class="step-name">Requirements</p>
       </div>
       <div class="step">
-          <span (click)="ChangeCurrentStep(4)" class="dot"><p>4</p></span>
+          <span (click)="ChangeCurrentStep(4)" [className]="isClicked(4) ? 'dot dot-selected' : 'dot'"><p>4</p></span>
           <p class="step-name">Content</p>
       </div>
       <div class="step">

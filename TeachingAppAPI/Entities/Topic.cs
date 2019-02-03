@@ -7,6 +7,7 @@ namespace TeachingAppAPI.Entities
     {
         public Topic()
         {
+            Lesson = new HashSet<Lesson>();
             Quiz = new HashSet<Quiz>();
         }
 
@@ -14,9 +15,10 @@ namespace TeachingAppAPI.Entities
         public int? CourseId { get; set; }
         public string TopicName { get; set; }
         public string TopicDesc { get; set; }
-        public int TopicOrder { get; set; }
+        public int? TopicOrder { get; set; }
 
         public Course Course { get; set; }
+        public ICollection<Lesson> Lesson { get; set; }
         public ICollection<Quiz> Quiz { get; set; }
     }
 }

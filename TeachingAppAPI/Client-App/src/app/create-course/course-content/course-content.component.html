@@ -4,19 +4,30 @@
 </div>
 <div class="section-content">
   <div class="topic" *ngFor="let topic of topics; let i = index">
-    <p>Topic {{i + 1}}: {{topic.topicName}}</p>
-    <button class="custom-btn" routerLink="/create-course/content/edit-topic">Edit</button>
+    <div class="created-topic" *ngIf="topics[i].topicId">
+      <p>Topic {{i + 1}}: {{topic.topicName}}</p>
+      <button class="custom-btn delete-btn" title="Delete" (click)="deleteTopic(i)"><i class="fa fa-ban"></i></button>
+      <button class="custom-btn edit-btn" title="Edit" (click)="editTopic(i)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+    </div>
+
+    <!-- 
+        Topics which have just been generated, are editable so that the user can enter a name for them
+        ngIf to display all topics that do not have a topicId (i.e only been created locally and not in the database)
+        Add btn calls createTopic() which then creates the topic in the db
+    -->
+    <div class="new-topic" *ngIf="!topics[i].topicId">
+      <input type="text" name="TopicName" placeholder="Enter a Name for this Topic" #TopicName ngModel>
+      <button class="custom-btn add-btn" (click)="createTopic(TopicName.value, i)">Add</button>
+    </div>
   </div>
-  <div class="topic" *ngIf="addTopic">
-    <input type="text" name="TopicName" placeholder="Enter a Name for this Topic" #TopicName ngModel>
-    <button class="custom-btn" (click)="createTopic(TopicName.value)">Add</button>
-  </div>
-  <div class="add-topic" (click)="addTopic = true">
+
+  <!-- Button to add a new topic to the topics array (newTopic is set to true so that the user can edit the topics name) -->
+  <div class="add-topic" (click)="addTopic()">
       <p>Add Topic</p><i class="fa fa-plus"></i>
   </div>
   <div class="navigation-buttons">
     <button class="btn-previous custom-btn" (click)="goBack()">Go Back</button>
-    <button class="btn-next custom-btn" routerLink='/create-course/submit'>Next Step</button>
+    <button class="btn-next custom-btn" >Next Step</button>
   </div>
   
 </div>

@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using TeachingAppAPI.Models;
 using TeachingAppAPI.Entities;
 using TeachingAppAPI.Models;
 
@@ -26,6 +25,7 @@ namespace TeachingAppAPI.Data
         public virtual DbSet<Course> Course { get; set; }
         public virtual DbSet<CourseStatus> CourseStatus { get; set; }
         public virtual DbSet<Enrolment> Enrolment { get; set; }
+        public virtual DbSet<Lesson> Lesson { get; set; }
         public virtual DbSet<Question> Question { get; set; }
         public virtual DbSet<Quiz> Quiz { get; set; }
         public virtual DbSet<QuizInstance> QuizInstance { get; set; }
@@ -39,13 +39,12 @@ namespace TeachingAppAPI.Data
 
         public virtual DbQuery<EnrolledCoursesList> EnrolledCoursesLists { get; set; }
 
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-EI3KQ5R;Database=DevelopmentDB;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-ADKKK1M;Database=TestDB_Phase2;Trusted_Connection=True;");
             }
         }
 
@@ -105,15 +104,15 @@ namespace TeachingAppAPI.Data
                     .IsUnicode(false);
 
                 entity.Property(e => e.PasswordSalt)
-                   .HasMaxLength(50)
-                   .IsUnicode(false);
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.UserName)
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
                 entity.Property(e => e.UserPassword)
-                    .HasMaxLength(100)
+                    .HasMaxLength(50)
                     .IsUnicode(false);
 
                 entity.Property(e => e.VerificationCode)
@@ -158,10 +157,7 @@ namespace TeachingAppAPI.Data
 
             modelBuilder.Entity<Course>(entity =>
             {
-                entity.Property(e => e.CourseDescription)
-                    .HasMaxLength(100)
-                    .IsUnicode(false)
-                    .IsRequired(false);
+                entity.Property(e => e.CourseDescription).IsUnicode(false);
 
                 entity.Property(e => e.CourseDuration).HasColumnName("Course_Duration");
 
@@ -173,20 +169,17 @@ namespace TeachingAppAPI.Data
 
                 entity.Property(e => e.CourseThumbnailUrl)
                     .HasColumnName("CourseThumbnailURL")
-                    .IsUnicode(false)
-                    .IsRequired(false);
+                    .IsUnicode(false);
 
                 entity.Property(e => e.CourseTrailerVideo)
                     .HasMaxLength(400)
-                    .IsUnicode(false)
-                    .IsRequired(false);
+                    .IsUnicode(false);
 
                 entity.Property(e => e.DateCreated).HasColumnType("datetime");
 
                 entity.Property(e => e.Subtitle)
-                   .HasMaxLength(200)
-                   .IsUnicode(false)
-                   .IsRequired(false);
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
 
                 entity.HasOne(d => d.CourseStatus)
                     .WithMany(p => p.Course)
@@ -225,6 +218,32 @@ namespace TeachingAppAPI.Data
                     .WithMany(p => p.Enrolment)
                     .HasForeignKey(d => d.CourseId)
                     .HasConstraintName("FK__Enrolment__Cours__5629CD9C");
+            });
+
+            modelBuilder.Entity<Lesson>(entity =>
+            {
+                entity.Property(e => e.LessonArticle).IsUnicode(false);
+
+                entity.Property(e => e.LessonName)
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.LessonVideoUrl)
+                    .HasMaxLength(256)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.VideoFileName)
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.S3VideoFileName)
+                    .HasMaxLength(350)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Topic)
+                    .WithMany(p => p.Lesson)
+                    .HasForeignKey(d => d.TopicId)
+                    .HasConstraintName("FK__Lesson__TopicId__0880433F");
             });
 
             modelBuilder.Entity<Question>(entity =>
@@ -364,14 +383,11 @@ namespace TeachingAppAPI.Data
                 entity.HasOne(d => d.AppUser)
                     .WithMany(p => p.RefreshToken)
                     .HasForeignKey(d => d.AppUserId)
-                    .HasConstraintName("FK__RefreshTo__AppUs__3C34F16F");
+                    .HasConstraintName("FK__RefreshTo__AppUs__625A9A57");
             });
 
             modelBuilder.Entity<Topic>(entity =>
             {
-                entity.Property(e => e.TopicOrder)
-                    .HasColumnName("TopicOrder");
-
                 entity.Property(e => e.TopicDesc)
                     .HasColumnName("Topic_desc")
                     .HasMaxLength(50)

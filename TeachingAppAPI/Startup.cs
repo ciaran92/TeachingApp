@@ -12,6 +12,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using TeachingAppAPI.Data;
+using TeachingAppAPI.Entities;
+using TeachingAppAPI.Models;
 using TeachingAppAPI.Services;
 
 namespace TeachingAppAPI
@@ -81,6 +83,13 @@ namespace TeachingAppAPI
             }
             app.UseCors("AllowAll");
             app.UseAuthentication();
+            AutoMapper.Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<Topic, TopicsListDto>();
+                cfg.CreateMap<Topic, TopicDto>();
+                cfg.CreateMap<Lesson, LessonDto>();
+                cfg.CreateMap<LessonForCreationDto, Lesson>();
+            });
             app.UseMvc();
         }
     }

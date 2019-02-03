@@ -50,10 +50,7 @@ import { CourseThumbnailComponent } from './create-course/course-thumbnail/cours
 import { CourseRequirementsComponent } from './create-course/course-requirements/course-requirements.component';
 
 import { CourseContentComponent } from './create-course/course-content/course-content.component';
-import { AddTopicComponent } from './create-course/course-content/add-topic.component';
 import { EditTopicComponent } from './create-course/course-content/edit-topic.component';
-import { AddLessonComponent } from './create-course/course-content/add-lesson.component';
-import { EditLessonComponent } from './create-course/course-content/edit-lesson.component';
 import { CreateQuizComponent } from './create-course/course-content/create-quiz/create-quiz.component';
 
 import { SubmitCourseComponent } from './create-course/submit-course/submit-course.component';
@@ -97,10 +94,7 @@ import { VideoTestComponent } from './video-test/video-test.component';
     CreateQuizComponent,
     QuizInstanceComponent,
     VideoTestComponent,
-    AddTopicComponent,
     EditTopicComponent,
-    AddLessonComponent,
-    EditLessonComponent,
     GenerateCourseComponent
   ],
   imports: [
