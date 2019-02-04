@@ -97,8 +97,8 @@ export class AuthenticationService {
         );
     }
 
-    IsLoggedIn(): boolean{
-        return this.status.loggedIn;
+    isUserLoggedIn(): boolean{
+        return !!this.cookie.get('jwt');
     }
     
     LoginAttemptFailed(){
@@ -107,8 +107,7 @@ export class AuthenticationService {
 
     logOut(){
         this.cookie.delete('jwt');
-        //this.cookie.delete('loggedIn');
-        this.status.loggedIn = false;
+        this.cookie.delete('refresh');
         this.route.navigate(['/home']);
     }
 
@@ -124,25 +123,30 @@ export class AuthenticationService {
         return this.showVerificationPopup;
     }
 
-    RefreshToken(token: string): any{
+    GetRefreshToken(){
+        return this.cookie.get("refresh");
+    }
+
+    GetJwtToken(){
+        return this.cookie.get("jwt");
+    }
+
+    SetRefreshToken(token: string){
+        this.cookie.set("refresh", token)
+    }
+
+    SetJwtToken(token: string){
+        this.cookie.set("jwt", token)
+    }
+
+    RefreshToken(): any{
+        let result = null;
+        console.log("called");
         var body = {
-            Token: token
+            RefreshToken: this.GetRefreshToken(),
+            AccessToken: this.GetJwtToken()
         }
-        return this.http.post("http://localhost:52459/api/users/token/refresh", body).subscribe(
-            (response: any) => {
-                console.log("myId: " + response.id);
-                let token = (<any>response).token;
-                let refreshToken = response.refreshToken;
-                this.cookie.set("jwt", token);
-                this.cookie.set("refresh", refreshToken);
-                console.log("refresh token still valid, keep browsing");
-            },
-            err => {
-                    this.logOut();
-                    this.route.navigate(['home']);
-                    console.log(err.status);      
-            }      
-        );
+        return this.http.post("http://localhost:52459/api/users/token/refresh", body);
     }
 }
 

@@ -1,31 +1,26 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { CanActivate, Router } from '@angular/router';
 import { AuthenticationService } from './services/authentication.service';
-import { CookieService } from 'ngx-cookie-service';
-import { Status } from './services/status';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
 
-  loggedIn: boolean = false;
+  constructor(private authService: AuthenticationService, private router: Router){}
 
-  constructor(private authService: AuthenticationService, private router: Router, private cookie: CookieService){}
-
-  /*canActivate(): boolean{
-    if(this.authService.IsLoggedIn()){
-      return true;
-    }else{
+  /**
+   * Very basic can activate method checks to see if there is a jwt cookie present
+   * If there is you can go to the selected route
+   * if not redirected to login page
+   */
+  canActivate(): boolean{
+    if(!this.authService.isUserLoggedIn())
+    {
       this.router.navigate(['login']);
       return false;
     }
-  }*/
-
-  canActivate(): boolean{
-    this.authService.RefreshToken(this.cookie.get("refresh"));
-    return this.authService.IsLoggedIn();
+    return true;
   }
 
 }

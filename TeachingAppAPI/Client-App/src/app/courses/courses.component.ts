@@ -30,9 +30,32 @@ export class CoursesComponent implements OnInit {
       this.courseDetails = response;
       console.log("courses list: " + response[0]);
     }, err => {
-      console.log("error: " + err.error);
-      this.route.navigate(['/home']);
-      this.authService.ShowVerificationPopup();
+        console.log("error: " + err);
+        if(err == 401){
+          this.authService.RefreshToken().subscribe(
+            (response: any) => {
+              console.log(response);
+              if(response.status = 200){
+                console.log("refresh token still valid, keep browsing: " + response.token);
+                this.authService.SetJwtToken(response.token);
+                this.displayCourseList();
+              }else{
+                this.authService.logOut();
+                console.log("something went wrong");
+                this.route.navigate(['home']);
+            }              
+          },
+          err => {
+              this.authService.logOut();
+              this.route.navigate(['home']);
+              console.log("status" + err.status);      
+            }      
+          );
+        }else{
+          this.authService.logOut();
+          console.log("something went wrong");
+          this.route.navigate(['home']);
+        }
     });
   }
   

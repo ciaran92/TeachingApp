@@ -1,54 +1,36 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<div class="wrapper">
   <div class="container">
-    <img src="../../assets/hat.png" width="30" height="30" class="d-inline-block align-top" alt="">
-    <a class="navbar-brand" routerLink='/home'>3Peas</a>
-    <form class="form-inline">
-        <div class="input-group">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-          <img class="searchImgBtn" src="../../assets/search.png">
-        </div>
-    </form>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav ml-auto">
-          
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Courses
-            </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Categories</a>
-                <a class="dropdown-item" routerLink='/courses'>All Courses</a>
-                <a class="dropdown-item" href="#">Popular Courses</a>
-                <a class="dropdown-item" href="#">Trending Courses</a>
-                <a class="dropdown-item" routerLink='/add-course'>Create Course</a>
-                <a class="dropdown-item" routerLink='/quiz-instances'>Quiz</a>
-              </div>
-          </li>
-          <li *ngIf = "loggedIn()" class="nav-item">
-            <a class="nav-link" routerLink='/my-courses'>My Courses<span class="sr-only">(current)</span></a>
-          </li>
-        <div *ngIf = "!loggedIn()"> 
-          <button routerLink='/register' routerLinkActive='active' type="button" class="btn btn-outline-primary">Register</button>
-          <button routerLink='/sign-in' routerLinkActive='active' type="button" class="btn btn-outline-primary">Sign In</button>
-        </div>
-        <div *ngIf = "loggedIn()"> 
-            <!--<button routerLink='/home' routerLinkActive='active' type="button" class="btn btn-primary" (click) = "logOut()">Sign Out</button>-->    
-            <div class="dropdown-options">
-              <div><img src="../../assets/profileImage.jpg"></div>
-              
-              <div class="dropdown-content">
-                <a><img class="icon" src="../../assets/dashboard.png">Dashboard</a>
-                <a><img class="icon" src="../../assets/user-black.png">My Profile</a>
-                <a><img class="icon" src="../../assets/settings.png">Settings</a>
-                <a (click) = "logOut()"><img class="icon" src="../../assets/logout.png">Sign Out</a>
-              </div>
-            </div>
-        </div>
-      </div>
-    </div>
+    <ul class="navbar">
+      <li routerLink='/home'><img src="../../assets/hat.png" alt=""></li>
+      <li><p class="app-name">WIRBLE.io</p></li>
+      <li class="search-box">
+          <input class="search-text" type="text" placeholder="Find your Course"><a class="search-btn" href="#"><i class="fa fa-search"></i></a>
+      </li>
+    
+      <li class="list">Courses<i class="fa fa-caret-down"></i>
+        <ul class="dropdown" id="dropdown-list">
+          <li routerLink='/courses'>All Courses</li>
+          <li *ngIf="loggedIn()" routerLink='/my-courses'>My Courses</li>
+          <li>Popular Courses</li>
+          <li routerLink='/quiz-instances'>Quiz</li>
+          <li routerLink='/add-course'>Create Course</li>
+        </ul>
+      </li>
+      <li *ngIf="!loggedIn()"><button type="button" routerLink='/register'>Register</button></li>
+      <li *ngIf="!loggedIn()"><button type="button" routerLink='/sign-in'>Sign In</button></li>
+
+      <li class="profile" *ngIf="loggedIn()">
+        <img src="../../assets/profileImage.jpg" alt="poos">
+        <ul class="profile-dropdown" id="dropdown-list2">
+          <li routerLink='dashboard'>Dashboard</li>
+          <li>My Account</li>
+          <li (click)="logOut()">Sign Out</li>
+        </ul>
+      </li>
+    </ul>
   </div>
-</nav>
-<div *ngIf="shown" class="test">
-  
 </div>
+
+
+
   

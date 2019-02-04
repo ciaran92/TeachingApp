@@ -24,6 +24,7 @@ import { CourseContentComponent } from './create-course/course-content/course-co
 import { EditTopicComponent } from './create-course/course-content/edit-topic.component';
 import { GenerateCourseComponent } from './create-course/generate-course.component';
 import { CreateQuizComponent } from './create-course/course-content/create-quiz/create-quiz.component';
+import { TeacherDashboardComponent } from './dashboard/teacher-dashboard/teacher-dashboard.component';
 
 export const appRoutes : Routes = [
     {path: 'home', component:HomeComponent},
@@ -40,21 +41,22 @@ export const appRoutes : Routes = [
         canActivate: [AuthGuard]
     },
     {
-        path: 'dashboard', component:DashboardComponent//,
-        //canActivate: [AuthGuard]
+        path: 'dashboard', component:DashboardComponent,
+        children:[
+            { path: '', redirectTo: 'teacher', pathMatch: 'full' },
+            { path: 'teacher', component: TeacherDashboardComponent }
+        ]    
     },
     {
         path: 'my-courses', component:MyCoursesComponent,
         canActivate: [AuthGuard]
     },
     {
-        path: 'courses', component:CoursesComponent
+        path: 'courses', component:CoursesComponent,
+        canActivate: [AuthGuard]
     },
     {
         path: 'courses/:id', component:CourseDetailsComponent
-    },
-    {
-        path: 'courses', component:CoursesComponent
     },
     {
         path: 'topics', component:TopicsComponent

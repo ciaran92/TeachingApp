@@ -1,26 +1,49 @@
 :host{
     width: 100%;
     float: left;
+    padding-bottom: 57px;
 }
 
-.wrapper{
+.header{
+    background: #2f3640;
+    height: 160px;
+    display: flex;
+    align-items: center; 
+}
+
+.header h1{
+    font-family: 'Open Sans', sans-serif;
+    cursor: default;
+    color: #fff;
+    margin-top: 30px;
+}
+
+.tab-list{
+    list-style: none;
+    height: 30px;
     width: 100%;
-    padding:.9rem;
-    background-color: red;
+    text-align: center;
+    background: #2f3640;
 }
 
-.navigation-pane{
-    float: left;
-    width: 20%;
-    background-color: yellow
+.tab-list ul{
+    margin: 0;
+    padding: 0;
+}
+.tab-list li{
+    display: inline;
+    padding: 0 5px;
+    font-size: 1.1rem;
+    color: #fff;
+    border-right:1px solid #fff;
+    cursor: pointer;
+    transition: 0.2s;
 }
 
-.list-group{
-    padding: .2rem;
+.tab-list li:hover{
+    color: #e84118;
 }
 
 .content{
-    float: right;
-    width: 80%;
-    background-color: blueviolet;
+
 }

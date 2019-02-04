@@ -23,13 +23,13 @@ namespace TeachingAppAPI.Services
         {
             _context = context;
             _appSettings = appSettings.Value;
-            _secretKey = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            _secretKey = Encoding.UTF8.GetBytes(_appSettings.Secret);
         }
 
         public string CreateAccessToken(AppUser user)
         {
             var key = new SymmetricSecurityKey(_secretKey);
-            var signInCred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+            var signInCred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var claims = new List<Claim>
                 {
@@ -42,7 +42,7 @@ namespace TeachingAppAPI.Services
                         (
                         issuer: "http://localhost:52459",
                         audience: "http://localhost:52459",
-                        expires: DateTime.Now.AddMinutes(1),
+                        expires: DateTime.Now.AddMinutes(5),
                         claims: claims,
                         signingCredentials: signInCred
                         );
@@ -64,13 +64,23 @@ namespace TeachingAppAPI.Services
                 AppUserId = userId,
                 Token = Guid.NewGuid().ToString(),
                 IssuedUtc = DateTime.Now,
-                ExpiresUtc = DateTime.Now.AddMinutes(5)
+                ExpiresUtc = DateTime.Now.AddHours(1)
             };
 
             _context.RefreshToken.Add(newRefreshToken);
             _context.SaveChanges();
 
             return newRefreshToken;
+        }
+
+        public bool RefreshTokenExists(int id)
+        {
+            return false;
+        }
+
+        public RefreshToken GetRefreshTokenFromDB(int appUserId)
+        {
+            return _context.RefreshToken.FirstOrDefault(t => t.AppUserId == appUserId);
         }
     }
 }

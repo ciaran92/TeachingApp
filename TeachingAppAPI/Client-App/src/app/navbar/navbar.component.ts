@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
-import { longStackSupport } from 'q';
-import { Status } from '../services/status';
 
 
 @Component({
@@ -17,66 +15,17 @@ export class NavbarComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router, private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
-    this.route.fragment.subscribe(fragment => { this.fragment = fragment; });
-  }
-
-  ngAfterViewInit(): void {
-    try { 
-      document.querySelector('#' + this.fragment).scrollIntoView();
-    } catch (e) { }
-  }
-
-  onAnchorClick ( ) {
-    let x = document.querySelector("#about");
-    if (x){
-        x.scrollIntoView();
-    }
-  }
-
-  go () {
-    this.route.fragment.subscribe ( f => {
-      const element = document.querySelector ( "#" + f )
-      if ( element ){
-        element.scrollIntoView();
-      } 
-    });
+    
   }
 
   loggedIn(): boolean{
     //console.log(this.authenticationService.IsLoggedIn());
-    return this.authenticationService.IsLoggedIn();
+    return this.authenticationService.isUserLoggedIn();
   }
 
   logOut(){
-    //localStorage.removeItem("jwt");
+    console.log("logout called from navbar");
     this.authenticationService.logOut();
-  }
-
-  goTo(id){
-    this.router.navigate( ['/home', id ]);
-  }
-
-  scrollUp(){
-    let x = document.querySelector("#home");
-    if (x){
-        x.scrollIntoView({ behavior: "smooth"});
-    }
-    //document.body.scrollTop = document.documentElement.scrollTop = 0;
-  }
-
-  about(){
-    this.router.navigate( ['/home']);
-    let x = document.querySelector("#about");
-    if (x){
-      x.scrollIntoView();
-    }
-
-    
-  }
-  
-  public shown: boolean = false;
-  show(){
-    this.shown = true;
   }
 
 

@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using TeachingAppAPI.Data;
 using TeachingAppAPI.Entities;
 using TeachingAppAPI.Helpers;
+using TeachingAppAPI.Models;
 using TeachingAppAPI.Services;
 
 namespace TeachingAppAPI.Controllers
@@ -60,7 +61,7 @@ namespace TeachingAppAPI.Controllers
                 //context.AppUser.FromSql($"verifyAccount @AppUserId", param);
                 //context.Update(user);
                 context.SaveChanges();
-                CreateToken(user);
+                UserLogin(user);
                 return Ok();
             }
             else
@@ -80,9 +81,9 @@ namespace TeachingAppAPI.Controllers
                 var user = _userService.CreateUser(newUser, newUser.UserPassword);
                 emailSender.SendEmailAsync(appSettings.MailKey, user.Email, "Your verifiaction code", "Your verification code is " + user.VerificationCode);
                 Console.WriteLine("sent mail");
-                var SecretKey = Encoding.ASCII.GetBytes(appSettings.Secret);
+                var SecretKey = Encoding.UTF8.GetBytes(appSettings.Secret);
                 var key = new SymmetricSecurityKey(SecretKey);
-                var signInCred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+                var signInCred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
                 var claims = new List<Claim>
                 {
@@ -92,7 +93,7 @@ namespace TeachingAppAPI.Controllers
                         (
                         issuer: "http://localhost:52459",
                         audience: "http://localhost:52459",
-                        expires: DateTime.Now.AddMinutes(1),
+                        expires: DateTime.Now.AddSeconds(10),
                         claims: claims,
                         signingCredentials: signInCred
                         );
@@ -114,8 +115,9 @@ namespace TeachingAppAPI.Controllers
             }
         }
 
+        // Method used to Log In
         [HttpPost("token")]
-        public IActionResult CreateToken([FromBody]AppUser userInput)
+        public IActionResult UserLogin([FromBody]AppUser userInput)
         {
             var user = context.AppUser.SingleOrDefault(x => x.UserName == userInput.UserName);
             Console.WriteLine("user: " + user);
@@ -148,45 +150,82 @@ namespace TeachingAppAPI.Controllers
             }       
         }
 
+
+        /**
+         * Method used to Refresh and give new AccessToken to client.
+         * Method is called from client whenever a 401 unauthorized error is given, the client will then attempt to get a new accessToken by
+         * calling this method parsing its Expired access token and current refresh token. If tokens are valid and refresh token has not expired
+         * a new access token will be sent back to client
+         * https://www.blinkingcaret.com/2018/05/30/refresh-tokens-in-asp-net-core-web-api/
+         */
+        [AllowAnonymous]
         [HttpPost("token/refresh")]
-        public IActionResult RefreshToken([FromBody] RefreshToken refreshToken)
+        public IActionResult RefreshToken([FromBody]dynamic tokens)
         {
-            var refreshTokenFromDatabase = context.RefreshToken.Include(x => x.AppUser).SingleOrDefault(i => i.Token == refreshToken.Token);
-            Console.WriteLine("DateTime.Now: " + DateTime.Now);
-            if (refreshTokenFromDatabase == null)
+            string parsedRefreshToken = Convert.ToString(tokens.RefreshToken);
+            string parsedAccessToken = Convert.ToString(tokens.AccessToken);
+
+            if(parsedRefreshToken.Length <= 0 || parsedAccessToken.Length <= 0)
+            {
+                Console.WriteLine("empty negros");
+                return Unauthorized();
+            }
+            Console.WriteLine("refresh token parsed: " + parsedRefreshToken);
+            var principal = GetPrincipalFromExpiredToken(parsedAccessToken);
+            int userId = Convert.ToInt32(principal.Identity.Name);
+
+            var refreshTokenFromDB = _tokenGenerator.GetRefreshTokenFromDB(userId);
+
+            if (refreshTokenFromDB == null)
             {
                 return BadRequest();
             }
-            if (refreshTokenFromDatabase.ExpiresUtc < DateTime.Now)
+
+            // If refresh token has expired return unauthorized
+            if (refreshTokenFromDB.ExpiresUtc < DateTime.Now)
             {
                 Console.WriteLine("DateTime.Now: " + DateTime.Now);
-                Console.WriteLine("refreshTokenFromDatabase.ExpiresUtc: " + refreshTokenFromDatabase.ExpiresUtc);
+                Console.WriteLine("refreshTokenFromDatabase.ExpiresUtc: " + refreshTokenFromDB.ExpiresUtc);
                 return Unauthorized();
             }
-            AppUser user = refreshTokenFromDatabase.AppUser;
-            string accessToken = _tokenGenerator.CreateAccessToken(user);
 
-
-            return Ok(new
+            // If token from db is different to the token parsed then return unathorized
+            if(refreshTokenFromDB.Token != parsedRefreshToken)
             {
-                token = accessToken,
-                refreshToken = refreshTokenFromDatabase.Token,
-                id = refreshTokenFromDatabase.AppUser.AppUserId
-            });
+                return Unauthorized();
+            }
+            
+            // If RefreshToken and old AccessToken are both valid, generate new Access token and send it back to Client
+            var user = context.AppUser.FirstOrDefault(x => x.AppUserId == userId);
+            var newAccessToken = _tokenGenerator.CreateAccessToken(user);
+
+            return Ok(new { token = newAccessToken });
+        }
+
+
+        private ClaimsPrincipal GetPrincipalFromExpiredToken(String token)
+        {
+            var SecretKey = Encoding.UTF8.GetBytes(appSettings.Secret);
+            var key = new SymmetricSecurityKey(SecretKey);
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = false,
+                ValidateIssuer = false,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = key,
+                ValidateLifetime = false
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            SecurityToken securityToken;
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
+            var jwtSecurityToken = securityToken as JwtSecurityToken;
+            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+                throw new SecurityTokenException("Invalid token");
+
+            return principal;
+        }
+
         
-
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

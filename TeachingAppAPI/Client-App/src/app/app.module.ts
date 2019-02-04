@@ -61,6 +61,8 @@ import { TopicsComponent } from './topics/topics.component';
 import { Quiz2Component } from './quiz2/quiz2.component';
 import { QuizInstanceComponent } from './quiz-instance/quiz-instance.component';
 import { VideoTestComponent } from './video-test/video-test.component';
+import { UnauthorizedComponent } from './error-templates/unauthorized/unauthorized.component';
+import { TeacherDashboardComponent } from './dashboard/teacher-dashboard/teacher-dashboard.component';
 
 
 @NgModule({
@@ -95,7 +97,9 @@ import { VideoTestComponent } from './video-test/video-test.component';
     QuizInstanceComponent,
     VideoTestComponent,
     EditTopicComponent,
-    GenerateCourseComponent
+    GenerateCourseComponent,
+    UnauthorizedComponent,
+    TeacherDashboardComponent,
   ],
   imports: [
     BrowserModule,

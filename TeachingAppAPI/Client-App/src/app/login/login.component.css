@@ -1,13 +1,12 @@
 :host{
-    position: fixed;
     width: 100%;
-    height: 100%;
-    background: #fff;
+    background: #f2f3f5;
+    padding-bottom: 57px;
+    float: left;
 }
 
 .wrapper{
     text-align: center;
-    height: 100%;
 }
 
 h1{
@@ -53,8 +52,12 @@ input{
 .btn-primary{
     width: 16rem;
     color: #fff;
-    background: #90C3D4;
+    background: #288ca2;
     border: none;
+}
+
+.btn-primary:hover{
+    background: #135e6e;
 }
 
 .btn{

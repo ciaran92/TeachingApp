@@ -11,5 +11,6 @@ namespace TeachingAppAPI.Services
 
         string CreateAccessToken(AppUser user);
         RefreshToken CreateRefreshToken(int userId);
+        RefreshToken GetRefreshTokenFromDB(int appUserId);
     }
 }

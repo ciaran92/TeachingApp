@@ -29,10 +29,16 @@ export class MyCoursesComponent implements OnInit {
   DisplayCourseList(){
     this.courseService.GetCoursesEnrolledIn().subscribe((response) => 
     {
-      this.myCoursesList = response;
-      console.log("MyCourses: " + this.myCoursesList[0].courseName);
-    }, err => {
-      console.log("error: " + err.error);
+      console.log("error: 401 nigga", JSON.stringify(response));
+      if(response.ok){
+        this.myCoursesList = response;
+        console.log("MyCourses: " + this.myCoursesList[0].courseName);
+      }
+      if(response.status == 401){
+        console.log("error: 401 nigga");
+      }
+    }, error => {
+      console.log("error: " + (error.status));
       this.route.navigate(['/home']);
     });
   }

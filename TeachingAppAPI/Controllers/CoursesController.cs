@@ -104,7 +104,8 @@ namespace TeachingAppAPI.Controllers
 
         // Select all Courses (no matter what their status:
         // Returns CoursesListDto object 
-        
+
+        [Authorize(Policy = "RegisteredUser")]
         [HttpGet]
         public IActionResult GetCourses()
         {

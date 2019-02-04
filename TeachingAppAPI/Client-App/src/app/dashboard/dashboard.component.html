@@ -1,4 +1,20 @@
-
-<!--<h1>View Courses</h1>User can view available courses even if they have not confirmed their account-->
-<!--<h1>My Courses</h1>User cannot view or add/enrol in courses and subsequently cannont view my courses-->
+<div class="wrapper">
+    <div class="header">
+        <div class="container">
+            <h1>My Courses</h1>
+        </div>
+    </div>
+    <div class="tab-list">
+        <ul>
+            <li>My Courses</li>
+            <li>Favourites</li>
+            <li style="border-right: none" routerLink="teacher">Teacher</li>
+        </ul>
+    </div>
+    <div class="content">
+        <div class="container">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>
 
