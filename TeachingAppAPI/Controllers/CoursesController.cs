@@ -19,6 +19,7 @@ using Amazon.S3;
 using Amazon.S3.Model;
 using TeachingAppAPI.Models;
 using static System.Net.Mime.MediaTypeNames;
+using AutoMapper;
 
 namespace TeachingAppAPI.Controllers
 {
@@ -90,7 +91,6 @@ namespace TeachingAppAPI.Controllers
                     topics = topicsArray,
                     courseStatusId = courses.ElementAt(i).CourseStatusId,
                     dateCreated = courses.ElementAt(i).DateCreated,
-                    courseDuration = courses.ElementAt(i).CourseDuration,
                     courseDesc = courses.ElementAt(i).CourseDescription
                 };
 
@@ -104,68 +104,31 @@ namespace TeachingAppAPI.Controllers
 
         // Select all Courses (no matter what their status:
         // Returns CoursesListDto object 
-
-        [Authorize(Policy = "RegisteredUser")]
         [HttpGet]
         public IActionResult GetCourses()
         {
-            try
-            {
-                var query = _context.Course.ToList();
-                var courses = new List<CoursesListDto>();
+            var courses = _context.Course.FromSql($"select * from Course").ToList();
+            var courseListToReturn = Mapper.Map<IEnumerable<CoursesListDto>>(courses);
+            return Ok(courseListToReturn);
 
-                foreach (var course in query)
-                {
-                    courses.Add(new CoursesListDto()
-                    {
-                        CourseId = course.CourseId,
-                        CourseName = course.CourseName,
-                        CourseThumbnailUrl = course.CourseThumbnailUrl
-                    });
-                }
-                return Ok(courses);
-            }
-            catch(Exception ex)
-            {
-                return Ok();
-            }
-            
 
-            
         }
+
 
         [Authorize(Policy = "RegisteredUser")]
         [HttpGet("my-courses")]
         public IActionResult GetCoursesEnrolledIn()
         {
             var claimsIdentity = User.Identity as ClaimsIdentity;
-            var userIdClaim = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
+            int userIdClaim = Convert.ToInt32(claimsIdentity.FindFirst(ClaimTypes.Name)?.Value);
 
             var userId = new SqlParameter("@UserId", userIdClaim);
             var myCourses = _context.EnrolledCoursesLists.FromSql($"ViewEnrolledList @UserId", userId).ToList();
 
-            var length = myCourses.Count;
-            var returnArray = new object[length];
-            for(int i = 0; i < length; i++)
-            {
-                returnArray[i] = new
-                {
-                    courseId = myCourses.ElementAt(i).CourseId,
-                    courseName = myCourses.ElementAt(i).CourseName
-                };
-            }
-            return Ok(returnArray);
+            var courseListToReturn = Mapper.Map<IEnumerable<CoursesListDto>>(myCourses);
+            return Ok(courseListToReturn);
         }
 
-        
-
-        [HttpPost("add-topic")]
-        public IActionResult CreateNewTopic([FromBody]Topic topic)
-        {
-            _context.Topic.Add(topic);
-            _context.SaveChanges();
-            return Ok(topic);
-        }
 
         /*[HttpPost("uploadNGX"), DisableRequestSizeLimit]
         public async Task<ActionResult> UploadNGXImage()
@@ -206,39 +169,6 @@ namespace TeachingAppAPI.Controllers
             
             return null;
         }*/
-
-        [HttpPost("new-course")]
-        public IActionResult CreateNewCourse([FromBody]Course course)
-        {
-            course.CourseStatusId = 1; //TODO: change this to 0 if course is in process of being created and has not been submitted for review
-            
-            _context.Course.Add(course);
-            
-            _context.SaveChanges();
-            CreateDefaultTopic(course.CourseId);
-            return Ok(course);
-        }
-
-        // Method to create default topic whenever a new course is created
-        public IActionResult CreateDefaultTopic([FromQuery] int id)
-        {
-            Topic topic = new Topic() { CourseId = id, TopicName = "Example Topic", TopicDesc = "Example Description", TopicOrder = 1 };
-            _context.Topic.Add(topic);
-            _context.SaveChanges();
-            CreateDefaultLesson(topic.TopicId);
-            return null;
-        }
-
-        // Method to create default topic whenever a new course is created
-        public IActionResult CreateDefaultLesson([FromQuery] int id)
-        {
-            Lesson defaultLesson = new Lesson() { TopicId = id, LessonName = "Default Lesson", LessonOrder = 1, VideoFileName = "No File Selected" };
-            _context.Lesson.Add(defaultLesson);
-            _context.SaveChanges();
-            return null;
-        }
-
-
         
 
         /*[HttpPost("upload"), DisableRequestSizeLimit]

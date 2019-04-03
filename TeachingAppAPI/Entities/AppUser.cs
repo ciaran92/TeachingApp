@@ -7,6 +7,7 @@ namespace TeachingAppAPI.Entities
     {
         public AppUser()
         {
+            Course = new HashSet<Course>();
             Enrolment = new HashSet<Enrolment>();
             RefreshToken = new HashSet<RefreshToken>();
         }
@@ -25,6 +26,7 @@ namespace TeachingAppAPI.Entities
 
         public AppUserStatus AppUserStatus { get; set; }
         public AppUserType AppUserType { get; set; }
+        public ICollection<Course> Course { get; set; }
         public ICollection<Enrolment> Enrolment { get; set; }
         public ICollection<RefreshToken> RefreshToken { get; set; }
     }

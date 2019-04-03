@@ -7,6 +7,7 @@ namespace TeachingAppAPI.Entities
     {
         public int CourseId { get; set; }
         public string CourseName { get; set; }
+        public string CourseThumbnailURL { get; set; }
 
         public Course Course { get; set; }
     }

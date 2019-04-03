@@ -12,7 +12,7 @@ namespace TeachingAppAPI.Entities
         public string LessonVideoUrl { get; set; }
         public int? LessonOrder { get; set; }
         public string VideoFileName { get; set; }
-        public string S3VideoFileName { get; set; }
+        public string S3videoFileName { get; set; }
 
         public Topic Topic { get; set; }
     }

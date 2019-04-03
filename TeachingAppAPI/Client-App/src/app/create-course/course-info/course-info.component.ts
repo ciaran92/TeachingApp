@@ -1,11 +1,11 @@
-import { Component, OnInit, AfterViewInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CreateCourseService } from 'src/app/services/create-course.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-course-info',
   templateUrl: './course-info.component.html',
-  styleUrls: ['../create-course.component.css']
+  styleUrls: ['../create-course.component.css', './course-info.component.css']
 })
 export class CourseInfoComponent implements OnInit, AfterViewInit {
 
@@ -27,10 +27,6 @@ export class CourseInfoComponent implements OnInit, AfterViewInit {
     //this.editor.contentDocument.designMode = "on";
   }
 
-  execCmd(command: string){
-    this.editor.contentDocument.execCommand(command, false, null);
-  }
-
   addImage(){
     var url = prompt("enter image url");
     this.editor.contentDocument.execCommand("insertImage", false, url);
@@ -41,6 +37,7 @@ export class CourseInfoComponent implements OnInit, AfterViewInit {
     sessionStorage.setItem("Subtitle", this.courseSubtitle);
     sessionStorage.setItem("CourseDescription", this.dataModel);
     console.log(this.dataModel);
+
     this.route.navigate(['create-course/thumbnail', this.getCourseId()]);
     //this.courseService.createCourse(CourseName, CourseSubtitle, this.editor.body.innerHTML);
   }

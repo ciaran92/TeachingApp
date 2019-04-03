@@ -6,6 +6,7 @@
     width: 100%;
     display: flex;
     align-items: center;
+    justify-content: center;
     list-style: none;
     padding: 3px 0;
     margin: 0;
@@ -160,10 +161,18 @@ li i{
     color: #e84118;
 }
 
-/********** Profile **********/
-
-.profile{
+/********** Standard Links **********/
+.navbar-link{
+    cursor: pointer;
 }
+
+.navbar-link:focus{
+    border: none;
+    outline: none;
+}
+
+
+/********** Profile **********/
 
 .profile img{
     width: 40px;

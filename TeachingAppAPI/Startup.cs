@@ -85,6 +85,7 @@ namespace TeachingAppAPI
             app.UseAuthentication();
             AutoMapper.Mapper.Initialize(cfg =>
             {
+                cfg.CreateMap<Course, CoursesListDto>();
                 cfg.CreateMap<Topic, TopicsListDto>();
                 cfg.CreateMap<Topic, TopicDto>();
                 cfg.CreateMap<Lesson, LessonDto>();

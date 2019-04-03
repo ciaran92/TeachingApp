@@ -1,3 +1,24 @@
-<p>
-  teacher-dashboard works!
-</p>
+<button type="button" class="custom-btn" routerLink="/add-course">Create Course</button>
+
+<div class="section-1">
+    <p>Courses I Teach</p>
+    <div class="row">
+        <div class="col-3" *ngFor="let course of courseListStatus1">
+            <div *ngIf="course.courseStatusId == 1" class="card" (click)="GoToCourse(course.courseId)">
+                <div class="img-container-outer">
+                    <div class="img-container-inner">
+                        <img src="../../assets/placeholder.jpg" alt="Card image cap">
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ course.courseName | slice:0:25}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="section-2">
+    <p>Courses I'm currently working on</p>
+</div>
+
+

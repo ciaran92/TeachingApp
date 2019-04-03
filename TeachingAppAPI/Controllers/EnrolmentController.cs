@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TeachingAppAPI.Data;
 using TeachingAppAPI.Helpers;
 using TeachingAppAPI.Entities;
-using TeachingAppAPI.Services;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace TeachingAppAPI.Services
 {
@@ -32,39 +30,6 @@ namespace TeachingAppAPI.Services
             _context = context;
             _enrolmentService = enrolmentService;
         }
-
-
-        //[HttpGet("{id}")]
-        //public IActionResult GetEnrolment(int id)
-        //{
-        //    // Calling the selectEnrolment Stored Procedure:
-        //    var param = new SqlParameter("@EnrolmentId", id);
-        //    var enrolment = _context.Enrolment.FromSql($"selectEnrolment @EnrolmentId", param).ToArray();
-
-        //    if (enrolment.Length <= 0)
-        //    {
-        //        return BadRequest("There is no such enrolment.");
-        //    }
-
-           
-        //    var length = enrolment.Length;
-        //    var returnArray = new object[length];
-
-        //    for (int i = 0; i < length; i++)
-        //    {
-        //        returnArray[i] = new
-        //        {
-        //            enrolmentID = enrolment.ElementAt(i).EnrolmentId,
-        //            appUserId = enrolment.ElementAt(i).AppUserId,
-        //            courseId = enrolment.ElementAt(i).CourseId,
-        //            enrolmentDateTimeStart = enrolment.ElementAt(i).EnrolmentDateTimeStart
-        //        };
-
-        //    }
-
-        //    return Ok(returnArray);
-
-        //}
 
 
         // Select all Enrolments for a Course: 
@@ -101,25 +66,23 @@ namespace TeachingAppAPI.Services
 
 
         // POST api/Course
+        [Authorize(Policy = "RegisteredUser")]
         [HttpPost]
         public IActionResult CreateNewEnrolment([FromBody]Enrolment newEnrolment)
         {
-            try
-            {
-                Console.WriteLine("called createEnrolment()");
-                var enrolment = _enrolmentService.CreateEnrolment(newEnrolment);
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            int userIdClaim = Convert.ToInt32(claimsIdentity.FindFirst(ClaimTypes.Name)?.Value);
 
-                return Ok(new
-                {
-                    appUserID = enrolment.AppUserId,
-                    courseID = enrolment.CourseId,
-                    enrolment = enrolment.EnrolmentDateTimeStart
-                });
-            }
-            catch (CustomException e)
+            Console.WriteLine("EnrolmentId: " + newEnrolment.EnrolmentId);
+            if (_context.Enrolment.Any(x => x.EnrolmentId == newEnrolment.EnrolmentId))
             {
-                return BadRequest(new { message = e.Message });
+               BadRequest();
             }
+            newEnrolment.AppUserId = userIdClaim;
+            newEnrolment.EnrolmentDateTimeStart = DateTime.UtcNow;
+            _context.Enrolment.Add(newEnrolment);
+            _context.SaveChanges();
+            return Ok();
         }
 
 

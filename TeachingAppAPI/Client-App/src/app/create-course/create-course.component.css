@@ -1,7 +1,15 @@
-.wrapper{
-    padding-top: 60px;
-    padding-bottom: 60px;
+:host{
+    width: 100%;
+    float: left;
+    padding-bottom: 57px;
     background-color: #f2f3f5;
+}
+
+.wrapper{
+    padding: 60px 0px;
+    width: 100%;
+    float: left;
+    
 }
 
 /****** Base Styles for all buttons in create course******/
@@ -15,7 +23,7 @@
 
 /***************************************/
 
-/****** Generate Course Component ******/
+/****** Dots ******/
 
 .steps{
     text-align: center;
@@ -70,7 +78,10 @@
     line-height: 28px;
 }*/
 
+/* Boxed Container For All Content */
 .section{
+    width: 100%;
+    float: left;
     box-shadow: 0 0 5px #888;
     background: #fff;
 }
@@ -81,11 +92,11 @@
     border-bottom: 1px solid #C0C0C0; 
 }
 
-.section-title h3{
+.section-title h3{ /* Step title */
     margin-bottom: 0;
 }
 
-.section-content{
+.section-content{ /* padding for the main content */
     padding: 30px;
 }
 
@@ -110,44 +121,6 @@
     display: block;
     border: 1px solid #C0C0C0;
     resize: none;
-}
-
-.textEditor{
-    height: 500px;
-    width: 100%;
-}
-
-.editorOptions{
-    height: 40px;
-    border: 1px solid #C0C0C0;
-}
-
-.editorOptions button{
-    background-color: transparent;
-    height: 100%;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    margin-right: 5px;
-    margin-left: 5px;
-    border: none;
-    cursor: pointer;
-}
-
-.editorOptions button i{
-    line-height: 34px;
-}
-
-.textArea{
-    width: 100%;
-    height: 460px;
-    border: 1px solid #C0C0C0;
-    border-top: none;
-}
-
-.textArea iframe{
-    width: 100%;
-    height: 100%;
-    border: none;
 }
 
 /************ Bottom Navigation Buttons ************/

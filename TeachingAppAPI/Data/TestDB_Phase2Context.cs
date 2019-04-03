@@ -24,6 +24,7 @@ namespace TeachingAppAPI.Data
         public virtual DbSet<AppUserType> AppUserType { get; set; }
         public virtual DbSet<Course> Course { get; set; }
         public virtual DbSet<CourseStatus> CourseStatus { get; set; }
+        public virtual DbSet<CourseTrailerVideo> CourseTrailerVideo { get; set; }
         public virtual DbSet<Enrolment> Enrolment { get; set; }
         public virtual DbSet<Lesson> Lesson { get; set; }
         public virtual DbSet<Question> Question { get; set; }
@@ -33,10 +34,10 @@ namespace TeachingAppAPI.Data
         public virtual DbSet<QuizType> QuizType { get; set; }
         public virtual DbSet<QuizUserStatus> QuizUserStatus { get; set; }
         public virtual DbSet<RefreshToken> RefreshToken { get; set; }
+        public virtual DbSet<Thumbnail> Thumbnail { get; set; }
         public virtual DbSet<Topic> Topic { get; set; }
 
         public virtual DbQuery<test1> Test1 { get; set; }
-
         public virtual DbQuery<EnrolledCoursesList> EnrolledCoursesLists { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -159,21 +160,11 @@ namespace TeachingAppAPI.Data
             {
                 entity.Property(e => e.CourseDescription).IsUnicode(false);
 
-                entity.Property(e => e.CourseDuration).HasColumnName("Course_Duration");
-
                 entity.Property(e => e.CourseName)
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
                 entity.Property(e => e.CourseStatusId).HasColumnName("CourseStatusID");
-
-                entity.Property(e => e.CourseThumbnailUrl)
-                    .HasColumnName("CourseThumbnailURL")
-                    .IsUnicode(false);
-
-                entity.Property(e => e.CourseTrailerVideo)
-                    .HasMaxLength(400)
-                    .IsUnicode(false);
 
                 entity.Property(e => e.DateCreated).HasColumnType("datetime");
 
@@ -185,6 +176,11 @@ namespace TeachingAppAPI.Data
                     .WithMany(p => p.Course)
                     .HasForeignKey(d => d.CourseStatusId)
                     .HasConstraintName("FK__Course__CourseSt__412EB0B6");
+
+                entity.HasOne(d => d.CreatorAppUser)
+                    .WithMany(p => p.Course)
+                    .HasForeignKey(d => d.CreatorAppUserId)
+                    .HasConstraintName("FK__Course__CreatorA__19AACF41");
             });
 
             modelBuilder.Entity<CourseStatus>(entity =>
@@ -197,6 +193,30 @@ namespace TeachingAppAPI.Data
                     .HasColumnName("CourseStatus_desc")
                     .HasMaxLength(100)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<CourseTrailerVideo>(entity =>
+            {
+                entity.HasKey(e => e.TrailerVideoId);
+
+                entity.Property(e => e.LocalFileName)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.S3fileName)
+                    .HasColumnName("S3FileName")
+                    .HasMaxLength(300)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.TrailerVideoUrl)
+                    .HasColumnName("TrailerVideoURL")
+                    .HasMaxLength(300)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Course)
+                    .WithMany(p => p.CourseTrailerVideo)
+                    .HasForeignKey(d => d.CourseId)
+                    .HasConstraintName("FK__CourseTra__Cours__336AA144");
             });
 
             modelBuilder.Entity<Enrolment>(entity =>
@@ -232,12 +252,13 @@ namespace TeachingAppAPI.Data
                     .HasMaxLength(256)
                     .IsUnicode(false);
 
-                entity.Property(e => e.VideoFileName)
-                    .HasMaxLength(250)
+                entity.Property(e => e.S3videoFileName)
+                    .HasColumnName("S3VideoFileName")
+                    .HasMaxLength(350)
                     .IsUnicode(false);
 
-                entity.Property(e => e.S3VideoFileName)
-                    .HasMaxLength(350)
+                entity.Property(e => e.VideoFileName)
+                    .HasMaxLength(250)
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.Topic)
@@ -384,6 +405,28 @@ namespace TeachingAppAPI.Data
                     .WithMany(p => p.RefreshToken)
                     .HasForeignKey(d => d.AppUserId)
                     .HasConstraintName("FK__RefreshTo__AppUs__625A9A57");
+            });
+
+            modelBuilder.Entity<Thumbnail>(entity =>
+            {
+                entity.Property(e => e.LocalFilename)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.S3fileName)
+                    .HasColumnName("S3FileName")
+                    .HasMaxLength(300)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ThumbnailUrl)
+                    .HasColumnName("ThumbnailURL")
+                    .HasMaxLength(300)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Course)
+                    .WithMany(p => p.Thumbnail)
+                    .HasForeignKey(d => d.CourseId)
+                    .HasConstraintName("FK__Thumbnail__Cours__308E3499");
             });
 
             modelBuilder.Entity<Topic>(entity =>

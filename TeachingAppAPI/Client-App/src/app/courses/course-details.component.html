@@ -13,8 +13,7 @@
       </p>
     </div>
     
-    <button *ngIf="loggedIn()" type="button" routerLink="" class="btn btn-primary">Enrol</button>
-    <button *ngIf="!loggedIn()" type="button" routerLink="" class="btn btn-primary">Enroleddeeeded</button>    
+    <button type="button" (click)="enrol()" class="btn btn-primary">Enrol</button> 
   </div>
   
 </div>

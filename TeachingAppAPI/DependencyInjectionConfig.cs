@@ -12,6 +12,7 @@ namespace TeachingAppAPI
             services.AddSingleton<IEmailSender, EmailSender>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITokenGenerator, TokenGenerator>();
+            services.AddScoped<IFileUploadService, FileUploadService>();
 
             services.AddScoped<ICourseService, CourseService>();
             services.AddScoped<IEnrolmentService, EnrolmentService>();

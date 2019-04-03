@@ -10,5 +10,6 @@ namespace TeachingAppAPI.Models
         public int CourseId { get; set; }
         public string CourseName { get; set; }
         public string CourseThumbnailUrl { get; set; }
+        public int? CourseStatusId { get; set; }
     }
 }

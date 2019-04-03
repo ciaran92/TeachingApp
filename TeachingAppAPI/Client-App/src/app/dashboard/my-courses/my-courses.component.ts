@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { CourseService } from '../services/course.service';
+import { CourseService } from '../../services/course.service';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 
 @Component({
-  selector: 'app-my-courses',
+  selector: 'my-courses',
   templateUrl: './my-courses.component.html',
   styleUrls: ['./my-courses.component.css']
 })

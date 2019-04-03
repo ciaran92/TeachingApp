@@ -8,7 +8,7 @@ import { ContactUsComponent } from './contact-us/contact-us.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from './auth.guard';
 import { AccountConfirmationComponent } from './account-confirmation/account-confirmation.component';
-import { MyCoursesComponent } from './my-courses/my-courses.component';
+import { MyCoursesComponent } from './dashboard/my-courses/my-courses.component';
 import { CoursesComponent } from './courses/courses.component';
 import { TopicsComponent } from './topics/topics.component';
 import { Quiz2Component } from './quiz2/quiz2.component';

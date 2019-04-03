@@ -117,72 +117,9 @@ namespace TeachingAppAPI.Controllers
 
 
         // POST api/Topic
-        [HttpPost]
-        public IActionResult CreateNewTopic([FromBody]Topic newTopic)
-        {
-            try
-            {
-                Console.WriteLine("called createTopic()");
-                _context.Add(newTopic);
-                _context.SaveChanges();
-                TopicsListDto createdTopic = new TopicsListDto();
+        
 
-                createdTopic.TopicId = newTopic.TopicId;
-                createdTopic.TopicName = newTopic.TopicName;
-                createdTopic.TopicOrder = newTopic.TopicOrder;
-
-                return Ok(createdTopic);
-            }
-            catch (CustomException e)
-            {
-                return BadRequest(new { message = e.Message });
-            }
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult DeleteTopic(int id)
-        {
-            var topic = _context.Topic.FirstOrDefault(t => t.TopicId == id);
-
-            _context.Topic.Remove(topic);
-            _context.SaveChanges();
-            return NoContent();
-        }
-
-
-        // Update a Topic:
-        [HttpPut("{id}")]
-        public void UpdateTopic(int id, [FromBody]Topic topic)
-        {
-            var topicFromDatabase = _context.Topic.FirstOrDefault(t => t.TopicId == id);
-
-            topicFromDatabase.TopicName = topic.TopicName;
-            topicFromDatabase.TopicDesc = topic.TopicDesc;
-            _context.Topic.Update(topicFromDatabase);
-            _context.SaveChanges();
-
-        }
-
-        [HttpGet("get-topic-by-id/{id}")]
-        public IActionResult GetTopicById(int id)
-        {
-            Console.WriteLine("called");
-            var topic = _context.Topic.Include(t => t.Lesson).AsEnumerable().FirstOrDefault(t => t.TopicId == id); //LINQ statement to get topic and all its lessons
-            Console.WriteLine(topic);
-            var topicToReturn = Mapper.Map<TopicDto>(topic);
-            return Ok(topicToReturn);
-        }
-
-        // Method to display list of all topics for a given course
-        [HttpGet("get-topics/{id}")]
-        public IActionResult GetTopics(int id)
-        {
-            var param = new SqlParameter("@CourseId", id);
-            var query = _context.Topic.FromSql($"select * from Topic where CourseId = @CourseId order by TopicOrder asc", param).ToArray();
-            var topics = Mapper.Map<IEnumerable<TopicsListDto>>(query);
-            return Ok(topics);
-
-        }
+         
 
     }
 }

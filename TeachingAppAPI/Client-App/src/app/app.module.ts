@@ -38,7 +38,7 @@ import { AboutUsComponent } from './about-us/about-us.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { FooterComponent } from './footer/footer.component';
 
-import { MyCoursesComponent } from './my-courses/my-courses.component';
+import { MyCoursesComponent } from './dashboard/my-courses/my-courses.component';
 import { CoursesComponent } from './courses/courses.component';
 import { CourseDetailsComponent } from './courses/course-details.component';
 import { CreateCourseComponent } from './create-course/create-course.component';

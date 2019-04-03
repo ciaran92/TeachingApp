@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-create-course',
   templateUrl: './generate-course.component.html',
-  styleUrls: ['./create-course.component.css', './generate-course.component.css']
+  styleUrls: ['./generate-course.component.css']
 })
 export class GenerateCourseComponent implements OnInit{
 

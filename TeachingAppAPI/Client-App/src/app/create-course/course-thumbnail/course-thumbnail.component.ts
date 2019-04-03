@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-course-thumbnail',
   templateUrl: './course-thumbnail.component.html',
-  styleUrls: ['../create-course.component.css']
+  styleUrls: ['../create-course.component.css', './course-thumbnail.component.css']
 })
 export class CourseThumbnailComponent implements OnInit {
 

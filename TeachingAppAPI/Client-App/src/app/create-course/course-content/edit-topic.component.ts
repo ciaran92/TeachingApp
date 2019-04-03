@@ -15,6 +15,7 @@ export class EditTopicComponent implements OnInit {
   private topicName: string;
   private topicDescription: string;
   private lessons: Lesson[];
+  private lessonId: number;
   private filename: string = "No file selected";
   image64: string;
 
@@ -66,7 +67,8 @@ export class EditTopicComponent implements OnInit {
   }
 
   handleFileInput(event, index){
-    let lessonId = this.lessons[index].lessonId;
+    console.log("index: " + this.lessonId);
+    
     let file = event.target.files[0];
     let reader = new FileReader();
     reader.readAsDataURL(file);
@@ -80,9 +82,9 @@ export class EditTopicComponent implements OnInit {
           )[1];
           sessionStorage.setItem("thumbnail_img", res);
           //console.log(res)
-          this.courseService.updateLessonVideo(lessonId, res, file.name).subscribe((response) => 
+          this.courseService.updateLessonVideo(this.lessonId, res, file.name).subscribe((response) => 
           {
-            console.log("success: updated lesson name");
+            console.log("success: uploaded video");
             //this.hideLessonEditView(index);
           }, err => {
             console.log("error: " + err);
@@ -101,6 +103,7 @@ export class EditTopicComponent implements OnInit {
    * Method used to update the Lesson Name
    */
   updateLessonName(index: number, newLessonName: string){
+    console.log("index: " + index);
     let id = this.lessons[index].lessonId;
     this.courseService.updateLessonName(id, newLessonName).subscribe((response) => 
     {
@@ -152,6 +155,8 @@ export class EditTopicComponent implements OnInit {
 
 
   displayLessonEditView(index: number){
+    console.log("index: " + index);
+    this.lessonId = this.lessons[index].lessonId;
     let name = document.getElementById("lesson-name-" + index) as HTMLInputElement;
     let confirmBtn = document.getElementById("confirm-btn-" + index)
     let cancelBtn = document.getElementById("cancel-btn-" + index)
@@ -191,6 +196,10 @@ export class EditTopicComponent implements OnInit {
     }, err => {
       console.log("error: " + err);
     });
+  }
+
+  deleteLesson(lessonId){
+    console.log("LessonId: " + lessonId);
   }
 
 }

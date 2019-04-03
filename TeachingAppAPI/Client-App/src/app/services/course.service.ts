@@ -14,7 +14,8 @@ export class CourseService {
     
     private step = new BehaviorSubject<number>(1);
     currentStep = this.step.asObservable();
-    private rootURL = "http://localhost:52459/api/courses";
+    private courseURL = "http://localhost:52459/api/courses";
+    private enrolmentURL = "http://localhost:52459/api/enrolment";
     public EnrolledCoursesList: any;
     private courseDetails: any;
     constructor(private http: HttpClient, private cookie: CookieService, private route: Router){}
@@ -27,7 +28,7 @@ export class CourseService {
 
     getCourses(): any {
         let token = this.cookie.get("jwt");
-        var result = this.http.get(this.rootURL, {
+        var result = this.http.get(this.courseURL, {
             headers: new HttpHeaders({
                 "Authorization": "Bearer " + token,
                 "Content-Type": "application/json"
@@ -53,7 +54,7 @@ export class CourseService {
 
     GetCoursesEnrolledIn(): any{
         let token = this.cookie.get("jwt");
-        var result = this.http.get(this.rootURL + "/my-courses", {
+        var result = this.http.get(this.courseURL + "/my-courses", {
             headers: new HttpHeaders({
                 "Authorization": "Bearer " + token,
                 "Content-Type": "application/json"
@@ -63,7 +64,7 @@ export class CourseService {
     }
 
     getCourse(courseId: number): any{
-        return this.http.get(this.rootURL + "/" + courseId);        
+        return this.http.get(this.courseURL + "/" + courseId);        
     }
 
     createCourse(courseName: string, courseSubtitle: string, courseDescription: string){
@@ -72,7 +73,7 @@ export class CourseService {
             CourseDescription: courseDescription,
             Subtitle: courseSubtitle
         }
-        return this.http.post(this.rootURL, body).subscribe(
+        return this.http.post(this.courseURL, body).subscribe(
             (response) => {
                 //this.route.navigate(['/home']);
             },
@@ -87,11 +88,25 @@ export class CourseService {
         const formData: FormData = new FormData();
         formData.append(image.name, image);
         //formData.append('Name', caption);
-        return this.http.post(this.rootURL + "/upload", formData);
+        return this.http.post(this.courseURL + "/upload", formData);
     }
 
     changeStep(newStep: number){
         this.step.next(newStep);
+    }
+
+    enrolInCourse(courseId: number){
+        let token = this.cookie.get("jwt");
+        let body = {
+            CourseId: courseId
+        }
+        var result = this.http.post(this.enrolmentURL, body, {
+            headers: new HttpHeaders({
+                "Authorization": "Bearer " + token,
+                "Content-Type": "application/json"
+            })
+        }).pipe(catchError(this.handleError));
+        return result; 
     }
     
 }

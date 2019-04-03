@@ -33,7 +33,7 @@
                             <input type="text" id="lesson-name-{{i}}" class="lessonName" name="LessonName" value="{{lesson.lessonName}}" #LessonName readonly/>
                         </div>
                         <div class="option-btns">
-                            <button class="custom-btn delete-btn" id="delete-btn-{{i}}" title="Delete" (click)="deleteTopic(i)"><i class="fa fa-ban"></i></button>
+                            <button class="custom-btn delete-btn" id="delete-btn-{{i}}" title="Delete" (click)="deleteLesson(lesson.lessonId)"><i class="fa fa-ban"></i></button>
                             <button class="custom-btn edit-btn" id="edit-btn-{{i}}" title="Edit" (click)="displayLessonEditView(i)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
                             <button class="custom-btn cancel-btn" id="cancel-btn-{{i}}" style="display: none" (click)="cancelUpdate(i)"><i class="fa fa-times"></i></button>
                             <button class="custom-btn confirm-btn" id="confirm-btn-{{i}}" style="display: none" (click)="updateLessonName(i, LessonName.value)"><i class="fa fa-check"></i></button>
@@ -44,9 +44,9 @@
                         <button class="custom-btn add-btn" (click)="createNewLesson(LessonName.value, i)">Add</button>
                     </div>
                 </div>
-                <div id="lesson-content-{{i}}" style="display:none" class="lesson-content">
+                <div id="lesson-content-{{i}}" style="display:none" class="lesson-content"> 
                     <button type="button" onclick="document.getElementById('file-upload').click()" class="custom-btn upload-file-btn">Choose File</button>
-                    <input id="file-upload" class="upload-file" type="file" #Image (change)="handleFileInput($event, i)" />
+                    <input id="file-upload" class="upload-file" type="file" (change)="handleFileInput($event, i)" >
                     <input type="text" class="file-name" name="FileName" placeholder="{{ lesson.videoFileName }}" #FileName readonly>
                 </div>
             </div>

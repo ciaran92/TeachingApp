@@ -16,13 +16,13 @@
           <li routerLink='/add-course'>Create Course</li>
         </ul>
       </li>
+      <li class="navbar-link" *ngIf="loggedIn()" routerLink='dashboard'>Dashboard</li>
       <li *ngIf="!loggedIn()"><button type="button" routerLink='/register'>Register</button></li>
       <li *ngIf="!loggedIn()"><button type="button" routerLink='/sign-in'>Sign In</button></li>
 
       <li class="profile" *ngIf="loggedIn()">
         <img src="../../assets/profileImage.jpg" alt="poos">
         <ul class="profile-dropdown" id="dropdown-list2">
-          <li routerLink='dashboard'>Dashboard</li>
           <li>My Account</li>
           <li (click)="logOut()">Sign Out</li>
         </ul>

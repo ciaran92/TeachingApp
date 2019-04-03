@@ -44,6 +44,11 @@
     color: #e84118;
 }
 
-.content{
+.active-link{
+    color: #e84118 !important;;
+}
 
+.container-2{
+    margin: 0 auto;
+    max-width: 1000px;
 }
